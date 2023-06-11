@@ -17,4 +17,16 @@ export const invoices = [
     description: "Lorem ipsum3",
     dateOfIssue: new Date(),
   },
+  { 
+    id: "er980191-7939-46aa-8a3c-fd9bee043d26",
+    customerId: "254c3ea9-9501-471a-8480-b08597aeabde",
+    description: "Lorem ipsum4",
+    dateOfIssue: new Date("2023-02-25T22:00:00.000Z"),
+  },
+  { 
+    id: "ew980191-7939-46aa-8a3c-fd9bee043d26",
+    customerId: "254c3ea9-9501-471a-8480-b08597aeabde",
+    description: "Lorem ipsum5",
+    dateOfIssue: new Date("2023-01-31T22:00:00.000Z"),
+  },
 ]

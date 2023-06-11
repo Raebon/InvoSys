@@ -8,10 +8,10 @@ export const createInvoiceItems = () => {
   })
 }
 
-export const getInvoiceItems = async ():Promise<InvoiceItem[]> => {
+export const getInvoiceItems = async (): Promise<InvoiceItem[]> => {
   const invoiceItemsData = await db.InvoiceItem.findAll()
 
-  const invoiceItems = await invoiceItemsData.map((item:InvoiceItem) => {
+  const invoiceItems = await invoiceItemsData.map((item: InvoiceItem) => {
     return {
       id: item.id,
       invoiceId: item.invoiceId,

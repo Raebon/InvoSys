@@ -8,25 +8,19 @@ import { GraphqlService } from '../../services/graphql.service';
 })
 export class RevenueLastThreeMonthsComponent implements OnInit {
 
-  revenueStats = [
-    {
-      month: "Červen",
-      revenue: 75231
-    },
-    {
-      month: "Květen",
-      revenue: 251231
-    },
-    {
-      month: "Březen",
-      revenue: 65155
-    },
-
-  ]
+  revenueStats:RevenueLastThreeMonthsResult[] = []
 
   constructor(private graphqlService: GraphqlService) { }
 
   ngOnInit(): void {
+    this.getLastThreeMonthsRevenueData()
+  }
+
+  public getLastThreeMonthsRevenueData(): void {
+    this.graphqlService.getLastThreeMonthsRevenue().subscribe(data => {
+      this.revenueStats = data
+      console.log(data)
+    })
   }
 
 }

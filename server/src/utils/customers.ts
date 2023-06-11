@@ -8,10 +8,10 @@ export const createCustomers = () => {
   })
 }
 
-export const getCustomers = async ():Promise<Customer[]> => {
+export const getCustomers = async (): Promise<Customer[]> => {
   const customerData = await db.Customer.findAll()
 
-  const customers = await customerData.map((customer:Customer) => {
+  const customers = await customerData.map((customer: Customer) => {
     return {
       id: customer.id,
       firsName: customer.firstName,

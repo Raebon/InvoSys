@@ -20,4 +20,18 @@ export const invoiceItems = [
     unitPrice: 500,
     numberOfItems: 55,
   },
+  { 
+    id: "773b92c0-d750-42b0-81a2-b1e30b642468",
+    invoiceId: "er980191-7939-46aa-8a3c-fd9bee043d26",
+    name: "invoice item 3",
+    unitPrice: 1500,
+    numberOfItems: 15,
+  },
+  { 
+    id: "763b92c0-d750-42b0-81a2-b1e30b642468",
+    invoiceId: "ew980191-7939-46aa-8a3c-fd9bee043d26",
+    name: "invoice item 3",
+    unitPrice: 100,
+    numberOfItems: 125,
+  },
 ]

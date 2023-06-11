@@ -3,13 +3,13 @@ import { startStandaloneServer } from '@apollo/server/standalone';
 import { resolvers } from './graphql/resolvers';
 import { typeDefs } from './graphql/schema';
 import db from '../models';
-import { createCustomers, createInvoices, createInvoiceItems } from './utils';
+import { createCustomers, createInvoices, createInvoiceItems, getRevenueLastThreeMonths, getInvoices } from './utils';
 
-//createCustomers()
-//createInvoices()
-//createInvoiceItems()
-
-
+/* createCustomers()
+createInvoices()
+createInvoiceItems() */
+getRevenueLastThreeMonths()
+//getInvoices()
 const server = new ApolloServer({
   typeDefs,
   resolvers,

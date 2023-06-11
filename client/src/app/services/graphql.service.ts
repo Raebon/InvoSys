@@ -31,4 +31,17 @@ export class GraphqlService {
       `
     }).pipe(map((result: { data: any; }) => result.data.invoices));
   }
+
+  public getLastThreeMonthsRevenue(): Observable<RevenueLastThreeMonthsResult[]> {
+    return this.apollo.query<RevenueLastThreeMonthsResult[]>({
+      query: gql`
+      query LastThreeMonthsRevenue {
+        lastThreeMonthsRevenue {
+          month
+          revenue
+        }
+      }
+      `
+    }).pipe(map((result: { data: any; }) => result.data.lastThreeMonthsRevenue));
+  }
 }

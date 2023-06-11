@@ -33,3 +33,9 @@ interface InvoiceItemAttributes {
 }
 
 interface InvoiceItem extends InvoiceItemAttributes {}
+
+interface RevenueLastThreeMonthsResult {
+  month:string;
+  revenue: number;
+}
+

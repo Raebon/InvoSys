@@ -28,9 +28,15 @@ export const typeDefs = `#graphql
     rows: [Invoice!]!
   }
 
+  type LastThreeMonthsRevenue{
+    month: String!
+    revenue: Int!
+  }
+
   type Query{
     customers: [Customer]
     invoices: InvoicesResult!
     invoiceItems: [InvoiceItem]
+    lastThreeMonthsRevenue: [LastThreeMonthsRevenue]
   }
 `;
