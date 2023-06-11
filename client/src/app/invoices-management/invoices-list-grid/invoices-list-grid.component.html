@@ -1,0 +1,49 @@
+<div class="w-full bg-white rounded-sm my-5">
+  <div class="p-3">
+    <div class="overflow-x-auto">
+      <table class="table-auto w-full">
+        <thead class="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
+          <tr>
+            <th class="p-2 whitespace-nowrap">
+              <div class="font-semibold text-left">Jméno</div>
+            </th>
+            <th class="p-2 whitespace-nowrap">
+              <div class="font-semibold text-left">Příjmení</div>
+            </th>
+            <th class="p-2 whitespace-nowrap">
+              <div class="font-semibold text-left">Datum vystavení</div>
+            </th>
+            <th class="p-2 whitespace-nowrap">
+              <div class="font-semibold text-center">Cena celkem</div>
+            </th>
+            <th>
+            </th>
+          </tr>
+        </thead>
+        <tbody class="text-sm divide-y divide-gray-100">
+          <tr *ngFor="let item of invoices">
+            <td class="p-2 whitespace-nowrap">
+              <div class="text-left">{{item.customer.firstName}}</div>
+            </td>
+            <td class="p-2 whitespace-nowrap">
+              <div class="text-left">{{item.customer.lastName}}</div>
+            </td>
+            <td class="p-2 whitespace-nowrap">
+              <div class="text-left">{{item.dateOfIssue | date: 'dd.MM.yyyy'}}</div>
+            </td>
+            <td class="p-2 whitespace-nowrap">
+              <div class="text-lg text-center font-medium">{{calculateTotalPrice(item.invoiceItems) | number:'1.2-2' }}
+                Kč</div>
+            </td>
+            <td class="p-2 whitespace-nowrap">
+              <div class="flex gap-2 justify-end my-auto">
+                <button class=""><i class='fas fa-pencil'></i></button>
+                <button class=""><i class='fas fa-download'></i></button>
+
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>

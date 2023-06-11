@@ -6,7 +6,7 @@ export const typeDefs = `#graphql
     email: String
   }
 
-  type IvoiceItem {
+  type InvoiceItem {
     id: String
     invoiceId: String
     name: String
@@ -20,7 +20,7 @@ export const typeDefs = `#graphql
     description: String!
     dateOfIssue: String!
     customer: Customer!
-    invoiceItems: [IvoiceItem!]!
+    invoiceItems: [InvoiceItem!]!
   }
 
   type InvoicesResult{
@@ -31,6 +31,6 @@ export const typeDefs = `#graphql
   type Query{
     customers: [Customer]
     invoices: InvoicesResult!
-    invoiceItems: [IvoiceItem]
+    invoiceItems: [InvoiceItem]
   }
 `;

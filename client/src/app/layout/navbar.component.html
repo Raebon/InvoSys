@@ -1,0 +1,28 @@
+<header class="header sticky top-0 bg-white shadow-md px-8 py-02 ">
+  <div class="flex items-center justify-between max-w-6xl mx-auto">
+
+    <!-- logo -->
+    <h1 class="w-3/12">
+      <a href="" class="h-6 w-auto hover:text-green-500 duration-200 text-2xl font-bold -space-x-1.5">
+        <span>
+          Invo
+        </span>
+        <span class="text-green-500">
+          Sys
+        </span>
+      </a>
+    </h1>
+
+    <!-- navigation -->
+    <nav class="nav font-semibold text-lg">
+      <ul class="flex items-center">
+
+        <li *ngFor="let item of menuItems"
+          class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer"
+          routerLinkActive="border-opacity-100">
+          <a [routerLink]="item.path">{{item.label}}</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>

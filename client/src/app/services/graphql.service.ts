@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +9,8 @@ export class GraphqlService {
 
   constructor(private apollo: Apollo) { }
 
-  public getInvoices(): Observable<any> {
-    return this.apollo.query<any>({
+  public getInvoices(): Observable<InvoiceResult> {
+    return this.apollo.query<InvoiceResult>({
       query: gql`
       query Invoices {
         invoices {
@@ -29,6 +29,6 @@ export class GraphqlService {
         }
       }
       `
-    });
+    }).pipe(map((result: { data: any; }) => result.data.invoices));
   }
 }
