@@ -15,17 +15,22 @@ export const typeDefs = `#graphql
   }
 
   type Invoice {
-    id: String
-    customerId: String
-    description: String
-    dateOfIssue: String
-    customer: Customer
-    invoiceItems: [IvoiceItem]
+    id: String!
+    customerId: String!
+    description: String!
+    dateOfIssue: String!
+    customer: Customer!
+    invoiceItems: [IvoiceItem!]!
+  }
+
+  type InvoicesResult{
+    count: Int!
+    rows: [Invoice!]!
   }
 
   type Query{
     customers: [Customer]
-    invoices: [Invoice]
+    invoices: InvoicesResult!
     invoiceItems: [IvoiceItem]
   }
 `;

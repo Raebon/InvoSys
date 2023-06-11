@@ -14,6 +14,11 @@ interface InvoiceAttributes {
   dateOfIssue: Date;
 }
 
+interface InvoiceResult  {
+  count: number;
+  rows: [Invoice]
+}
+
 interface Invoice extends InvoiceAttributes {
   Customer: Customer;
   InvoiceItems: InvoiceItem[];

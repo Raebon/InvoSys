@@ -8,19 +8,23 @@ export const createInvoices = () => {
   })
 }
 
-export const getInvoices = async ():Promise<Invoice[]> => {
-  const invoiceData = await db.Invoice.findAll({
-    include : [db.Customer, db.InvoiceItem]
+export const getInvoices = async (): Promise<InvoiceResult> => {
+  const invoiceData = await db.Invoice.findAndCountAll({
+    include: [db.Customer, db.InvoiceItem]
   })
-  const invoices = await invoiceData.map((invoice:Invoice) => {
+  const invoices = await invoiceData.rows.map((invoice: Invoice) => {
     return {
-      id: invoice.id,
-      customerId: invoice.customerId,
-      description: invoice.description,
-      dateOfIssue: invoice.dateOfIssue,
-      customer: invoice.Customer,
-      invoiceItems: invoice.InvoiceItems
+        id: invoice.id,
+        customerId: invoice.customerId,
+        description: invoice.description,
+        dateOfIssue: invoice.dateOfIssue,
+        customer: invoice.Customer,
+        invoiceItems: invoice.InvoiceItems    
     }
   })
-  return invoices
+
+  return {
+  count:invoiceData.count,
+  rows: invoices
+  }
 }
