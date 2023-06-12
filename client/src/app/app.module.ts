@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,6 +10,7 @@ import { NavbarComponent } from './layout/navbar.component';
 import { InvoicesManagementComponent } from './invoices-management/invoices-management.component';
 import { RevenueLastThreeMonthsComponent } from './invoices-management/revenue-last-three-months/revenue-last-three-months.component';
 import { InvoicesListGridComponent } from './invoices-management/invoices-list-grid/invoices-list-grid.component';
+import { InvoiceAddEditComponent } from './invoice-add-edit/invoice-add-edit.component';
 
 @NgModule({
   declarations: [
@@ -16,13 +18,15 @@ import { InvoicesListGridComponent } from './invoices-management/invoices-list-g
     NavbarComponent,
     InvoicesManagementComponent,
     RevenueLastThreeMonthsComponent,
-    InvoicesListGridComponent
+    InvoicesListGridComponent,
+    InvoiceAddEditComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     GraphQLModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

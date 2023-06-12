@@ -8,7 +8,7 @@ import { createCustomers, createInvoices, createInvoiceItems, getRevenueLastThre
 /* createCustomers()
 createInvoices()
 createInvoiceItems() */
-getRevenueLastThreeMonths()
+//getRevenueLastThreeMonths()
 //getInvoices()
 const server = new ApolloServer({
   typeDefs,

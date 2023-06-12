@@ -16,6 +16,7 @@ export class GraphqlService {
         invoices {
           count
           rows {
+            id
             customer {
               firstName
               lastName
