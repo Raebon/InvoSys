@@ -38,5 +38,6 @@ export const typeDefs = `#graphql
     invoices: InvoicesResult!
     invoiceItems: [InvoiceItem]
     lastThreeMonthsRevenue: [LastThreeMonthsRevenue]
+    getInvoiceById(id:String!): Invoice
   }
 `;

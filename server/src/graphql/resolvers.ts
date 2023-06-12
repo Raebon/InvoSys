@@ -1,9 +1,10 @@
-import { getCustomers, getInvoiceItems, getInvoices, getRevenueLastThreeMonths } from "../utils"
+import { getCustomers, getInvoiceItems, getInvoices, getRevenueLastThreeMonths, getInvoiceById } from "../utils"
 export const resolvers = {
   Query: {
     customers: async () => getCustomers(),
     invoices: async () => getInvoices(),
     invoiceItems: async () => getInvoiceItems(),
     lastThreeMonthsRevenue: async () => getRevenueLastThreeMonths(),
+    getInvoiceById: async (_:any, args:any) => getInvoiceById(args.id),
   },
 };
