@@ -14,9 +14,9 @@ interface InvoiceAttributes {
   dateOfIssue: Date;
 }
 
-interface InvoiceResult  {
+interface InvoiceResult {
   count: number;
-  rows: [Invoice]
+  rows: [Invoice];
 }
 interface GetInvoiceResult extends InvoiceAttributes {
   customer: Customer;
@@ -39,6 +39,35 @@ interface InvoiceItemAttributes {
 interface InvoiceItem extends InvoiceItemAttributes {}
 
 interface RevenueLastThreeMonthsResult {
-  month:string;
+  month: string;
   revenue: number;
+}
+
+interface Invoice {
+  id: string;
+  customerId: string;
+  description: string;
+  dateOfIssue: Date;
+  customer: Customer;
+  invoiceItems: InvoiceItem[];
+}
+
+interface AddInvoiceInput {
+  customerId: string;
+  description: string;
+  dateOfIssue: Date;
+  customer: AddCustomerInput;
+  invoiceItems: AddInvoiceItemInput[];
+}
+
+interface AddCustomerInput {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
+interface AddInvoiceItemInput {
+  name: string;
+  unitPrice: number;
+  numberOfItems: number;
 }

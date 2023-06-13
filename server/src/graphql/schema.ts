@@ -1,22 +1,22 @@
 export const typeDefs = `#graphql
   type Customer {
-    id: String
+    id: ID!
     firstName: String
     lastName: String
     email: String
   }
 
   type InvoiceItem {
-    id: String
-    invoiceId: String
+    id: ID!
+    invoiceId: ID!
     name: String
     unitPrice: Int
     numberOfItems: Int
   }
 
   type Invoice {
-    id: String!
-    customerId: String!
+    id: ID!
+    customerId: ID!
     description: String!
     dateOfIssue: String!
     customer: Customer!
@@ -39,5 +39,28 @@ export const typeDefs = `#graphql
     invoiceItems: [InvoiceItem]
     lastThreeMonthsRevenue: [LastThreeMonthsRevenue]
     getInvoiceById(id:String!): Invoice
+  }
+
+  type Mutation{
+    addInvoice(input: AddInvoiceInput!): Invoice!
+  }
+
+  input AddInvoiceInput{
+    description: String!
+    dateOfIssue: String!
+    customer: AddCustomerInput!
+    invoiceItems: [AddInvoiceItemInput!]!
+  }
+
+  input AddCustomerInput{
+    firstName: String!
+    lastName: String!
+    email:  String!
+  }
+
+  input AddInvoiceItemInput{
+    name: String!
+    unitPrice: Int!
+    numberOfItems:Int!
   }
 `;

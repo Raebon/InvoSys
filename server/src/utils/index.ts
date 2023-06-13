@@ -3,6 +3,7 @@ import {
   getInvoices,
   getRevenueLastThreeMonths,
   getInvoiceById,
+  addInvoice,
 } from './invoices';
 import { createInvoiceItems, getInvoiceItems } from './invoiceitems';
 import { getCustomers, createCustomers } from './customers';
@@ -16,4 +17,5 @@ export {
   createCustomers,
   getRevenueLastThreeMonths,
   getInvoiceById,
+  addInvoice,
 };
