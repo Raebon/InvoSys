@@ -31,7 +31,7 @@
         <div class="w-[180px] text-end">
           <label class="font-semibold text-md text-gray-400">Email</label>
         </div>
-        <input type="text"
+        <input type="email"
           class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1"
           formControlName="email" required />
       </div>
@@ -41,7 +41,7 @@
         <div class="w-[180px] text-end">
           <label class="font-semibold text-md text-gray-400">Datum vystavení</label>
         </div>
-        <input type="text"
+        <input type="date"
           class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1"
           formControlName="dateOfIssue" required />
       </div>
@@ -60,11 +60,12 @@
       <h4 class="text-2xl mb-2">Položky faktury</h4>
       <div class="grid mt-3 mb-5">
         <app-invoice-item *ngFor="let item of invoiceItems" [item]="item"
-          (itemValuesChange)="onUpdateInvoiceItemFormValue($event)"></app-invoice-item>
+          (itemValuesChange)="onUpdateInvoiceItemFormValue($event)"
+          (deleteItem)="onDeleteInvoiceItem($event)"></app-invoice-item>
       </div>
 
       <div class="flex justify-center">
-        <button type="button"
+        <button type="button" (click)="onAddInvoiceItem()"
           class="bg-gray-400 px-3.5 py-2 text-white font-semibold text-md shadow-lg hover:opacity-80 rounded-full"><i
             class='fas fa-plus'></i></button>
       </div>
