@@ -1,12 +1,12 @@
 <div class="grid md:grid-cols-3 gap-2">
-  <div *ngFor="let item of revenueStats" class="flex w-full bg-gray-100 shadow-md rounded-md">
+  <div *ngFor="let item of revenueStats" class="flex w-full shadow-md">
     <div class="grow-0 mx-auto">
-      <i class='far fa-calendar-days text-6xl lg:text-8xl text-gray-300/50 p-2'></i>
+      <i class='far fa-calendar-days text-6xl lg:text-8xl text-gray-100 p-2'></i>
     </div>
     <div class="grow">
-      <div class="flex flex-col justify-between h-full w-full p-2 text-center text-gray-700 text-xl lg:text-3xl">
+      <div class="flex flex-col justify-between h-full w-full p-2 text-center text-gray-500 text-xl lg:text-3xl">
         <h4 class="font-bold ">Obrat za {{item.month}}</h4>
-        <span class="font-semibold  font-mono text-green-500">{{ item.revenue | number:'1.2-2' }} Kč</span>
+        <span class="font-semibold font-mono text-green-500">{{ item.revenue | number:'1.2-2' }} Kč</span>
       </div>
     </div>
   </div>

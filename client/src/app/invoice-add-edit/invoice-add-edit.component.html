@@ -4,41 +4,75 @@
       class='fas fa-arrow-left-long'></i>Vrátit se
     zpět</button>
 </div>
-<br>
-<br>
-<br>
-<br>
-<br>
+
 <div>
-  {{title}}
+  <form [formGroup]="invoiceDetail" (ngSubmit)="onSubmit()" class="">
+    <div class="max-w-xl mx-auto my-5">
+      <h4 class="text-2xl mb-2">Detail zákazníka</h4>
+      <div class="flex gap-3 items-center my-5">
+        <div class="w-[180px] text-end">
+          <label class="font-semibold text-md text-gray-400">Jméno</label>
+        </div>
+        <input type="text"
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1"
+          formControlName="firstName" required />
+      </div>
 
-  <br>
-  <br>
-  Zákazník
-  <br>
-  jméno
-  <input type="text"
-    class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1" />
-  příjmení
-  <input type="text"
-    class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1" />
-  email
-  <input type="text"
-    class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1" />
+      <div class="flex gap-3 items-center my-5">
+        <div class="w-[180px] text-end">
+          <label class="font-semibold text-md text-gray-400">Příjmení</label>
+        </div>
+        <input type="text"
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1"
+          formControlName="lastName" required />
+      </div>
 
-  <br>
-  <br>
-  <br>
-  popis
-  <textarea
-    class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1"></textarea>
-  <br>
-  datum vystavení
-  <input type="date"
-    class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1" />
-  <br>
-  <br>
-  <br>
-  položky
-  Komponenta na přidání položky - bude mít v řadě Název, jednotková cena, Počet položek
+      <div class="flex gap-3 items-center my-5">
+        <div class="w-[180px] text-end">
+          <label class="font-semibold text-md text-gray-400">Email</label>
+        </div>
+        <input type="text"
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1"
+          formControlName="email" required />
+      </div>
+      <h4 class="text-2xl mb-2">Detail faktury</h4>
+
+      <div class="flex gap-3 items-center my-5">
+        <div class="w-[180px] text-end">
+          <label class="font-semibold text-md text-gray-400">Datum vystavení</label>
+        </div>
+        <input type="text"
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1"
+          formControlName="dateOfIssue" required />
+      </div>
+
+      <div class="flex gap-3 items-center my-5">
+        <div class="w-[180px] text-end">
+          <label class="font-semibold text-md text-gray-400">Popis</label>
+        </div>
+        <textarea
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1"
+          formControlName="description" required></textarea>
+      </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto my-5">
+      <h4 class="text-2xl mb-2">Položky faktury</h4>
+      <div class="grid mt-3 mb-5">
+        <app-invoice-item *ngFor="let item of invoiceItems" [item]="item"
+          (itemValuesChange)="onUpdateInvoiceItemFormValue($event)"></app-invoice-item>
+      </div>
+
+      <div class="flex justify-center">
+        <button type="button"
+          class="bg-gray-400 px-3.5 py-2 text-white font-semibold text-md shadow-lg hover:opacity-80 rounded-full"><i
+            class='fas fa-plus'></i></button>
+      </div>
+
+    </div>
+    <div class="flex justify-end border-t pt-5">
+      <button type="submit"
+        class="bg-amber-300 px-5 py-2 text-gray-800 font-semibold text-2xl shadow-lg hover:opacity-80">{{buttonLabel}}</button>
+    </div>
+  </form>
 </div>

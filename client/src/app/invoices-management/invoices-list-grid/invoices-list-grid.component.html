@@ -1,4 +1,4 @@
-<div class="w-full bg-white rounded-sm my-5">
+<div class="w-full my-5 shadow-md">
   <div class="p-3">
     <div class="overflow-x-auto">
       <table class="table-auto w-full">
@@ -11,10 +11,10 @@
               <div class="font-semibold text-left">Příjmení</div>
             </th>
             <th class="p-2 whitespace-nowrap">
-              <div class="font-semibold text-left">Datum vystavení</div>
+              <div class="font-semibold text-center">Datum vystavení</div>
             </th>
             <th class="p-2 whitespace-nowrap">
-              <div class="font-semibold text-center">Cena celkem</div>
+              <div class="font-semibold text-end">Cena celkem</div>
             </th>
             <th>
             </th>
@@ -29,16 +29,19 @@
               <div class="text-left">{{item.customer.lastName}}</div>
             </td>
             <td class="p-2 whitespace-nowrap">
-              <div class="text-left">{{item.dateOfIssue | date: 'dd.MM.yyyy'}}</div>
+              <div class="text-center">{{item.dateOfIssue | date: 'dd.MM.yyyy'}}</div>
             </td>
             <td class="p-2 whitespace-nowrap">
-              <div class="text-lg text-center font-medium">{{calculateTotalPrice(item.invoiceItems) | number:'1.2-2' }}
+              <div class="text-md font-normal text-end"><span class="font-mono">
+                  {{calculateTotalPrice(item.invoiceItems) |
+                  number:'1.2-2' }}
+                </span>
                 Kč</div>
             </td>
-            <td class="p-2 whitespace-nowrap">
+            <td class="p-2 whitespace-nowrap min-w-[5rem]">
               <div class="flex gap-2 justify-end my-auto">
-                <button class="hover:text-green-500" [routerLink]="'/invoice/'+item.id"><i
-                    class='fas fa-pencil'></i></button>
+                <button class="hover:opacity-80 shadow-lg py-1 px-1.5 rounded-full bg-sky-500 text-white"
+                  [routerLink]="'/invoice/'+item.id"><i class='fas fa-pencil'></i></button>
               </div>
             </td>
           </tr>

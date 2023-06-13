@@ -3,7 +3,10 @@
 import { Model } from 'sequelize';
 
 module.exports = (sequelize: any, DataTypes: any) => {
-  class Customer extends Model<CustomerAttributes> implements CustomerAttributes {
+  class Customer
+    extends Model<CustomerAttributes>
+    implements CustomerAttributes
+  {
     id!: string;
     firstName!: string;
     lastName!: string;
@@ -12,33 +15,36 @@ module.exports = (sequelize: any, DataTypes: any) => {
     static associate(models: any) {
       // define association here
       Customer.hasMany(models.Invoice, {
-        foreignKey: 'customerId'
-      })
+        foreignKey: 'customerId',
+      });
     }
-  };
-  Customer.init({
-    id: {
-      type: DataTypes.STRING,
-      primaryKey: true,
+  }
+  Customer.init(
+    {
+      id: {
+        type: DataTypes.STRING,
+        primaryKey: true,
+      },
+      firstName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      lastName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
     },
-    firstName: {
-      type: DataTypes.STRING,
-      allowNull: false,
+    {
+      sequelize,
+      modelName: 'Customer',
+      tableName: 'Customers',
     },
-    lastName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    }
-  }, {
-    sequelize,
-    modelName: "Customer",
-    tableName: "Customers"
-  });
+  );
 
-  return Customer
-}
+  return Customer;
+};

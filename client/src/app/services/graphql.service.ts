@@ -45,4 +45,32 @@ export class GraphqlService {
       `
     }).pipe(map((result: { data: any; }) => result.data.lastThreeMonthsRevenue));
   }
+  public getInvoiceById(id: string): Observable<GetInvoiceResult> {
+    return this.apollo.query<GetInvoiceResult>({
+      query: gql`
+      query GetInvoiceById($getInvoiceByIdId: String!) {
+        getInvoiceById(id: $getInvoiceByIdId) {
+          id
+          customer {
+            email
+            id
+            firstName
+            lastName
+          }
+          dateOfIssue
+          description
+          invoiceItems {
+            id
+            name
+            numberOfItems
+            unitPrice
+          }
+        }
+      }
+      `,
+      variables: {
+        getInvoiceByIdId: id
+      }
+    }).pipe(map((result: { data: any; }) => result.data.getInvoiceById));
+  }
 }

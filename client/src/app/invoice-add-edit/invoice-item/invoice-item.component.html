@@ -1,0 +1,27 @@
+<form [formGroup]="invoiceItem" class="flex gap-3 my-2">
+  <div class="max-w-[5rem]">
+    <label class="font-semibold text-md text-gray-400">Počet</label>
+    <input type="number"
+      class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1"
+      formControlName="numberOfItems" />
+  </div>
+  <div class="w-full">
+    <label class="font-semibold text-md text-gray-400">Název položky</label>
+    <input type="text"
+      class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1"
+      formControlName="name" />
+  </div>
+  <div class="w-[12rem]">
+    <label class="font-semibold text-md text-gray-400">Cena položky</label>
+    <input type="text"
+      class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1"
+      formControlName="unitPrice" />
+  </div>
+  <div class="pt-6">
+    <button type="button"
+      class="bg-red-500 px-3.5 py-2 text-white font-semibold text-md shadow-lg hover:opacity-80 rounded-full"><i
+        class='far fa-trash-can'></i></button>
+  </div>
+</form>
+<!-- {{item | json}}
+{{invoiceItem | json}} -->

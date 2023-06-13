@@ -12,37 +12,40 @@ module.exports = (sequelize: any, DataTypes: any) => {
     static associate(models: any) {
       // define association here
       Invoice.belongsTo(models.Customer, {
-        foreignKey: 'customerId'
-      })
-      Invoice.hasMany(models.InvoiceItem, { foreignKey: 'invoiceId' })
+        foreignKey: 'customerId',
+      });
+      Invoice.hasMany(models.InvoiceItem, { foreignKey: 'invoiceId' });
     }
-  };
+  }
 
-  Invoice.init({
-    id: {
-      type: DataTypes.STRING,
-      primaryKey: true,
+  Invoice.init(
+    {
+      id: {
+        type: DataTypes.STRING,
+        primaryKey: true,
+      },
+      customerId: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        references: {
+          model: 'Customers',
+          key: 'id',
+        },
+      },
+      description: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      dateOfIssue: {
+        type: DataTypes.DATEONLY,
+      },
     },
-    customerId: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      references: {
-        model: "Customers",
-        key: "id"
-      }
+    {
+      sequelize,
+      modelName: 'Invoice',
+      tableName: 'Invoices',
     },
-    description: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    dateOfIssue: {
-      type: DataTypes.DATEONLY,
-    }
-  }, {
-    sequelize,
-    modelName: "Invoice",
-    tableName: "Invoices"
-  });
+  );
 
-  return Invoice
-}
+  return Invoice;
+};

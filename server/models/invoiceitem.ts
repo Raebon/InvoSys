@@ -3,7 +3,10 @@
 import { Model } from 'sequelize';
 
 module.exports = (sequelize: any, DataTypes: any) => {
-  class InvoiceItem extends Model<InvoiceItemAttributes> implements InvoiceItemAttributes {
+  class InvoiceItem
+    extends Model<InvoiceItemAttributes>
+    implements InvoiceItemAttributes
+  {
     id!: string;
     invoiceId!: string;
     name!: string;
@@ -13,40 +16,43 @@ module.exports = (sequelize: any, DataTypes: any) => {
     static associate(models: any) {
       // define association here
       InvoiceItem.belongsTo(models.Invoice, {
-        foreignKey: 'invoiceId'
-      })
+        foreignKey: 'invoiceId',
+      });
     }
-  };
-  InvoiceItem.init({
-    id: {
-      type: DataTypes.STRING,
-      primaryKey: true,
-    },
-    invoiceId: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      references: {
-        model: "Invoices",
-        key: "id"
+  }
+  InvoiceItem.init(
+    {
+      id: {
+        type: DataTypes.STRING,
+        primaryKey: true,
+      },
+      invoiceId: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        references: {
+          model: 'Invoices',
+          key: 'id',
+        },
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      unitPrice: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
+      numberOfItems: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
       },
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
+    {
+      sequelize,
+      modelName: 'InvoiceItem',
+      tableName: 'InvoiceItems',
     },
-    unitPrice: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-    },
-    numberOfItems: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    }
-  }, {
-    sequelize,
-    modelName: "InvoiceItem",
-    tableName: "InvoiceItems"
-  })
+  );
 
-  return InvoiceItem
-}
+  return InvoiceItem;
+};

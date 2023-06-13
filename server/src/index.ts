@@ -3,7 +3,13 @@ import { startStandaloneServer } from '@apollo/server/standalone';
 import { resolvers } from './graphql/resolvers';
 import { typeDefs } from './graphql/schema';
 import db from '../models';
-import { createCustomers, createInvoices, createInvoiceItems, getRevenueLastThreeMonths, getInvoices } from './utils';
+import {
+  createCustomers,
+  createInvoices,
+  createInvoiceItems,
+  getRevenueLastThreeMonths,
+  getInvoices,
+} from './utils';
 
 /* createCustomers()
 createInvoices()
@@ -16,15 +22,13 @@ const server = new ApolloServer({
 });
 
 db.sequelize.sync().then(() => {
-  startServer()
+  startServer();
 });
 
 const startServer = async () => {
-
   const { url } = await startStandaloneServer(server, {
     listen: { port: 4000 },
   });
 
   console.log(`🚀  Server ready at: ${url}`);
-}
-
+};
