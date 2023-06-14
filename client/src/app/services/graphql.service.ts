@@ -82,8 +82,7 @@ export class GraphqlService {
       .pipe(map((result: { data: any }) => result.data.getInvoiceById));
   }
 
-  public createInvoice(invoiceInput: AddInvoiceInput): void {
-    console.log(invoiceInput);
+  public createInvoice(invoiceInput: AddInvoiceInput): Observable<any> {
     const createInvoiceMutation = gql`
       mutation AddInvoice($input: AddInvoiceInput!) {
         addInvoice(input: $input) {
@@ -108,11 +107,11 @@ export class GraphqlService {
       }
     `;
 
-    this.apollo
+    return this.apollo
       .mutate({
         mutation: createInvoiceMutation,
         variables: { input: invoiceInput },
       })
-      .subscribe();
+      .pipe(map((res) => res.data));
   }
 }

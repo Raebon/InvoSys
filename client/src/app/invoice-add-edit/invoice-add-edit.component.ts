@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { GraphqlService } from "../services/graphql.service";
+import { NotificationService } from "../services/notification.service";
 import { FormControl, FormGroup } from "@angular/forms";
-import { v4 as uuidv4 } from "uuid";
 import { format } from "date-fns";
 
 @Component({
@@ -24,13 +24,8 @@ export class InvoiceAddEditComponent implements OnInit {
     lastName: new FormControl(""),
     email: new FormControl(""),
   });
-
-  newInvoiceId = uuidv4();
-
   invoiceItems: InvoiceItem[] = [
     {
-      //id: uuidv4(),
-      //invoiceId: this.newInvoiceId,
       name: "",
       numberOfItems: 0,
       unitPrice: 0,
@@ -41,7 +36,9 @@ export class InvoiceAddEditComponent implements OnInit {
   buttonLabel: string = "Vytvořit";
   constructor(
     private route: ActivatedRoute,
-    private graphqlService: GraphqlService
+    private router: Router,
+    private graphqlService: GraphqlService,
+    private notifyService: NotificationService
   ) {
     this.currentDate = new Date(new Date().setHours(0, 0, 0, 0));
   }
@@ -78,7 +75,11 @@ export class InvoiceAddEditComponent implements OnInit {
 
   public onSubmit() {
     if (this.invoiceDetail.invalid) {
-      return alert("nevalidní formulář");
+      this.notifyService.showError(
+        "Zkontrolujte hodnoty ve formuláři",
+        "Chyba ve formuláři!"
+      );
+      return;
     }
     if (!this.invoiceId) {
       //vytvoření
@@ -92,13 +93,11 @@ export class InvoiceAddEditComponent implements OnInit {
         },
         invoiceItems: this.invoiceItems,
       };
-      console.log(createInvoiceInput);
       this.createInvoice(createInvoiceInput);
     } else {
       //editace
       this.editInvoice();
     }
-    console.log(this.invoiceDetail.value, this.invoiceItems);
   }
 
   public onUpdateInvoiceItemFormValue(event: {
@@ -135,10 +134,19 @@ export class InvoiceAddEditComponent implements OnInit {
 
   private createInvoice(input: AddInvoiceInput) {
     try {
-      console.log(input);
-      return this.graphqlService.createInvoice(input);
+      this.graphqlService.createInvoice(input).subscribe((res) => {
+        this.notifyService.showSuccess(
+          "Faktura byla úspěšně vytvořena",
+          "Úspěšná akce!"
+        );
+
+        this.router.navigate(["invoices-list"]);
+      });
     } catch (error) {
-      console.log(error);
+      this.notifyService.showError(
+        "Faktura nebyla vytvořena",
+        "Neúspěšná akce!"
+      );
     }
   }
 

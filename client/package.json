@@ -10,8 +10,8 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^14.2.0",
-    "@angular/common": "^14.2.0",
+    "@angular/animations": "^14.3.0",
+    "@angular/common": "^14.3.0",
     "@angular/compiler": "^14.2.0",
     "@angular/core": "^14.2.0",
     "@angular/forms": "^14.2.0",
@@ -22,6 +22,7 @@
     "apollo-angular": "^5.0.0",
     "date-fns": "^2.30.0",
     "graphql": "^16",
+    "ngx-toastr": "^15.2.2",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "uuid": "^9.0.0",
