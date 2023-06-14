@@ -218,8 +218,15 @@ export const addInvoice = async (input: AddInvoiceInput) => {
       numberOfItems: item.numberOfItems,
     }));
     await db.InvoiceItem.bulkCreate(invoiceItems);
-    console.log(invoice);
-    return invoice;
+
+    return {
+      id: invoice.id,
+      customerId: customer.id,
+      description: invoice.description,
+      dateOfIssue: invoice.dateOfIssue,
+      customer: customer,
+      invoiceItems: invoiceItems,
+    };
   } catch (error) {
     console.log('addInvoice - chyba při založení faktury', error);
     throw new Error('Při založení faktury došlo k chybě!');

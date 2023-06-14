@@ -7,60 +7,66 @@
 
 <div>
   <form [formGroup]="invoiceDetail" (ngSubmit)="onSubmit()" class="">
-    <div class="max-w-xl mx-auto my-5">
+    <div class="max-w-2xl mx-auto my-5">
       <h4 class="text-2xl mb-2">Detail zákazníka</h4>
       <div class="flex gap-3 items-center my-5">
         <div class="w-[180px] text-end">
-          <label class="font-semibold text-md text-gray-400">Jméno</label>
+          <label class="font-semibold text-md text-gray-400 required">Jméno</label>
         </div>
         <input type="text"
-          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1"
-          formControlName="firstName" required />
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px]"
+          formControlName="firstName" name="firstName" required />
+        <app-error-validation-alert [control]="invoiceDetail.controls['firstName']"></app-error-validation-alert>
+
       </div>
 
       <div class="flex gap-3 items-center my-5">
         <div class="w-[180px] text-end">
-          <label class="font-semibold text-md text-gray-400">Příjmení</label>
+          <label class="font-semibold text-md text-gray-400 required">Příjmení</label>
         </div>
         <input type="text"
-          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1"
-          formControlName="lastName" required />
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px]"
+          formControlName="lastName" name="lastName" required />
+        <app-error-validation-alert [control]="invoiceDetail.controls['lastName']"></app-error-validation-alert>
       </div>
 
       <div class="flex gap-3 items-center my-5">
         <div class="w-[180px] text-end">
-          <label class="font-semibold text-md text-gray-400">Email</label>
+          <label class="font-semibold text-md text-gray-400 required">Email</label>
         </div>
         <input type="email"
-          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1"
-          formControlName="email" required />
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px]"
+          formControlName="email" name="email" required />
+        <app-error-validation-alert [control]="invoiceDetail.controls['email']"></app-error-validation-alert>
       </div>
       <h4 class="text-2xl mb-2">Detail faktury</h4>
 
       <div class="flex gap-3 items-center my-5">
         <div class="w-[180px] text-end">
-          <label class="font-semibold text-md text-gray-400">Datum vystavení</label>
+          <label class="font-semibold text-md text-gray-400 required">Datum vystavení</label>
         </div>
         <input type="date"
-          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1"
-          formControlName="dateOfIssue" required />
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px]"
+          formControlName="dateOfIssue" name="dateOfIssue" required />
+        <app-error-validation-alert [control]="invoiceDetail.controls['dateOfIssue']"></app-error-validation-alert>
       </div>
 
       <div class="flex gap-3 items-center my-5">
         <div class="w-[180px] text-end">
-          <label class="font-semibold text-md text-gray-400">Popis</label>
+          <label class="font-semibold text-md text-gray-400 required">Popis</label>
         </div>
         <textarea
-          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1"
-          formControlName="description" required></textarea>
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px]"
+          formControlName="description" name="description" required></textarea>
+        <app-error-validation-alert [control]="invoiceDetail.controls['description']"></app-error-validation-alert>
       </div>
     </div>
 
     <div class="max-w-4xl mx-auto my-5">
       <h4 class="text-2xl mb-2">Položky faktury</h4>
       <div class="grid mt-3 mb-5">
-        <app-invoice-item *ngFor="let item of invoiceItems" [item]="item"
-          (itemValuesChange)="onUpdateInvoiceItemFormValue($event)"
+        <app-invoice-item *ngFor="let item of invoiceItems; let rowId = index; trackBy: trackByFn" [item]="item"
+          [index]="rowId" (itemValuesChange)="onUpdateInvoiceItemFormValue($event)"
           (deleteItem)="onDeleteInvoiceItem($event)"></app-invoice-item>
       </div>
 

@@ -12,6 +12,7 @@ import { RevenueLastThreeMonthsComponent } from './invoices-management/revenue-l
 import { InvoicesListGridComponent } from './invoices-management/invoices-list-grid/invoices-list-grid.component';
 import { InvoiceAddEditComponent } from './invoice-add-edit/invoice-add-edit.component';
 import { InvoiceItemComponent } from './invoice-add-edit/invoice-item/invoice-item.component';
+import { ErrorValidationAlertComponent } from './components/error-validation-alert.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { InvoiceItemComponent } from './invoice-add-edit/invoice-item/invoice-it
     RevenueLastThreeMonthsComponent,
     InvoicesListGridComponent,
     InvoiceAddEditComponent,
-    InvoiceItemComponent
+    InvoiceItemComponent,
+    ErrorValidationAlertComponent,
   ],
   imports: [
     BrowserModule,
@@ -29,9 +31,9 @@ import { InvoiceItemComponent } from './invoice-add-edit/invoice-item/invoice-it
     GraphQLModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

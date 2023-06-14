@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { GraphqlService } from '../services/graphql.service';
-import { FormControl, FormGroup } from '@angular/forms';
-import { v4 as uuidv4 } from 'uuid';
-import { format } from 'date-fns';
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { GraphqlService } from "../services/graphql.service";
+import { FormControl, FormGroup } from "@angular/forms";
+import { v4 as uuidv4 } from "uuid";
+import { format } from "date-fns";
 
 @Component({
-  selector: 'app-invoice-add-edit',
-  templateUrl: './invoice-add-edit.component.html',
-  styleUrls: ['./invoice-add-edit.component.css'],
+  selector: "app-invoice-add-edit",
+  templateUrl: "./invoice-add-edit.component.html",
+  styleUrls: ["./invoice-add-edit.component.css"],
 })
 export class InvoiceAddEditComponent implements OnInit {
   invoiceId: string | null = null;
@@ -16,27 +16,29 @@ export class InvoiceAddEditComponent implements OnInit {
   currentDate: Date = new Date();
 
   invoiceDetail = new FormGroup({
-    description: new FormControl(''),
+    description: new FormControl(""),
     dateOfIssue: new FormControl<Date | undefined>(
-      format(this.currentDate, 'yyyy-MM-dd') as any
+      format(this.currentDate, "yyyy-MM-dd") as any
     ),
-    firstName: new FormControl(''),
-    lastName: new FormControl(''),
-    email: new FormControl(''),
+    firstName: new FormControl(""),
+    lastName: new FormControl(""),
+    email: new FormControl(""),
   });
+
+  newInvoiceId = uuidv4();
 
   invoiceItems: InvoiceItem[] = [
     {
-      id: uuidv4(),
-      invoiceId: '',
-      name: '',
+      //id: uuidv4(),
+      //invoiceId: this.newInvoiceId,
+      name: "",
       numberOfItems: 0,
       unitPrice: 0,
     },
   ];
 
-  title: string = 'Vytvoření faktury';
-  buttonLabel: string = 'Vytvořit';
+  title: string = "Vytvoření faktury";
+  buttonLabel: string = "Vytvořit";
   constructor(
     private route: ActivatedRoute,
     private graphqlService: GraphqlService
@@ -45,17 +47,17 @@ export class InvoiceAddEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.invoiceId = this.route.snapshot.paramMap.get('id');
+    this.invoiceId = this.route.snapshot.paramMap.get("id");
 
     if (this.invoiceId) {
       //Editace
       this.title = `Editace faktury - ${this.invoiceId}`;
-      this.buttonLabel = 'Editace';
+      this.buttonLabel = "Editace";
       this.getInvoiceByIdDataToFormIfEdit(this.invoiceId);
     } else {
       //Vytvoření
-      this.title = 'Vytvoření faktury';
-      this.buttonLabel = 'Vytvořit';
+      this.title = "Vytvoření faktury";
+      this.buttonLabel = "Vytvořit";
     }
   }
 
@@ -75,43 +77,72 @@ export class InvoiceAddEditComponent implements OnInit {
   }
 
   public onSubmit() {
-    console.log(this.invoiceDetail, this.invoiceItems);
-  }
-
-  public onUpdateInvoiceItemFormValue(event: InvoiceItem): void {
-    this.invoiceItems = this.invoiceItems.map((item) => {
-      if (item.id === event.id) {
-        return {
-          ...item,
-          name: event.name,
-          numberOfItems: event.numberOfItems,
-          unitPrice: event.unitPrice,
-        };
-      }
-      return item;
-    });
-  }
-
-  public onDeleteInvoiceItem(invoiceItemId: string): void {
-    const selectedInvoiceItemIndex = this.invoiceItems.findIndex(
-      (item) => item.id === invoiceItemId
-    );
-
-    if (selectedInvoiceItemIndex !== -1) {
-      this.invoiceItems.splice(selectedInvoiceItemIndex, 1);
+    if (this.invoiceDetail.invalid) {
+      return alert("nevalidní formulář");
     }
+    if (!this.invoiceId) {
+      //vytvoření
+      const createInvoiceInput: AddInvoiceInput = {
+        description: this.invoiceDetail.value.description!,
+        dateOfIssue: this.invoiceDetail.value.dateOfIssue!,
+        customer: {
+          firstName: this.invoiceDetail.value.firstName!,
+          lastName: this.invoiceDetail.value.lastName!,
+          email: this.invoiceDetail.value.email!,
+        },
+        invoiceItems: this.invoiceItems,
+      };
+      console.log(createInvoiceInput);
+      this.createInvoice(createInvoiceInput);
+    } else {
+      //editace
+      this.editInvoice();
+    }
+    console.log(this.invoiceDetail.value, this.invoiceItems);
+  }
+
+  public onUpdateInvoiceItemFormValue(event: {
+    item: InvoiceItem;
+    index: number;
+  }): void {
+    const { item: eventItem, index } = event;
+    this.invoiceItems[index] = {
+      ...this.invoiceItems[index],
+      name: eventItem.name,
+      numberOfItems: eventItem.numberOfItems,
+      unitPrice: eventItem.unitPrice,
+    };
+  }
+
+  public onDeleteInvoiceItem(invoiceItemIndex: number): void {
+    this.invoiceItems.splice(invoiceItemIndex, 1);
   }
 
   public onAddInvoiceItem(): void {
     this.invoiceItems = [
       ...this.invoiceItems,
       {
-        id: uuidv4(),
-        invoiceId: this.invoiceId ?? '',
-        name: '',
+        name: "",
         numberOfItems: 0,
         unitPrice: 0,
       },
     ];
+  }
+
+  public trackByFn(index: number): number {
+    return index;
+  }
+
+  private createInvoice(input: AddInvoiceInput) {
+    try {
+      console.log(input);
+      return this.graphqlService.createInvoice(input);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  private editInvoice(input?: any) {
+    console.log(input);
   }
 }

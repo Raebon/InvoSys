@@ -1,23 +1,21 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { FormControl, FormGroup } from "@angular/forms";
 
 @Component({
-  selector: 'app-invoice-item',
-  templateUrl: './invoice-item.component.html',
+  selector: "app-invoice-item",
+  templateUrl: "./invoice-item.component.html",
 })
 export class InvoiceItemComponent implements OnInit {
-  @Output() itemValuesChange = new EventEmitter<InvoiceItem>();
-  @Output() deleteItem = new EventEmitter<string>();
-  @Input() item: InvoiceItem = {
-    id: '',
-    invoiceId: '',
-    numberOfItems: 0,
-    name: '',
-    unitPrice: 0,
-  };
+  @Output() itemValuesChange = new EventEmitter<{
+    item: InvoiceItem;
+    index: number;
+  }>();
+  @Output() deleteItem = new EventEmitter<number>();
+  @Input() item!: InvoiceItem;
+  @Input() index!: number;
 
   invoiceItem = new FormGroup({
-    name: new FormControl<string>(''),
+    name: new FormControl<string>(""),
     numberOfItems: new FormControl<number>(0),
     unitPrice: new FormControl<number>(0),
   });
@@ -39,16 +37,17 @@ export class InvoiceItemComponent implements OnInit {
   public onChangeValues(): void {
     this.invoiceItem.valueChanges.subscribe((res) => {
       this.itemValuesChange.emit({
-        id: this.item.id,
-        invoiceId: this.item.invoiceId,
-        numberOfItems: res.numberOfItems ?? 0,
-        name: res.name ?? '',
-        unitPrice: res.unitPrice ?? 0,
+        item: {
+          numberOfItems: res.numberOfItems ?? 0,
+          name: res.name ?? "",
+          unitPrice: res.unitPrice ?? 0,
+        },
+        index: this.index,
       });
     });
   }
 
-  public onDeleteItem(itemId: string): void {
-    this.deleteItem.emit(itemId);
+  public onDeleteItem(item: InvoiceItem): void {
+    this.deleteItem.emit(this.index);
   }
 }

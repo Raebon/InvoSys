@@ -1,0 +1,10 @@
+<div *ngIf="
+control &&
+control.invalid &&
+  (control.dirty || control.touched)
+" class="w-full p-2 border border-red-300 bg-red-200 shadow-md text-red-600 text-sm space-x-1">
+  <i class='fas fa-circle-exclamation'></i>
+  <span>
+    {{ getErrorText() }}
+  </span>
+</div>
