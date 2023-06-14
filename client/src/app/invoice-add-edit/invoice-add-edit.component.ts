@@ -117,7 +117,7 @@ export class InvoiceAddEditComponent implements OnInit {
     index: number;
   }): void {
     const { item: eventItem, index } = event;
-    console.log(event, this.invoiceItems);
+
     this.invoiceItems[index] = {
       ...this.invoiceItems[index],
       name: eventItem.name,

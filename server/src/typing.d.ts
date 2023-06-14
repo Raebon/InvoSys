@@ -6,6 +6,10 @@ interface CustomerAttributes {
 }
 
 interface Customer extends CustomerAttributes {}
+interface CustomerResult {
+  count: number;
+  rows: [Customer];
+}
 
 interface InvoiceAttributes {
   id: string;
@@ -37,6 +41,11 @@ interface InvoiceItemAttributes {
 }
 
 interface InvoiceItem extends InvoiceItemAttributes {}
+
+interface InvoiceItemResult {
+  count: number;
+  rows: [InvoiceItem];
+}
 
 interface RevenueLastThreeMonthsResult {
   month: string;

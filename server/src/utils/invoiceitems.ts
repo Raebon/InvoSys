@@ -1,25 +1,51 @@
 import db from '../../models';
 import { invoiceItems } from '../../seeders/invoice-items';
 
-export const createInvoiceItems = () => {
-  console.log('create invoice items');
-  invoiceItems.map((item) => {
-    db.InvoiceItem.create(item);
-  });
+/**
+ * Vytvoření fakturačních položek
+ * @returns vytvoří položky faktury ze seeders
+ */
+
+export const createInvoiceItems = async () => {
+  try {
+    await Promise.all(
+      invoiceItems.map((item) => {
+        db.InvoiceItem.create(item);
+      }),
+    );
+  } catch (error) {
+    console.error('Chyba při vytváření položek faktur:', error);
+    throw new Error('Nepodařilo se vytvořit položky faktur.');
+  }
 };
 
-export const getInvoiceItems = async (): Promise<InvoiceItem[]> => {
-  const invoiceItemsData = await db.InvoiceItem.findAll();
+/**
+ * Seznam položek faktur
+ * @returns vrátí seznam fakturačních položek
+ */
 
-  const invoiceItems = await invoiceItemsData.map((item: InvoiceItem) => {
+export const getInvoiceItems = async (): Promise<InvoiceItemResult> => {
+  try {
+    const invoiceItemsData = await db.InvoiceItem.findAndCountAll();
+
+    const invoiceItems = await invoiceItemsData.rows.map(
+      (item: InvoiceItem) => {
+        return {
+          id: item.id,
+          invoiceId: item.invoiceId,
+          name: item.name,
+          unitPrice: item.unitPrice,
+          numberOfItems: item.numberOfItems,
+        };
+      },
+    );
+
     return {
-      id: item.id,
-      invoiceId: item.invoiceId,
-      name: item.name,
-      unitPrice: item.unitPrice,
-      numberOfItems: item.numberOfItems,
+      rows: invoiceItems,
+      count: invoiceItemsData.count,
     };
-  });
-
-  return invoiceItems;
+  } catch (error) {
+    console.error('Chyba při získávání položek faktur:', error);
+    throw new Error('Nepodařilo se získat položky faktur.');
+  }
 };
