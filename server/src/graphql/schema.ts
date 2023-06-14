@@ -43,6 +43,7 @@ export const typeDefs = `#graphql
 
   type Mutation{
     addInvoice(input: AddInvoiceInput!): Invoice!
+    updateInvoice(input: UpdateInvoiceInput!): Invoice!
   }
 
   input AddInvoiceInput{
@@ -62,5 +63,28 @@ export const typeDefs = `#graphql
     name: String!
     unitPrice: Int!
     numberOfItems:Int!
+  }
+
+  input UpdateInvoiceInput{
+    id: ID!
+    customerId: ID
+    description: String!
+    dateOfIssue: String!
+    customer: UpdateCustomerInput!
+    invoiceItems: [UpdateInvoiceItemInput!]!
+  }
+
+  input UpdateCustomerInput{
+    id: ID
+    firstName: String!
+    lastName: String!
+    email: String!
+  }
+
+  input UpdateInvoiceItemInput{
+    id: ID
+    name: String!
+    unitPrice: Int!
+    numberOfItems: Int!
   }
 `;

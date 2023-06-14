@@ -4,6 +4,7 @@ import db from '../../models';
 import { invoices } from '../../seeders/invoices';
 
 /**
+ * Vytvoření záznamu ze seeedru
  * @return naplní data do tabulky Invoice ze seeders
  */
 export const createInvoices = async () => {
@@ -20,6 +21,7 @@ export const createInvoices = async () => {
 };
 
 /**
+ * Seznam faktur
  * @return vrátí počet a seznam faktur
  */
 export const getInvoices = async (): Promise<InvoiceResult> => {
@@ -50,6 +52,7 @@ export const getInvoices = async (): Promise<InvoiceResult> => {
 };
 
 /**
+ * Obraty vystavených faktur za poslední 3 měsíce
  * @return vrátí obraty z faktur za jednotlivé poslední 3 měsíce
  */
 export const getRevenueLastThreeMonths = async (): Promise<
@@ -155,6 +158,7 @@ export const getRevenueLastThreeMonths = async (): Promise<
 };
 
 /**
+ * Vyhledat fakturu podle id
  * @param id Id faktury
  * @return vrátí detail faktury podle id
  */
@@ -186,27 +190,37 @@ export const getInvoiceById = async (
 };
 
 /**
+ * Založení nové faktury
  * @param AddInvoiceInput
  * @return založí se nová faktura
  */
 export const addInvoice = async (input: AddInvoiceInput) => {
+  const transaction = await db.sequelize.transaction();
   try {
-    console.log('Input', input);
-    //vytvoření zákazníka
-    const customer = await db.Customer.create({
-      id: uuidv4(),
-      firstName: input.customer.firstName,
-      lastName: input.customer.lastName,
-      email: input.customer.email,
+    //zjištění, jestli zákazník neexistuje v DB
+    let customer = await db.Customer.findOne({
+      where: { email: input.customer.email },
+      transaction,
     });
 
+    //vytvoření zákazníka
+    if (!customer) {
+      customer = await db.Customer.create({
+        id: uuidv4(),
+        firstName: input.customer.firstName,
+        lastName: input.customer.lastName,
+        email: input.customer.email,
+        transaction,
+      });
+    }
+
     //vytvoření faktury
-    console.log('vytvoření faktury - zjištění customerId', customer.id);
     const invoice = await db.Invoice.create({
       id: uuidv4(),
       customerId: customer.id,
       description: input.description,
       dateOfIssue: input.dateOfIssue,
+      transaction,
     });
 
     //vytvoření položek faktury
@@ -217,7 +231,9 @@ export const addInvoice = async (input: AddInvoiceInput) => {
       unitPrice: item.unitPrice,
       numberOfItems: item.numberOfItems,
     }));
-    await db.InvoiceItem.bulkCreate(invoiceItems);
+    await db.InvoiceItem.bulkCreate(invoiceItems, { transaction });
+
+    await transaction.commit();
 
     return {
       id: invoice.id,
@@ -228,7 +244,98 @@ export const addInvoice = async (input: AddInvoiceInput) => {
       invoiceItems: invoiceItems,
     };
   } catch (error) {
+    await transaction.rollback();
     console.log('addInvoice - chyba při založení faktury', error);
     throw new Error('Při založení faktury došlo k chybě!');
+  }
+};
+
+/**
+ * Update faktury
+ * @param UpdateInvoiceInput
+ * @return aktualizuje se nová faktura
+ */
+export const updateInvoice = async (input: UpdateInvoiceInput) => {
+  const transaction = await db.sequelize.transaction();
+  try {
+    // vytáhnout aktuální data zákazníka z DB podle emailu
+    let customer = await db.Customer.findOne({
+      where: { email: input.customer.email },
+      transaction,
+    });
+
+    if (!customer) {
+      // záznam neexistuje => vytvořit
+      await db.Customer.create({
+        id: uuidv4(),
+        firstName: input.customer.firstName,
+        lastName: input.customer.lastName,
+        email: input.customer.email,
+        transaction,
+      });
+    } else {
+      // záznam existuje => update
+      await db.Customer.update(
+        {
+          firstName: input.customer.firstName,
+          lastName: input.customer.lastName,
+          email: input.customer.email,
+        },
+        { where: { id: customer.id }, transaction },
+      );
+    }
+
+    // update faktury
+    let invoice = await db.Invoice.update(
+      {
+        customerId: customer.id,
+        description: input.description,
+        dateOfIssue: input.dateOfIssue,
+      },
+      {
+        where: { id: input.id },
+        transaction,
+      },
+    );
+
+    // update záznamů položek faktury, pokud není ID položky založit nový
+    await db.InvoiceItem.destroy({
+      where: { invoiceId: input.id },
+      transaction,
+    });
+
+    const invoiceItems = input.invoiceItems.map((item) => ({
+      id: item.id || uuidv4(),
+      invoiceId: input.id,
+      name: item.name,
+      unitPrice: item.unitPrice,
+      numberOfItems: item.numberOfItems,
+    }));
+
+    await db.InvoiceItem.bulkCreate(invoiceItems, { transaction });
+
+    await transaction.commit();
+
+    // vrátit upravenou fakturu
+    let updatedInvoice = await db.Invoice.findByPk(input.id, {
+      include: [db.Customer, db.InvoiceItem],
+    });
+
+    if (!invoice) {
+      throw new Error('Faktura nebyla nalezena');
+    }
+
+    return {
+      id: updatedInvoice.id,
+      customerId: updatedInvoice.customerId,
+      description: updatedInvoice.description,
+      dateOfIssue: updatedInvoice.dateOfIssue,
+      customer: updatedInvoice.Customer,
+      invoiceItems: updatedInvoice.InvoiceItems,
+    };
+  } catch (error) {
+    await transaction.rollback();
+    console.log('updateInvoice - chyba při aktualizaci faktury', error);
+    throw new Error('Při aktualizaci faktury došlo k chybě!');
   }
 };

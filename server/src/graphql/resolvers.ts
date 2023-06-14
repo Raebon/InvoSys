@@ -5,6 +5,7 @@ import {
   getRevenueLastThreeMonths,
   getInvoiceById,
   addInvoice,
+  updateInvoice,
 } from '../utils';
 export const resolvers = {
   Query: {
@@ -17,5 +18,7 @@ export const resolvers = {
   Mutation: {
     addInvoice: async (_: any, { input }: { input: AddInvoiceInput }) =>
       addInvoice(input),
+    updateInvoice: async (_: any, { input }: { input: UpdateInvoiceInput }) =>
+      updateInvoice(input),
   },
 };

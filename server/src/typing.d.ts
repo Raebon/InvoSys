@@ -71,3 +71,27 @@ interface AddInvoiceItemInput {
   unitPrice: number;
   numberOfItems: number;
 }
+
+interface UpdateInvoiceInput {
+  id: string;
+  customerId?: string;
+  description: string;
+  dateOfIssue: Date;
+  customer: UpdateCustomerInput;
+  invoiceItems: UpdateInvoiceItemInput[];
+}
+
+interface UpdateCustomerInput {
+  id?: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
+interface UpdateInvoiceItemInput {
+  id?: string;
+  invoiceId?: string;
+  name: string;
+  unitPrice: number;
+  numberOfItems: number;
+}
