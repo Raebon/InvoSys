@@ -60,9 +60,10 @@ export class InvoiceAddEditComponent implements OnInit {
 
   public getInvoiceByIdDataToFormIfEdit(invoiceId: string): void {
     this.graphqlService.getInvoiceById(invoiceId).subscribe((data) => {
-      console.log(data, this.currentDate, data.dateOfIssue);
-
-      this.invoiceItems = data.invoiceItems;
+      this.invoiceItems = data.invoiceItems.map((obj) => {
+        const { __typename, ...rest } = obj;
+        return rest;
+      });
       this.invoiceDetail.patchValue({
         description: data.description,
         dateOfIssue: data.dateOfIssue,
@@ -96,7 +97,18 @@ export class InvoiceAddEditComponent implements OnInit {
       this.createInvoice(createInvoiceInput);
     } else {
       //editace
-      this.editInvoice();
+      const updateInvoiceInput: UpdateInvoiceInput = {
+        id: this.invoiceId,
+        description: this.invoiceDetail.value.description!,
+        dateOfIssue: this.invoiceDetail.value.dateOfIssue!,
+        customer: {
+          firstName: this.invoiceDetail.value.firstName!,
+          lastName: this.invoiceDetail.value.lastName!,
+          email: this.invoiceDetail.value.email!,
+        },
+        invoiceItems: this.invoiceItems,
+      };
+      this.editInvoice(updateInvoiceInput);
     }
   }
 
@@ -105,6 +117,7 @@ export class InvoiceAddEditComponent implements OnInit {
     index: number;
   }): void {
     const { item: eventItem, index } = event;
+    console.log(event, this.invoiceItems);
     this.invoiceItems[index] = {
       ...this.invoiceItems[index],
       name: eventItem.name,
@@ -128,7 +141,10 @@ export class InvoiceAddEditComponent implements OnInit {
     ];
   }
 
-  public trackByFn(index: number): number {
+  public trackByFn(index: number, item: InvoiceItem): string | number {
+    if (item.id) {
+      return item.id;
+    }
     return index;
   }
 
@@ -150,7 +166,20 @@ export class InvoiceAddEditComponent implements OnInit {
     }
   }
 
-  private editInvoice(input?: any) {
-    console.log(input);
+  private editInvoice(input: UpdateInvoiceInput) {
+    try {
+      this.graphqlService.updateInvoice(input).subscribe((res) => {
+        this.notifyService.showSuccess(
+          "Faktura byla úspěšně aktualizovaná",
+          "Úspěšná akce!"
+        );
+        this.router.navigate(["invoices-list"]);
+      });
+    } catch (error) {
+      this.notifyService.showError(
+        "Faktura nebyla aktualizovaná",
+        "Neúspěšná akce!"
+      );
+    }
   }
 }

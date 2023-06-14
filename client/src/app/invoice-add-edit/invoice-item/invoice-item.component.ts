@@ -22,8 +22,8 @@ export class InvoiceItemComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    this.updateFormValuesFromInput();
     this.onChangeValues();
+    this.updateFormValuesFromInput();
   }
 
   public updateFormValuesFromInput(): void {
@@ -32,6 +32,7 @@ export class InvoiceItemComponent implements OnInit {
       numberOfItems: this.item.numberOfItems,
       unitPrice: this.item.unitPrice,
     });
+    console.log(this.invoiceItem);
   }
 
   public onChangeValues(): void {

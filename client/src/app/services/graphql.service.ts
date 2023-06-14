@@ -112,6 +112,47 @@ export class GraphqlService {
         mutation: createInvoiceMutation,
         variables: { input: invoiceInput },
       })
-      .pipe(map((res) => res.data));
+      .pipe(
+        map((res) => {
+          this.invalidateCache();
+          return res.data;
+        })
+      );
+  }
+
+  public updateInvoice(invoiceInput: UpdateInvoiceInput): Observable<any> {
+    const upateInvoiceMutation = gql`
+      mutation UpdateInvoice($input: UpdateInvoiceInput!) {
+        updateInvoice(input: $input) {
+          customer {
+            id
+          }
+          customerId
+          dateOfIssue
+          description
+          id
+          invoiceItems {
+            id
+            invoiceId
+          }
+        }
+      }
+    `;
+
+    return this.apollo
+      .mutate({
+        mutation: upateInvoiceMutation,
+        variables: { input: invoiceInput },
+      })
+      .pipe(
+        map((res) => {
+          this.invalidateCache();
+          return res.data;
+        })
+      );
+  }
+
+  public invalidateCache() {
+    this.apollo.client.cache.reset();
   }
 }

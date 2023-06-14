@@ -65,9 +65,10 @@
     <div class="max-w-4xl mx-auto my-5">
       <h4 class="text-2xl mb-2">Položky faktury</h4>
       <div class="grid mt-3 mb-5">
-        <app-invoice-item *ngFor="let item of invoiceItems; let rowId = index; trackBy: trackByFn" [item]="item"
-          [index]="rowId" (itemValuesChange)="onUpdateInvoiceItemFormValue($event)"
-          (deleteItem)="onDeleteInvoiceItem($event)"></app-invoice-item>
+        <ng-container *ngFor="let item of invoiceItems; let rowId = index; trackBy: trackByFn">
+          <app-invoice-item [item]="item" [index]="rowId" (itemValuesChange)="onUpdateInvoiceItemFormValue($event)"
+            (deleteItem)="onDeleteInvoiceItem($event)"></app-invoice-item>
+        </ng-container>
       </div>
 
       <div class="flex justify-center">

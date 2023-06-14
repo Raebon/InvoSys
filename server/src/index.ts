@@ -11,9 +11,11 @@ import {
   getInvoices,
 } from './utils';
 
-/* createCustomers()
-createInvoices()
-createInvoiceItems() */
+/*
+createInvoices();
+createCustomers();
+createInvoiceItems();
+ */
 //getRevenueLastThreeMonths()
 //getInvoices()
 const server = new ApolloServer({
