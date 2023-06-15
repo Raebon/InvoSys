@@ -26,6 +26,9 @@ export class SearchCustomerDropdownComponent {
   }
 
   getCustomers(text: string): void {
+    if (text.length < 3) {
+      return;
+    }
     this.loading = true;
     this.graphqlService
       .searchCustomers(text)
