@@ -37,6 +37,11 @@ export const typeDefs = `#graphql
     revenue: Int!
   }
 
+  type DeleteInvoiceResponse{
+    success: Boolean!
+    message: String!
+  }
+
   type Query{
     customers: [Customer]
     invoices: InvoicesResult!
@@ -49,6 +54,7 @@ export const typeDefs = `#graphql
   type Mutation{
     addInvoice(input: AddInvoiceInput!): Invoice!
     updateInvoice(input: UpdateInvoiceInput!): Invoice!
+    deleteInvoice(input: ID!): DeleteInvoiceResponse
   }
 
   input AddInvoiceInput{

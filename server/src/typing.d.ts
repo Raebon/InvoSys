@@ -104,3 +104,8 @@ interface UpdateInvoiceItemInput {
   unitPrice: number;
   numberOfItems: number;
 }
+
+interface DeleteInvoiceResponse {
+  success: boolean;
+  message: string;
+}

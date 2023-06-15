@@ -7,6 +7,7 @@ import {
   addInvoice,
   updateInvoice,
   searchCustomers,
+  deleteInvoice,
 } from '../utils';
 export const resolvers = {
   Query: {
@@ -24,5 +25,8 @@ export const resolvers = {
       addInvoice(input),
     updateInvoice: async (_: any, { input }: { input: UpdateInvoiceInput }) =>
       updateInvoice(input),
+    deleteInvoice: async (_: any, { input }: { input: string }) => {
+      deleteInvoice(input);
+    },
   },
 };

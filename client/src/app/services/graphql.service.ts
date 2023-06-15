@@ -1,7 +1,11 @@
 import { Injectable } from "@angular/core";
 import { Apollo } from "apollo-angular";
 import { Observable, map } from "rxjs";
-import { CREATE_INVOICE, UPDATE_INVOICE } from "./utils/mutation";
+import {
+  CREATE_INVOICE,
+  UPDATE_INVOICE,
+  DELETE_INVOICE,
+} from "./utils/mutation";
 import {
   GET_INVOICES,
   GET_LAST_THREE_MONTHS_REVENUE,
@@ -90,6 +94,20 @@ export class GraphqlService {
       .mutate({
         mutation: UPDATE_INVOICE,
         variables: { input: invoiceInput },
+      })
+      .pipe(
+        map((res) => {
+          this.invalidateCache();
+          return res.data;
+        })
+      );
+  }
+
+  public deleteInvoice(id: string): Observable<any> {
+    return this.apollo
+      .mutate({
+        mutation: DELETE_INVOICE,
+        variables: { input: id },
       })
       .pipe(
         map((res) => {

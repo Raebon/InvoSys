@@ -42,4 +42,13 @@ const UPDATE_INVOICE = gql`
   }
 `;
 
-export { CREATE_INVOICE, UPDATE_INVOICE };
+const DELETE_INVOICE = gql`
+  mutation DeleteInvoice($input: ID!) {
+    deleteInvoice(input: $input) {
+      message
+      success
+    }
+  }
+`;
+
+export { CREATE_INVOICE, UPDATE_INVOICE, DELETE_INVOICE };

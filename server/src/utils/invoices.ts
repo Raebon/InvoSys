@@ -55,6 +55,7 @@ export const getInvoices = async (): Promise<InvoiceResult> => {
  * Obraty vystavených faktur za poslední 3 měsíce
  * @return vrátí obraty z faktur za jednotlivé poslední 3 měsíce
  */
+
 export const getRevenueLastThreeMonths = async (): Promise<
   RevenueLastThreeMonthsResult[]
 > => {
@@ -244,7 +245,7 @@ export const addInvoice = async (input: AddInvoiceInput) => {
 };
 
 /**
- * Update faktury
+ *  Update faktury
  * @param UpdateInvoiceInput
  * @return aktualizuje se nová faktura
  */
@@ -330,5 +331,46 @@ export const updateInvoice = async (input: UpdateInvoiceInput) => {
     await transaction.rollback();
     console.error('updateInvoice - chyba při aktualizaci faktury', error);
     throw new Error('Při aktualizaci faktury došlo k chybě!');
+  }
+};
+
+/**
+ * odstranění faktury
+ * @param id - invoiceId
+ */
+
+export const deleteInvoice = async (
+  invoiceId: string,
+): Promise<DeleteInvoiceResponse> => {
+  const transaction = await db.sequelize.transaction();
+  try {
+    //vyhledáni faktury podle id
+    const invoice = await db.Invoice.findByPk(invoiceId, {
+      include: [db.InvoiceItem],
+      transaction,
+    });
+
+    if (!invoice) {
+      throw new Error('Faktura nebyla nalezena.');
+    }
+
+    // odstranění všech vazebných položek faktury s transakcí
+    await Promise.all(
+      invoice.InvoiceItems.map((item: any) => item.destroy({ transaction })),
+    );
+
+    // odstranění faktury
+    await invoice.destroy({ transaction });
+
+    await transaction.commit();
+
+    return {
+      success: true,
+      message: 'Faktura byla úspěšně odstraněna.',
+    };
+  } catch (error) {
+    await transaction.rollback();
+    console.error('Chyba při odstraňování faktury:', error);
+    throw new Error('Nepodařilo se odstranit fakturu.');
   }
 };

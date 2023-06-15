@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { GraphqlService } from "../../services/graphql.service";
 import { finalize } from "rxjs";
+import { NotificationService } from "src/app/services/notification.service";
 
 @Component({
   selector: "app-invoices-list-grid",
@@ -10,7 +11,10 @@ import { finalize } from "rxjs";
 export class InvoicesListGridComponent implements OnInit {
   invoices: Invoice[] = [];
   loading: boolean = false;
-  constructor(private graphqlService: GraphqlService) {}
+  constructor(
+    private graphqlService: GraphqlService,
+    private notifyService: NotificationService
+  ) {}
 
   ngOnInit(): void {
     this.getInvoicesData();
@@ -34,5 +38,28 @@ export class InvoicesListGridComponent implements OnInit {
     });
 
     return totalPrice;
+  }
+
+  public deleteInvoice(invoiceId: string): void {
+    if (window.confirm(`Opravdu chcete odstranit fakturu?`)) {
+      try {
+        this.graphqlService.deleteInvoice(invoiceId).subscribe((data) => {
+          this.notifyService.showSuccess(
+            "Faktura byla úspěšně odstraněna",
+            "Úspěšná akce!"
+          );
+          this.invoices = this.invoices.filter(
+            (invoice) => invoice.id !== invoiceId
+          );
+        });
+      } catch (error) {
+        {
+          this.notifyService.showError(
+            "Faktura nebyla odstraněna",
+            "Neúspěšná akce!"
+          );
+        }
+      }
+    }
   }
 }
