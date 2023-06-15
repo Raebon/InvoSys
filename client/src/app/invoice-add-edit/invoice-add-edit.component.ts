@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Location } from "@angular/common";
 import { ActivatedRoute, Router } from "@angular/router";
 import { GraphqlService } from "../services/graphql.service";
 import { NotificationService } from "../services/notification.service";
@@ -38,7 +39,8 @@ export class InvoiceAddEditComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private graphqlService: GraphqlService,
-    private notifyService: NotificationService
+    private notifyService: NotificationService,
+    private location: Location
   ) {
     this.currentDate = new Date(new Date().setHours(0, 0, 0, 0));
   }
@@ -146,6 +148,10 @@ export class InvoiceAddEditComponent implements OnInit {
       return item.id;
     }
     return index;
+  }
+
+  public goBack(): void {
+    this.location.back();
   }
 
   private createInvoice(input: AddInvoiceInput) {

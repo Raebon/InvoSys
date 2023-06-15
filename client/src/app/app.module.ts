@@ -15,6 +15,7 @@ import { InvoiceItemComponent } from "./invoice-add-edit/invoice-item/invoice-it
 import { ErrorValidationAlertComponent } from "./components/error-validation-alert.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ToastrModule } from "ngx-toastr";
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { ToastrModule } from "ngx-toastr";
     InvoiceAddEditComponent,
     InvoiceItemComponent,
     ErrorValidationAlertComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,

@@ -17,10 +17,9 @@
     <nav class="nav font-semibold text-md md:text-lg">
       <ul class="flex items-center">
 
-        <li *ngFor="let item of menuItems"
-          class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer"
-          routerLinkActive="border-opacity-100">
-          <a [routerLink]="item.path">{{item.label}}</a>
+        <li *ngFor="let item of menuItems" class="py-4">
+          <a class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer"
+            routerLinkActive="border-opacity-100" [routerLink]="item.path">{{item.label}}</a>
         </li>
       </ul>
     </nav>
