@@ -54,18 +54,19 @@ export const searchCustomers = async (
   searchInput: string = '',
 ): Promise<CustomerResult> => {
   try {
+    if (searchInput.trim().length < 2) {
+      return { count: 0, rows: [] };
+    }
+
     const searchTokens = searchInput
       .split(' ')
       .filter((token) => token.length > 0);
 
-    if (searchInput.trim().length < 2) {
-      return { count: 0, rows: [] };
-    }
     const whereConditions = searchTokens.map((token) => ({
       [Op.or]: [
-        { firstName: { [Op.like]: `%${token}%` } },
-        { lastName: { [Op.like]: `%${token}%` } },
-        { email: { [Op.like]: `%${token}%` } },
+        { firstName: { [Op.iLike]: `%${token}%` } },
+        { lastName: { [Op.iLike]: `%${token}%` } },
+        { email: { [Op.iLike]: `%${token}%` } },
       ],
     }));
 
