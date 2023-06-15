@@ -28,7 +28,7 @@
           <label class="font-semibold text-md text-gray-400 required">Jméno</label>
         </div>
         <input type="text"
-          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px] read-only:opacity-75 read-only:cursor-not-allowed"
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px] read-only:opacity-75 read-only:cursor-not-allowed read-only:outline-none"
           formControlName="firstName" name="firstName" required [readonly]="hasCustomerFromDropdown" />
         <app-error-validation-alert [control]="invoiceDetail.controls['firstName']"></app-error-validation-alert>
 
@@ -39,7 +39,7 @@
           <label class="font-semibold text-md text-gray-400 required">Příjmení</label>
         </div>
         <input type="text"
-          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px] read-only:opacity-75 read-only:cursor-not-allowed"
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px] read-only:opacity-75 read-only:cursor-not-allowed read-only:outline-none"
           formControlName="lastName" name="lastName" required [readonly]="hasCustomerFromDropdown" />
         <app-error-validation-alert [control]="invoiceDetail.controls['lastName']"></app-error-validation-alert>
       </div>
@@ -49,7 +49,7 @@
           <label class="font-semibold text-md text-gray-400 required">Email</label>
         </div>
         <input type="email"
-          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px] read-only:opacity-75 read-only:cursor-not-allowed"
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px] read-only:opacity-75 read-only:cursor-not-allowed read-only:outline-none"
           formControlName="email" name="email" required [readonly]="hasCustomerFromDropdown" />
         <app-error-validation-alert [control]="invoiceDetail.controls['email']"></app-error-validation-alert>
       </div>
@@ -60,7 +60,7 @@
           <label class="font-semibold text-md text-gray-400 required">Datum vystavení</label>
         </div>
         <input type="date"
-          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px] read-only:opacity-75 read-only:cursor-not-allowed"
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px] read-only:opacity-75 read-only:cursor-not-allowed read-only:outline-none"
           formControlName="dateOfIssue" name="dateOfIssue" required />
         <app-error-validation-alert [control]="invoiceDetail.controls['dateOfIssue']"></app-error-validation-alert>
       </div>
@@ -70,7 +70,7 @@
           <label class="font-semibold text-md text-gray-400 required">Popis</label>
         </div>
         <textarea
-          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px] read-only:opacity-75 read-only:cursor-not-allowed"
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px] read-only:opacity-75 read-only:cursor-not-allowed read-only:outline-none"
           formControlName="description" name="description" required></textarea>
         <app-error-validation-alert [control]="invoiceDetail.controls['description']"></app-error-validation-alert>
       </div>

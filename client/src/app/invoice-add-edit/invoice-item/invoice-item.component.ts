@@ -47,7 +47,7 @@ export class InvoiceItemComponent implements OnInit {
     });
   }
 
-  public onDeleteItem(item: InvoiceItem): void {
+  public onDeleteItem(): void {
     this.deleteItem.emit(this.index);
   }
 }

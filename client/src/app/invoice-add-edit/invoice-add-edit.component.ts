@@ -14,7 +14,11 @@ import { format } from "date-fns";
 export class InvoiceAddEditComponent implements OnInit {
   title: string = "Vytvoření faktury";
   buttonLabel: string = "Vytvořit";
-
+  newInvoiceItem: InvoiceItem = {
+    name: "Nová položka",
+    numberOfItems: 0,
+    unitPrice: 0,
+  };
   invoiceId: string | null = null;
   currentDate: Date = new Date();
   invoiceDetail = new FormGroup({
@@ -26,13 +30,7 @@ export class InvoiceAddEditComponent implements OnInit {
     lastName: new FormControl(""),
     email: new FormControl(""),
   });
-  invoiceItems: InvoiceItem[] = [
-    {
-      name: "",
-      numberOfItems: 0,
-      unitPrice: 0,
-    },
-  ];
+  invoiceItems: InvoiceItem[] = [this.newInvoiceItem];
   selectedCustomerFromDropdown: Customer | undefined;
   constructor(
     private route: ActivatedRoute,
@@ -164,6 +162,7 @@ export class InvoiceAddEditComponent implements OnInit {
         const { __typename, ...rest } = obj;
         return rest;
       });
+      this.selectedCustomerFromDropdown = data.customer;
       this.invoiceDetail.patchValue({
         description: data.description,
         dateOfIssue: data.dateOfIssue,
@@ -193,14 +192,7 @@ export class InvoiceAddEditComponent implements OnInit {
   }
 
   public onAddInvoiceItem(): void {
-    this.invoiceItems = [
-      ...this.invoiceItems,
-      {
-        name: "",
-        numberOfItems: 0,
-        unitPrice: 0,
-      },
-    ];
+    this.invoiceItems = [...this.invoiceItems, this.newInvoiceItem];
   }
 
   public trackByFn(index: number, item: InvoiceItem): string | number {
