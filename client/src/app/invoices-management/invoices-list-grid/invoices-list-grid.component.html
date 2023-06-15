@@ -44,8 +44,14 @@
                   [routerLink]="'/invoice/'+item.id"><i class='fas fa-pencil'></i></button>
               </div>
             </td>
+
           </tr>
         </tbody>
       </table>
     </div>
+    <ng-container *ngIf="loading">
+      <div class="flex justify-center">
+        <i class='fas fa-spinner text-2xl animate-spin'></i>
+      </div>
+    </ng-container>
   </div>

@@ -1,7 +1,12 @@
 import { Injectable } from "@angular/core";
-import { Apollo, gql } from "apollo-angular";
+import { Apollo } from "apollo-angular";
 import { Observable, map } from "rxjs";
-
+import { CREATE_INVOICE, UPDATE_INVOICE } from "./utils/mutation";
+import {
+  GET_INVOICES,
+  GET_LAST_THREE_MONTHS_REVENUE,
+  GET_INVOICE_BY_ID,
+} from "./utils/queries";
 @Injectable({
   providedIn: "root",
 })
@@ -11,25 +16,7 @@ export class GraphqlService {
   public getInvoices(): Observable<InvoiceResult> {
     return this.apollo
       .query<InvoiceResult>({
-        query: gql`
-          query Invoices {
-            invoices {
-              count
-              rows {
-                id
-                customer {
-                  firstName
-                  lastName
-                }
-                dateOfIssue
-                invoiceItems {
-                  numberOfItems
-                  unitPrice
-                }
-              }
-            }
-          }
-        `,
+        query: GET_INVOICES,
       })
       .pipe(map((result: { data: any }) => result.data.invoices));
   }
@@ -39,14 +26,7 @@ export class GraphqlService {
   > {
     return this.apollo
       .query<RevenueLastThreeMonthsResult[]>({
-        query: gql`
-          query LastThreeMonthsRevenue {
-            lastThreeMonthsRevenue {
-              month
-              revenue
-            }
-          }
-        `,
+        query: GET_LAST_THREE_MONTHS_REVENUE,
       })
       .pipe(map((result: { data: any }) => result.data.lastThreeMonthsRevenue));
   }
@@ -54,27 +34,7 @@ export class GraphqlService {
   public getInvoiceById(id: string): Observable<GetInvoiceResult> {
     return this.apollo
       .query<GetInvoiceResult>({
-        query: gql`
-          query GetInvoiceById($getInvoiceByIdId: String!) {
-            getInvoiceById(id: $getInvoiceByIdId) {
-              id
-              customer {
-                email
-                id
-                firstName
-                lastName
-              }
-              dateOfIssue
-              description
-              invoiceItems {
-                id
-                name
-                numberOfItems
-                unitPrice
-              }
-            }
-          }
-        `,
+        query: GET_INVOICE_BY_ID,
         variables: {
           getInvoiceByIdId: id,
         },
@@ -83,33 +43,9 @@ export class GraphqlService {
   }
 
   public createInvoice(invoiceInput: AddInvoiceInput): Observable<any> {
-    const createInvoiceMutation = gql`
-      mutation AddInvoice($input: AddInvoiceInput!) {
-        addInvoice(input: $input) {
-          id
-          customerId
-          dateOfIssue
-          description
-          customer {
-            email
-            firstName
-            id
-            lastName
-          }
-          invoiceItems {
-            id
-            invoiceId
-            name
-            numberOfItems
-            unitPrice
-          }
-        }
-      }
-    `;
-
     return this.apollo
       .mutate({
-        mutation: createInvoiceMutation,
+        mutation: CREATE_INVOICE,
         variables: { input: invoiceInput },
       })
       .pipe(
@@ -121,27 +57,9 @@ export class GraphqlService {
   }
 
   public updateInvoice(invoiceInput: UpdateInvoiceInput): Observable<any> {
-    const upateInvoiceMutation = gql`
-      mutation UpdateInvoice($input: UpdateInvoiceInput!) {
-        updateInvoice(input: $input) {
-          customer {
-            id
-          }
-          customerId
-          dateOfIssue
-          description
-          id
-          invoiceItems {
-            id
-            invoiceId
-          }
-        }
-      }
-    `;
-
     return this.apollo
       .mutate({
-        mutation: upateInvoiceMutation,
+        mutation: UPDATE_INVOICE,
         variables: { input: invoiceInput },
       })
       .pipe(
