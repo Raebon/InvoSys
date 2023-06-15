@@ -29,11 +29,12 @@ export class SearchCustomerDropdownComponent {
     if (text.length < 3) {
       return;
     }
+    text = text.toLowerCase();
     this.loading = true;
     this.graphqlService
       .searchCustomers(text)
       .pipe(
-        debounceTime(300),
+        debounceTime(500),
         distinctUntilChanged(),
         finalize(() => (this.loading = false))
       )
