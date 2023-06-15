@@ -144,12 +144,6 @@ export const getRevenueLastThreeMonths = async (): Promise<
       theMonthBefore,
     );
 
-    console.log('Celkové tržby', [
-      thisMonthRevenue,
-      lastMonthRevenue,
-      theMonthBeforeRevenue,
-    ]);
-
     return [thisMonthRevenue, lastMonthRevenue, theMonthBeforeRevenue];
   } catch (error) {
     console.error('Chyba při získávání tržeb:', error);
@@ -166,7 +160,6 @@ export const getInvoiceById = async (
   id: string,
 ): Promise<GetInvoiceResult | null> => {
   try {
-    console.log(id);
     const invoice = await db.Invoice.findByPk(id, {
       include: [db.Customer, db.InvoiceItem],
     });
@@ -245,7 +238,7 @@ export const addInvoice = async (input: AddInvoiceInput) => {
     };
   } catch (error) {
     await transaction.rollback();
-    console.log('addInvoice - chyba při založení faktury', error);
+    console.error('addInvoice - chyba při založení faktury', error);
     throw new Error('Při založení faktury došlo k chybě!');
   }
 };
@@ -335,7 +328,7 @@ export const updateInvoice = async (input: UpdateInvoiceInput) => {
     };
   } catch (error) {
     await transaction.rollback();
-    console.log('updateInvoice - chyba při aktualizaci faktury', error);
+    console.error('updateInvoice - chyba při aktualizaci faktury', error);
     throw new Error('Při aktualizaci faktury došlo k chybě!');
   }
 };

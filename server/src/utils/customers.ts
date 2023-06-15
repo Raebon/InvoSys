@@ -57,7 +57,7 @@ export const searchCustomers = async (
     const searchTokens = searchInput
       .split(' ')
       .filter((token) => token.length > 0);
-    console.log(searchInput?.trim());
+
     if (searchInput.trim().length < 2) {
       return { count: 0, rows: [] };
     }

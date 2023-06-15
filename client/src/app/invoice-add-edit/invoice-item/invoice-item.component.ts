@@ -32,7 +32,6 @@ export class InvoiceItemComponent implements OnInit {
       numberOfItems: this.item.numberOfItems,
       unitPrice: this.item.unitPrice,
     });
-    console.log(this.invoiceItem);
   }
 
   public onChangeValues(): void {
