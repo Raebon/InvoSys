@@ -7,7 +7,7 @@ import {
   updateInvoice,
 } from './invoices';
 import { createInvoiceItems, getInvoiceItems } from './invoiceitems';
-import { getCustomers, createCustomers } from './customers';
+import { getCustomers, createCustomers, searchCustomers } from './customers';
 
 export {
   createInvoices,
@@ -20,4 +20,5 @@ export {
   getInvoiceById,
   addInvoice,
   updateInvoice,
+  searchCustomers,
 };

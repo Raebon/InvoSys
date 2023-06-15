@@ -12,10 +12,11 @@ import { format } from "date-fns";
   styleUrls: ["./invoice-add-edit.component.css"],
 })
 export class InvoiceAddEditComponent implements OnInit {
+  title: string = "Vytvoření faktury";
+  buttonLabel: string = "Vytvořit";
+
   invoiceId: string | null = null;
-
   currentDate: Date = new Date();
-
   invoiceDetail = new FormGroup({
     description: new FormControl(""),
     dateOfIssue: new FormControl<Date | undefined>(
@@ -32,9 +33,7 @@ export class InvoiceAddEditComponent implements OnInit {
       unitPrice: 0,
     },
   ];
-
-  title: string = "Vytvoření faktury";
-  buttonLabel: string = "Vytvořit";
+  selectedCustomerFromDropdown: Customer | undefined;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -45,35 +44,39 @@ export class InvoiceAddEditComponent implements OnInit {
     this.currentDate = new Date(new Date().setHours(0, 0, 0, 0));
   }
 
-  ngOnInit(): void {
-    this.invoiceId = this.route.snapshot.paramMap.get("id");
+  private createInvoice(input: AddInvoiceInput) {
+    try {
+      this.graphqlService.createInvoice(input).subscribe((res) => {
+        this.notifyService.showSuccess(
+          "Faktura byla úspěšně vytvořena",
+          "Úspěšná akce!"
+        );
 
-    if (this.invoiceId) {
-      //Editace
-      this.title = `Editace faktury - ${this.invoiceId}`;
-      this.buttonLabel = "Editace";
-      this.getInvoiceByIdDataToFormIfEdit(this.invoiceId);
-    } else {
-      //Vytvoření
-      this.title = "Vytvoření faktury";
-      this.buttonLabel = "Vytvořit";
+        this.router.navigate(["invoices-list"]);
+      });
+    } catch (error) {
+      this.notifyService.showError(
+        "Faktura nebyla vytvořena",
+        "Neúspěšná akce!"
+      );
     }
   }
 
-  public getInvoiceByIdDataToFormIfEdit(invoiceId: string): void {
-    this.graphqlService.getInvoiceById(invoiceId).subscribe((data) => {
-      this.invoiceItems = data.invoiceItems.map((obj) => {
-        const { __typename, ...rest } = obj;
-        return rest;
+  private editInvoice(input: UpdateInvoiceInput) {
+    try {
+      this.graphqlService.updateInvoice(input).subscribe((res) => {
+        this.notifyService.showSuccess(
+          "Faktura byla úspěšně aktualizovaná",
+          "Úspěšná akce!"
+        );
+        this.router.navigate(["invoices-list"]);
       });
-      this.invoiceDetail.patchValue({
-        description: data.description,
-        dateOfIssue: data.dateOfIssue,
-        firstName: data.customer.firstName,
-        lastName: data.customer.lastName,
-        email: data.customer.email,
-      });
-    });
+    } catch (error) {
+      this.notifyService.showError(
+        "Faktura nebyla aktualizovaná",
+        "Neúspěšná akce!"
+      );
+    }
   }
 
   public onSubmit() {
@@ -112,6 +115,63 @@ export class InvoiceAddEditComponent implements OnInit {
       };
       this.editInvoice(updateInvoiceInput);
     }
+  }
+
+  ngOnInit(): void {
+    this.invoiceId = this.route.snapshot.paramMap.get("id");
+
+    if (this.invoiceId) {
+      //Editace
+      this.title = `Editace faktury - ${this.invoiceId}`;
+      this.buttonLabel = "Editace";
+      this.getInvoiceByIdDataToFormIfEdit(this.invoiceId);
+    } else {
+      //Vytvoření
+      this.title = "Vytvoření faktury";
+      this.buttonLabel = "Vytvořit";
+    }
+  }
+
+  public getSelectedCustomerFromDropdown(event: Customer): void {
+    this.selectedCustomerFromDropdown = event;
+    this.updateOrResetCustomerFormDetail(event);
+  }
+
+  public resetSelectedCustomerFromDropdown(): void {
+    this.selectedCustomerFromDropdown = undefined;
+    this.updateOrResetCustomerFormDetail(undefined);
+  }
+
+  public updateOrResetCustomerFormDetail(event: Customer | undefined): void {
+    if (event) {
+      this.invoiceDetail.patchValue({
+        firstName: event.firstName,
+        lastName: event.lastName,
+        email: event.email,
+      });
+    } else {
+      this.invoiceDetail.patchValue({
+        firstName: "",
+        lastName: "",
+        email: "",
+      });
+    }
+  }
+
+  public getInvoiceByIdDataToFormIfEdit(invoiceId: string): void {
+    this.graphqlService.getInvoiceById(invoiceId).subscribe((data) => {
+      this.invoiceItems = data.invoiceItems.map((obj) => {
+        const { __typename, ...rest } = obj;
+        return rest;
+      });
+      this.invoiceDetail.patchValue({
+        description: data.description,
+        dateOfIssue: data.dateOfIssue,
+        firstName: data.customer.firstName,
+        lastName: data.customer.lastName,
+        email: data.customer.email,
+      });
+    });
   }
 
   public onUpdateInvoiceItemFormValue(event: {
@@ -154,38 +214,7 @@ export class InvoiceAddEditComponent implements OnInit {
     this.location.back();
   }
 
-  private createInvoice(input: AddInvoiceInput) {
-    try {
-      this.graphqlService.createInvoice(input).subscribe((res) => {
-        this.notifyService.showSuccess(
-          "Faktura byla úspěšně vytvořena",
-          "Úspěšná akce!"
-        );
-
-        this.router.navigate(["invoices-list"]);
-      });
-    } catch (error) {
-      this.notifyService.showError(
-        "Faktura nebyla vytvořena",
-        "Neúspěšná akce!"
-      );
-    }
-  }
-
-  private editInvoice(input: UpdateInvoiceInput) {
-    try {
-      this.graphqlService.updateInvoice(input).subscribe((res) => {
-        this.notifyService.showSuccess(
-          "Faktura byla úspěšně aktualizovaná",
-          "Úspěšná akce!"
-        );
-        this.router.navigate(["invoices-list"]);
-      });
-    } catch (error) {
-      this.notifyService.showError(
-        "Faktura nebyla aktualizovaná",
-        "Neúspěšná akce!"
-      );
-    }
+  get hasCustomerFromDropdown(): boolean {
+    return !!this.selectedCustomerFromDropdown?.id;
   }
 }

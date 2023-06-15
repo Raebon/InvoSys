@@ -19,6 +19,11 @@ interface InvoiceResult {
   rows: [Invoice];
 }
 
+interface CustomerResult {
+  count: number;
+  rows: [Customer] | [];
+}
+
 interface GetInvoiceResult extends InvoiceAttributes {
   customer: Customer;
   invoiceItems: InvoiceItem[];

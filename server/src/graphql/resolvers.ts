@@ -6,6 +6,7 @@ import {
   getInvoiceById,
   addInvoice,
   updateInvoice,
+  searchCustomers,
 } from '../utils';
 export const resolvers = {
   Query: {
@@ -13,7 +14,10 @@ export const resolvers = {
     invoices: async () => getInvoices(),
     invoiceItems: async () => getInvoiceItems(),
     lastThreeMonthsRevenue: async () => getRevenueLastThreeMonths(),
-    getInvoiceById: async (_: any, args: any) => getInvoiceById(args.id),
+    getInvoiceById: async (_: any, args: { id: string }) =>
+      getInvoiceById(args.id),
+    searchCustomers: async (_: any, args: { text: string }) =>
+      searchCustomers(args.text),
   },
   Mutation: {
     addInvoice: async (_: any, { input }: { input: AddInvoiceInput }) =>

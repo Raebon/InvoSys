@@ -8,7 +8,7 @@ interface CustomerAttributes {
 interface Customer extends CustomerAttributes {}
 interface CustomerResult {
   count: number;
-  rows: [Customer];
+  rows: [Customer] | [];
 }
 
 interface InvoiceAttributes {

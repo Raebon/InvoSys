@@ -15,7 +15,8 @@ import { InvoiceItemComponent } from "./invoice-add-edit/invoice-item/invoice-it
 import { ErrorValidationAlertComponent } from "./components/error-validation-alert.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ToastrModule } from "ngx-toastr";
-import { HomeComponent } from './home/home.component';
+import { HomeComponent } from "./home/home.component";
+import { SearchCustomerDropdownComponent } from "./components/search-customer-dropdown.component";
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { HomeComponent } from './home/home.component';
     InvoiceItemComponent,
     ErrorValidationAlertComponent,
     HomeComponent,
+    SearchCustomerDropdownComponent,
   ],
   imports: [
     BrowserModule,

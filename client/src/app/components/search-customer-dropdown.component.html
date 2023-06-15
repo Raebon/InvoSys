@@ -1,0 +1,23 @@
+<div class="relative min-w-[265px]">
+  <form class="border border-gray-300 text-md rounded-sm shadow-md w-full max-w-[265px] relative">
+    <input class="p-2 w-full outline-green-500 focus:outline-1" type="text" (ngModelChange)="getCustomers($event)"
+      [(ngModel)]="filterText" name="search-customers-input" placeholder="Vyhledat zákazníka"
+      (click)="openDropdown()" />
+    <ng-container *ngIf="loading">
+      <div class="absolute flex justify-center top-3 right-2">
+        <i class='fas fa-spinner text-md animate-spin text-gray-500'></i>
+      </div>
+    </ng-container>
+  </form>
+  <ng-container *ngIf="count > 0 && isDropdownOpen">
+    <div
+      class="absolute bg-white border border-gray-300 text-md rounded-sm shadow-md w-full z-20 max-h-[200px] overflow-y-auto"
+      (click)="closeDropdown()">
+      <div *ngFor="let item of customers" class="cursor-pointer flex flex-col" (click)="selectCustomer(item)">
+        <span class="text-sm hover:bg-gray-300 p-2">
+          {{item.firstName}} {{item.lastName}} - <small class="text-green-500">{{item.email}}</small>
+        </span>
+      </div>
+    </div>
+  </ng-container>
+</div>

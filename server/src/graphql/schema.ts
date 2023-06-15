@@ -27,6 +27,10 @@ export const typeDefs = `#graphql
     count: Int!
     rows: [Invoice!]!
   }
+  type CustomerResult{
+    count: Int!
+    rows: [Customer]
+  }
 
   type LastThreeMonthsRevenue{
     month: String!
@@ -39,6 +43,7 @@ export const typeDefs = `#graphql
     invoiceItems: [InvoiceItem]
     lastThreeMonthsRevenue: [LastThreeMonthsRevenue]
     getInvoiceById(id:String!): Invoice
+    searchCustomers(text:String): CustomerResult!
   }
 
   type Mutation{

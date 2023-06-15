@@ -9,13 +9,27 @@
   <form [formGroup]="invoiceDetail" (ngSubmit)="onSubmit()" class="">
     <div class="max-w-2xl mx-auto my-5">
       <h4 class="text-2xl mb-2">Detail zákazníka</h4>
+      <div class="flex gap-3 items-center mt-5 mb-[4rem]">
+        <div class="w-[180px] text-end">
+          <label class="font-semibold text-md text-gray-400">Vyhledat zákazníka</label>
+        </div>
+        <div class="flex flex-col relative">
+          <app-search-customer-dropdown
+            (selectedCustomer)="getSelectedCustomerFromDropdown($event)"></app-search-customer-dropdown>
+          <div class="flex justify-end absolute -bottom-[2.75rem] right-0">
+            <div class="h-[36px] p-2"></div>
+            <button *ngIf="hasCustomerFromDropdown" type="button" (click)="resetSelectedCustomerFromDropdown()"
+              class="bg-sky-400 p-2 text-sm text-white shadow-md">nový zákazník</button>
+          </div>
+        </div>
+      </div>
       <div class="flex gap-3 items-center my-5">
         <div class="w-[180px] text-end">
           <label class="font-semibold text-md text-gray-400 required">Jméno</label>
         </div>
         <input type="text"
-          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px]"
-          formControlName="firstName" name="firstName" required />
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px] read-only:opacity-75 read-only:cursor-not-allowed"
+          formControlName="firstName" name="firstName" required [readonly]="hasCustomerFromDropdown" />
         <app-error-validation-alert [control]="invoiceDetail.controls['firstName']"></app-error-validation-alert>
 
       </div>
@@ -25,8 +39,8 @@
           <label class="font-semibold text-md text-gray-400 required">Příjmení</label>
         </div>
         <input type="text"
-          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px]"
-          formControlName="lastName" name="lastName" required />
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px] read-only:opacity-75 read-only:cursor-not-allowed"
+          formControlName="lastName" name="lastName" required [readonly]="hasCustomerFromDropdown" />
         <app-error-validation-alert [control]="invoiceDetail.controls['lastName']"></app-error-validation-alert>
       </div>
 
@@ -35,8 +49,8 @@
           <label class="font-semibold text-md text-gray-400 required">Email</label>
         </div>
         <input type="email"
-          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px]"
-          formControlName="email" name="email" required />
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px] read-only:opacity-75 read-only:cursor-not-allowed"
+          formControlName="email" name="email" required [readonly]="hasCustomerFromDropdown" />
         <app-error-validation-alert [control]="invoiceDetail.controls['email']"></app-error-validation-alert>
       </div>
       <h4 class="text-2xl mb-2">Detail faktury</h4>
@@ -46,7 +60,7 @@
           <label class="font-semibold text-md text-gray-400 required">Datum vystavení</label>
         </div>
         <input type="date"
-          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px]"
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px] read-only:opacity-75 read-only:cursor-not-allowed"
           formControlName="dateOfIssue" name="dateOfIssue" required />
         <app-error-validation-alert [control]="invoiceDetail.controls['dateOfIssue']"></app-error-validation-alert>
       </div>
@@ -56,7 +70,7 @@
           <label class="font-semibold text-md text-gray-400 required">Popis</label>
         </div>
         <textarea
-          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px]"
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px] read-only:opacity-75 read-only:cursor-not-allowed"
           formControlName="description" name="description" required></textarea>
         <app-error-validation-alert [control]="invoiceDetail.controls['description']"></app-error-validation-alert>
       </div>
