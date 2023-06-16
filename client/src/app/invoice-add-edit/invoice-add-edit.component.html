@@ -93,6 +93,10 @@
 
     </div>
     <div class="border-t pt-5">
+      <div class="flex justify-end mb-3 text-lg font-medium">
+        Celková cena: <span class="font-mono font-semibold px-1">{{getTotalPriceFromInvoiceItems |
+          number:'1.2-2'}}</span> Kč
+      </div>
       <div class="flex justify-end">
         <button type="submit"
           class="bg-amber-300 px-5 py-2 text-gray-800 font-semibold text-2xl shadow-lg hover:opacity-80">{{buttonLabel}}</button>

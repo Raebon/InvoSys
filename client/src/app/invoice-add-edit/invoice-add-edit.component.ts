@@ -206,6 +206,14 @@ export class InvoiceAddEditComponent implements OnInit {
     this.location.back();
   }
 
+  get getTotalPriceFromInvoiceItems(): number {
+    let totalPrice: number = 0;
+    this.invoiceItems.map((item) => {
+      totalPrice += item.numberOfItems * item.unitPrice;
+    });
+    return totalPrice;
+  }
+
   get hasCustomerFromDropdown(): boolean {
     return !!this.selectedCustomerFromDropdown?.id;
   }
