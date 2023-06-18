@@ -22,6 +22,7 @@
     "apollo-angular": "^5.0.0",
     "date-fns": "^2.30.0",
     "graphql": "^16",
+    "moment": "^2.29.4",
     "ngx-toastr": "^15.2.2",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",

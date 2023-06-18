@@ -3,7 +3,12 @@ import { Location } from "@angular/common";
 import { ActivatedRoute, Router } from "@angular/router";
 import { GraphqlService } from "../services/graphql.service";
 import { NotificationService } from "../services/notification.service";
-import { FormControl, FormGroup, FormBuilder } from "@angular/forms";
+import {
+  FormControl,
+  FormGroup,
+  FormBuilder,
+  Validators,
+} from "@angular/forms";
 import { format } from "date-fns";
 
 @Component({
@@ -39,11 +44,14 @@ export class InvoiceAddEditComponent implements OnInit {
     this.invoiceId = null;
     this.currentDate = new Date(new Date().setHours(0, 0, 0, 0));
     this.invoiceDetail = this.fb.group({
-      description: [""],
-      dateOfIssue: [format(this.currentDate, "yyyy-MM-dd")],
-      firstName: [""],
-      lastName: [""],
-      email: [""],
+      description: ["", Validators.required],
+      dateOfIssue: [
+        format(this.currentDate, "yyyy-MM-dd"),
+        Validators.required,
+      ],
+      firstName: ["", Validators.required],
+      lastName: ["", Validators.required],
+      email: ["", Validators.required],
     });
     this.invoiceItems = [this.newInvoiceItem];
   }

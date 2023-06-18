@@ -17,6 +17,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ToastrModule } from "ngx-toastr";
 import { HomeComponent } from "./home/home.component";
 import { SearchCustomerDropdownComponent } from "./components/search-customer-dropdown.component";
+import { LoginComponent } from "./login/login.component";
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { SearchCustomerDropdownComponent } from "./components/search-customer-dr
     ErrorValidationAlertComponent,
     HomeComponent,
     SearchCustomerDropdownComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,

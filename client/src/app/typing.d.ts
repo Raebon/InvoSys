@@ -1,3 +1,22 @@
+interface SignOutInput {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
+interface SignInInput {
+  email: string;
+  password: string;
+}
+
+interface UserAttributes {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
+
 interface CustomerAttributes {
   id: string;
   firstName: string;
