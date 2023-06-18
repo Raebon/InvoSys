@@ -1,4 +1,6 @@
 import { Component, Injector, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { AppComponentBase } from "src/shared/app-component-base";
 
 interface MenuItems {
   path: string;
@@ -9,17 +11,24 @@ interface MenuItems {
   selector: "navbar",
   templateUrl: "./navbar.component.html",
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent extends AppComponentBase implements OnInit {
   menuItems: MenuItems[] = [
     {
-      path: "/home",
+      path: "home",
       label: "Domov",
     },
     {
-      path: "/invoices-list",
+      path: "invoices-list",
       label: "Správa faktur",
     },
   ];
-  constructor(injector: Injector) {}
+  constructor(injector: Injector, private router: Router) {
+    super(injector);
+  }
   ngOnInit(): void {}
+
+  logOut(): void {
+    this.authService.logout();
+    this.router.navigateByUrl("/account/login");
+  }
 }

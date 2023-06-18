@@ -1,22 +1,19 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Injector } from "@angular/core";
 import { Location } from "@angular/common";
 import { ActivatedRoute, Router } from "@angular/router";
-import { GraphqlService } from "../services/graphql.service";
-import { NotificationService } from "../services/notification.service";
-import {
-  FormControl,
-  FormGroup,
-  FormBuilder,
-  Validators,
-} from "@angular/forms";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { format } from "date-fns";
+import { AppComponentBase } from "../../shared/app-component-base";
 
 @Component({
   selector: "app-invoice-add-edit",
   templateUrl: "./invoice-add-edit.component.html",
   styleUrls: ["./invoice-add-edit.component.css"],
 })
-export class InvoiceAddEditComponent implements OnInit {
+export class InvoiceAddEditComponent
+  extends AppComponentBase
+  implements OnInit
+{
   title: string;
   buttonLabel: string;
   newInvoiceItem: InvoiceItem;
@@ -27,13 +24,13 @@ export class InvoiceAddEditComponent implements OnInit {
   selectedCustomerFromDropdown: Customer | undefined;
 
   constructor(
+    injector: Injector,
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private graphqlService: GraphqlService,
-    private notifyService: NotificationService,
     private location: Location
   ) {
+    super(injector);
     this.title = "Vytvoření faktury";
     this.buttonLabel = "Vytvořit";
     this.newInvoiceItem = {
@@ -64,7 +61,7 @@ export class InvoiceAddEditComponent implements OnInit {
           "Úspěšná akce!"
         );
 
-        this.router.navigate(["invoices-list"]);
+        this.router.navigate(["/app/invoices-list"]);
       });
     } catch (error) {
       this.notifyService.showError(
@@ -81,7 +78,7 @@ export class InvoiceAddEditComponent implements OnInit {
           "Faktura byla úspěšně aktualizovaná",
           "Úspěšná akce!"
         );
-        this.router.navigate(["invoices-list"]);
+        this.router.navigate(["/app/invoices-list"]);
       });
     } catch (error) {
       this.notifyService.showError(

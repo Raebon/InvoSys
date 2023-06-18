@@ -1,23 +1,18 @@
 import { NgModule } from "@angular/core";
-import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
+import { CommonModule } from "@angular/common";
+import { AppRouteGuard } from "src/shared/auth/app-route-guard";
+import { SharedModule } from "src/shared/shared.module";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import { GraphQLModule } from "./graphql.module";
-import { HttpClientModule } from "@angular/common/http";
-import { NavbarComponent } from "./layout/navbar.component";
-import { InvoicesManagementComponent } from "./invoices-management/invoices-management.component";
-import { RevenueLastThreeMonthsComponent } from "./invoices-management/revenue-last-three-months/revenue-last-three-months.component";
-import { InvoicesListGridComponent } from "./invoices-management/invoices-list-grid/invoices-list-grid.component";
+import { HomeComponent } from "./home/home.component";
 import { InvoiceAddEditComponent } from "./invoice-add-edit/invoice-add-edit.component";
 import { InvoiceItemComponent } from "./invoice-add-edit/invoice-item/invoice-item.component";
-import { ErrorValidationAlertComponent } from "./components/error-validation-alert.component";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { ToastrModule } from "ngx-toastr";
-import { HomeComponent } from "./home/home.component";
-import { SearchCustomerDropdownComponent } from "./components/search-customer-dropdown.component";
-import { LoginComponent } from "./login/login.component";
+import { InvoicesListGridComponent } from "./invoices-management/invoices-list-grid/invoices-list-grid.component";
+import { InvoicesManagementComponent } from "./invoices-management/invoices-management.component";
+import { RevenueLastThreeMonthsComponent } from "./invoices-management/revenue-last-three-months/revenue-last-three-months.component";
+import { NavbarComponent } from "./layout/navbar.component";
 
 @NgModule({
   declarations: [
@@ -28,22 +23,15 @@ import { LoginComponent } from "./login/login.component";
     InvoicesListGridComponent,
     InvoiceAddEditComponent,
     InvoiceItemComponent,
-    ErrorValidationAlertComponent,
     HomeComponent,
-    SearchCustomerDropdownComponent,
-    LoginComponent,
   ],
   imports: [
-    BrowserModule,
+    CommonModule,
     AppRoutingModule,
-    GraphQLModule,
-    HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule,
-    ToastrModule.forRoot(),
+    SharedModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent],
+  providers: [AppRouteGuard],
 })
 export class AppModule {}

@@ -19,11 +19,7 @@ import {
 import { GraphQLError } from 'graphql';
 import { signOut } from './controlers/sign-out';
 import { signIn } from './controlers';
-
-/*
-
- */
-
+const jwt = require('jsonwebtoken');
 const app = express();
 const httpServer = http.createServer(app);
 
@@ -47,14 +43,16 @@ const startServer = async () => {
     // an Apollo Server instance and optional configuration options
     expressMiddleware(server, {
       context: async ({ req }) => {
-        if (req.headers.token === 'test token') {
+        const user = getUser(req.headers.authorization);
+        console.log('user', user);
+        if (!user.userId) {
           throw new GraphQLError('Nejste přihlášený', {
             extensions: {
               code: 'UNAUTHENTICATED',
             },
           });
         }
-        return { token: req.headers.token };
+        return { user };
       },
     }),
   );
@@ -66,15 +64,26 @@ const startServer = async () => {
   //createCustomers();
   //createInvoices();
   //createInvoiceItems();
-  console.log(`🚀 Server ready at http://localhost:4000/`);
+  console.log(`🚀 Server ready`);
 };
-
-app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(cors<cors.CorsRequest>(), bodyParser.json());
 app.post('/register', (req, res) => {
   signOut(req, res);
 });
 
 app.post('/login', (req, res) => {
+  console.log('test');
   signIn(req, res);
 });
+
+const getUser = (token: string | string[] | undefined) => {
+  if (token) {
+    try {
+      // return the user information from the token
+      return jwt.verify(token, process.env.JWT_TOKEN);
+    } catch (err) {
+      // if there's a problem with the token, throw an error
+      throw new Error('Session invalid');
+    }
+  }
+};

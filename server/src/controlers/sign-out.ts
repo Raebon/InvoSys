@@ -1,7 +1,7 @@
 import db from '../../models';
 const bcrypt = require('bcryptjs');
 import { Request, Response } from 'express';
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
 export const signOut = async (
   req: Request<any, never, SignOutInput>,
@@ -10,6 +10,7 @@ export const signOut = async (
   try {
     const { firstName, lastName, email, password } = req.body;
 
+    const expiresIn: number = 7200;
     if (!(email && password && lastName && firstName)) {
       res.status(400).send('Všechny pole jsou povinná!');
     }
@@ -29,10 +30,10 @@ export const signOut = async (
       password: encryptedPassword,
     });
 
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_TOKEN, {
-      expiresIn: '2h',
+    const token = jwt.sign({ userId: user.id, email }, process.env.JWT_TOKEN, {
+      expiresIn,
+      subject: user.id,
     });
-
     // save user token
     user.token = token;
 

@@ -1,3 +1,10 @@
+interface LoginResponse {
+  error: boolean;
+  message: string;
+  token: string | null;
+  expiresIn: number;
+}
+
 interface SignOutInput {
   firstName: string;
   lastName: string;

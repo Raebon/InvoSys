@@ -1,11 +1,19 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  Injector,
+} from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
+import { AppComponentBase } from "src/shared/app-component-base";
 
 @Component({
   selector: "app-invoice-item",
   templateUrl: "./invoice-item.component.html",
 })
-export class InvoiceItemComponent implements OnInit {
+export class InvoiceItemComponent extends AppComponentBase implements OnInit {
   @Output() itemValuesChange = new EventEmitter<{
     item: InvoiceItem;
     index: number;
@@ -19,7 +27,9 @@ export class InvoiceItemComponent implements OnInit {
     numberOfItems: new FormControl<number>(0),
     unitPrice: new FormControl<number>(0),
   });
-  constructor() {}
+  constructor(injector: Injector) {
+    super(injector);
+  }
 
   ngOnInit(): void {
     this.onChangeValues();

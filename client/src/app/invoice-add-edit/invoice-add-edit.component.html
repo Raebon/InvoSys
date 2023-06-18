@@ -23,7 +23,7 @@
           </div>
         </div>
       </div>
-      <div class="flex gap-3 items-center my-5">
+      <div class="flex gap-3 items-center my-5 relative">
         <div class="w-[180px] text-end">
           <label class="font-semibold text-md text-gray-400 required">Jméno</label>
         </div>
@@ -34,7 +34,7 @@
 
       </div>
 
-      <div class="flex gap-3 items-center my-5">
+      <div class="flex gap-3 items-center my-5 relative">
         <div class="w-[180px] text-end">
           <label class="font-semibold text-md text-gray-400 required">Příjmení</label>
         </div>
@@ -44,7 +44,7 @@
         <app-error-validation-alert [control]="invoiceDetail.controls['lastName']"></app-error-validation-alert>
       </div>
 
-      <div class="flex  gap-3 items-center my-5">
+      <div class="flex  gap-3 items-center my-5 relative">
         <div class="w-[180px] text-end">
           <label class="font-semibold text-md text-gray-400 required">Email</label>
         </div>
@@ -55,7 +55,7 @@
       </div>
       <h4 class="text-2xl mb-2">Detail faktury</h4>
 
-      <div class="flex gap-3 items-center my-5">
+      <div class="flex gap-3 items-center my-5 relative">
         <div class="w-[180px] text-end">
           <label class="font-semibold text-md text-gray-400 required">Datum vystavení</label>
         </div>
@@ -65,7 +65,7 @@
         <app-error-validation-alert [control]="invoiceDetail.controls['dateOfIssue']"></app-error-validation-alert>
       </div>
 
-      <div class="flex gap-3 items-center my-5">
+      <div class="flex gap-3 items-center my-5 relative">
         <div class="w-[180px] text-end">
           <label class="font-semibold text-md text-gray-400 required">Popis</label>
         </div>
@@ -76,7 +76,7 @@
       </div>
     </div>
 
-    <div class="max-w-4xl mx-auto my-5">
+    <div class="max-w-4xl mx-auto my-5 relative">
       <h4 class="text-2xl mb-2">Položky faktury</h4>
       <div class="grid mt-3 mb-5">
         <ng-container *ngFor="let item of invoiceItems; let rowId = index; trackBy: trackByFn">
