@@ -3,26 +3,24 @@
 import { Model } from 'sequelize';
 
 module.exports = (sequelize: any, DataTypes: any) => {
-  class Customer
-    extends Model<CustomerAttributes>
-    implements CustomerAttributes
-  {
+  class User extends Model<UserAttributes> implements UserAttributes {
     id!: string;
     firstName!: string;
     lastName!: string;
     email!: string;
+    password!: string;
 
     static associate(models: any) {
       // define association here
-      Customer.belongsTo(models.User, {
+      User.hasMany(models.Invoice, {
         foreignKey: 'userId',
       });
-      Customer.hasMany(models.Invoice, {
-        foreignKey: 'customerId',
+      User.hasMany(models.Customer, {
+        foreignKey: 'userId',
       });
     }
   }
-  Customer.init(
+  User.init(
     {
       id: {
         type: DataTypes.UUID,
@@ -42,13 +40,17 @@ module.exports = (sequelize: any, DataTypes: any) => {
         allowNull: false,
         unique: true,
       },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
     {
       sequelize,
-      modelName: 'Customer',
-      tableName: 'Customers',
+      modelName: 'User',
+      tableName: 'Users',
     },
   );
 
-  return Customer;
+  return User;
 };

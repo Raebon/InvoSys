@@ -1,5 +1,10 @@
 import { ApolloServer } from '@apollo/server';
-import { startStandaloneServer } from '@apollo/server/standalone';
+import express from 'express';
+import { expressMiddleware } from '@apollo/server/express4';
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
+import http from 'http';
+import cors from 'cors';
+import bodyParser from 'body-parser';
 import { resolvers } from './graphql/resolvers';
 import { typeDefs } from './graphql/schema';
 import db from '../models';
@@ -9,18 +14,23 @@ import {
   createInvoiceItems,
   getRevenueLastThreeMonths,
   getInvoices,
+  createUsers,
 } from './utils';
+import { GraphQLError } from 'graphql';
+import { signOut } from './controlers/sign-out';
+import { signIn } from './controlers';
 
 /*
-createInvoices();
-createCustomers();
-createInvoiceItems();
+
  */
-//getRevenueLastThreeMonths()
-//getInvoices()
+
+const app = express();
+const httpServer = http.createServer(app);
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
 
 db.sequelize.sync().then(() => {
@@ -28,9 +38,43 @@ db.sequelize.sync().then(() => {
 });
 
 const startServer = async () => {
-  const { url } = await startStandaloneServer(server, {
-    listen: { port: 4000 },
-  });
+  await server.start();
+  app.use(
+    '/',
+    cors<cors.CorsRequest>(),
+    bodyParser.json(),
+    // expressMiddleware accepts the same arguments:
+    // an Apollo Server instance and optional configuration options
+    expressMiddleware(server, {
+      context: async ({ req }) => {
+        if (req.headers.token === 'test token') {
+          throw new GraphQLError('Nejste přihlášený', {
+            extensions: {
+              code: 'UNAUTHENTICATED',
+            },
+          });
+        }
+        return { token: req.headers.token };
+      },
+    }),
+  );
 
-  console.log(`🚀  Server ready at: ${url}`);
+  await new Promise<void>((resolve) =>
+    httpServer.listen({ port: 4000 }, resolve),
+  );
+  //createUsers();
+  //createCustomers();
+  //createInvoices();
+  //createInvoiceItems();
+  console.log(`🚀 Server ready at http://localhost:4000/`);
 };
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.post('/register', (req, res) => {
+  signOut(req, res);
+});
+
+app.post('/login', (req, res) => {
+  signIn(req, res);
+});

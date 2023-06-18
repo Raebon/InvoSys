@@ -11,6 +11,7 @@ export const createCustomers = async () => {
   try {
     await Promise.all(
       customers.map((customer) => {
+        console.log(customer);
         db.Customer.create(customer);
       }),
     );
@@ -29,16 +30,7 @@ export const getCustomers = async (): Promise<CustomerResult> => {
   try {
     const customerData = await db.Customer.findAndCountAll();
 
-    const customers = await customerData.rows.map((customer: Customer) => {
-      return {
-        id: customer.id,
-        firsName: customer.firstName,
-        lastName: customer.lastName,
-        email: customer.email,
-      };
-    });
-
-    return { count: customers, rows: customers };
+    return { count: customerData.count, rows: customerData.rows };
   } catch (error) {
     console.error('Chyba při získávání zákazníku:', error);
     throw new Error('Nepodařilo se získat zákazníky.');
@@ -76,16 +68,7 @@ export const searchCustomers = async (
       },
     });
 
-    const customers = customerData.rows.map((customer: Customer) => {
-      return {
-        id: customer.id,
-        firstName: customer.firstName,
-        lastName: customer.lastName,
-        email: customer.email,
-      };
-    });
-
-    return { count: customers.length, rows: customers };
+    return { count: customerData.count, rows: customerData.rows };
   } catch (error) {
     console.error('Chyba při vyhledávání zákazníků:', error);
     throw new Error('Nepodařilo se vyhledat zákazníky.');

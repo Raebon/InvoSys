@@ -8,7 +8,6 @@ module.exports = (sequelize: any, DataTypes: any) => {
     implements InvoiceItemAttributes
   {
     id!: string;
-    invoiceId!: string;
     name!: string;
     unitPrice!: number;
     numberOfItems!: number;
@@ -23,16 +22,9 @@ module.exports = (sequelize: any, DataTypes: any) => {
   InvoiceItem.init(
     {
       id: {
-        type: DataTypes.STRING,
+        type: DataTypes.UUID,
         primaryKey: true,
-      },
-      invoiceId: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        references: {
-          model: 'Invoices',
-          key: 'id',
-        },
+        defaultValue: DataTypes.UUIDV4,
       },
       name: {
         type: DataTypes.STRING,

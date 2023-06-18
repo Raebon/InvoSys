@@ -5,15 +5,15 @@ import { Model } from 'sequelize';
 module.exports = (sequelize: any, DataTypes: any) => {
   class Invoice extends Model<InvoiceAttributes> implements InvoiceAttributes {
     id!: string;
-    customerId!: string;
     description!: string;
     dateOfIssue!: Date;
 
     static associate(models: any) {
       // define association here
-      Invoice.belongsTo(models.Customer, {
-        foreignKey: 'customerId',
+      Invoice.belongsTo(models.User, {
+        foreignKey: 'userId',
       });
+      Invoice.belongsTo(models.Customer, { foreignKey: 'customerId' });
       Invoice.hasMany(models.InvoiceItem, { foreignKey: 'invoiceId' });
     }
   }
@@ -21,16 +21,9 @@ module.exports = (sequelize: any, DataTypes: any) => {
   Invoice.init(
     {
       id: {
-        type: DataTypes.STRING,
+        type: DataTypes.UUID,
         primaryKey: true,
-      },
-      customerId: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        references: {
-          model: 'Customers',
-          key: 'id',
-        },
+        defaultValue: DataTypes.UUIDV4,
       },
       description: {
         type: DataTypes.STRING,
