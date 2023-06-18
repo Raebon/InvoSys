@@ -1,6 +1,7 @@
 import { Component, Injector, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
+import { finalize } from "rxjs";
 import { AppComponentBase } from "src/shared/app-component-base";
 
 @Component({
@@ -10,6 +11,7 @@ import { AppComponentBase } from "src/shared/app-component-base";
 })
 export class LoginComponent extends AppComponentBase implements OnInit {
   form: FormGroup;
+  loading: boolean;
   constructor(
     injector: Injector,
     private fb: FormBuilder,
@@ -20,17 +22,21 @@ export class LoginComponent extends AppComponentBase implements OnInit {
       email: ["test@test.cz", Validators.required],
       password: ["123qwe", Validators.required],
     });
+    this.loading = false;
   }
 
   ngOnInit(): void {}
 
   login() {
     const input = this.form.value;
-
     if (input.email && input.password) {
-      this.authService.login(input).subscribe(() => {
-        this.router.navigateByUrl("/app/home");
-      });
+      this.loading = true;
+      this.authService
+        .login(input)
+        .pipe(finalize(() => (this.loading = false)))
+        .subscribe(() => {
+          this.router.navigateByUrl("/app/home");
+        });
     }
   }
 }
