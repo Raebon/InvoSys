@@ -9,12 +9,15 @@ import { NotificationService } from "src/app/services/notification.service";
   styleUrls: ["./invoices-list-grid.component.css"],
 })
 export class InvoicesListGridComponent implements OnInit {
-  invoices: Invoice[] = [];
-  loading: boolean = false;
+  invoices: Invoice[];
+  loading: boolean;
   constructor(
     private graphqlService: GraphqlService,
     private notifyService: NotificationService
-  ) {}
+  ) {
+    this.invoices = [];
+    this.loading = false;
+  }
 
   ngOnInit(): void {
     this.getInvoicesData();

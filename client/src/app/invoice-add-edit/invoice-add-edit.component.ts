@@ -3,7 +3,7 @@ import { Location } from "@angular/common";
 import { ActivatedRoute, Router } from "@angular/router";
 import { GraphqlService } from "../services/graphql.service";
 import { NotificationService } from "../services/notification.service";
-import { FormControl, FormGroup } from "@angular/forms";
+import { FormControl, FormGroup, FormBuilder } from "@angular/forms";
 import { format } from "date-fns";
 
 @Component({
@@ -12,34 +12,40 @@ import { format } from "date-fns";
   styleUrls: ["./invoice-add-edit.component.css"],
 })
 export class InvoiceAddEditComponent implements OnInit {
-  title: string = "Vytvoření faktury";
-  buttonLabel: string = "Vytvořit";
-  newInvoiceItem: InvoiceItem = {
-    name: "Nová položka",
-    numberOfItems: 0,
-    unitPrice: 0,
-  };
-  invoiceId: string | null = null;
-  currentDate: Date = new Date();
-  invoiceDetail = new FormGroup({
-    description: new FormControl(""),
-    dateOfIssue: new FormControl<Date | undefined>(
-      format(this.currentDate, "yyyy-MM-dd") as any
-    ),
-    firstName: new FormControl(""),
-    lastName: new FormControl(""),
-    email: new FormControl(""),
-  });
-  invoiceItems: InvoiceItem[] = [this.newInvoiceItem];
+  title: string;
+  buttonLabel: string;
+  newInvoiceItem: InvoiceItem;
+  invoiceId: string | null;
+  currentDate: Date;
+  invoiceDetail: FormGroup;
+  invoiceItems: InvoiceItem[];
   selectedCustomerFromDropdown: Customer | undefined;
+
   constructor(
+    private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private graphqlService: GraphqlService,
     private notifyService: NotificationService,
     private location: Location
   ) {
+    this.title = "Vytvoření faktury";
+    this.buttonLabel = "Vytvořit";
+    this.newInvoiceItem = {
+      name: "Nová položka",
+      numberOfItems: 0,
+      unitPrice: 0,
+    };
+    this.invoiceId = null;
     this.currentDate = new Date(new Date().setHours(0, 0, 0, 0));
+    this.invoiceDetail = this.fb.group({
+      description: [""],
+      dateOfIssue: [format(this.currentDate, "yyyy-MM-dd")],
+      firstName: [""],
+      lastName: [""],
+      email: [""],
+    });
+    this.invoiceItems = [this.newInvoiceItem];
   }
 
   private createInvoice(input: AddInvoiceInput) {

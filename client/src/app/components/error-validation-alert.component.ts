@@ -1,12 +1,12 @@
 import { Component, Input } from "@angular/core";
-import { FormControl } from "@angular/forms";
+import { AbstractControl } from "@angular/forms";
 
 @Component({
   selector: "app-error-validation-alert",
   templateUrl: "./error-validation-alert.component.html",
 })
 export class ErrorValidationAlertComponent {
-  @Input() control!: FormControl<any | null>;
+  @Input() control!: AbstractControl<any | null>;
   constructor() {}
 
   ngOnInit(): void {}

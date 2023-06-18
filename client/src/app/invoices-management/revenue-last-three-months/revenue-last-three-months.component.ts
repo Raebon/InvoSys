@@ -7,9 +7,11 @@ import { GraphqlService } from "../../services/graphql.service";
   styleUrls: ["./revenue-last-three-months.component.css"],
 })
 export class RevenueLastThreeMonthsComponent implements OnInit {
-  revenueStats: RevenueLastThreeMonthsResult[] = [];
+  revenueStats: RevenueLastThreeMonthsResult[];
 
-  constructor(private graphqlService: GraphqlService) {}
+  constructor(private graphqlService: GraphqlService) {
+    this.revenueStats = [];
+  }
 
   ngOnInit(): void {
     this.getLastThreeMonthsRevenueData();
