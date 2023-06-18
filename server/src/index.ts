@@ -33,8 +33,10 @@ db.sequelize.sync().then(() => {
   startServer();
 });
 
+app.use(cors<cors.CorsRequest>(), bodyParser.json());
 const startServer = async () => {
   await server.start();
+
   app.use(
     '/',
     cors<cors.CorsRequest>(),
@@ -45,7 +47,7 @@ const startServer = async () => {
       context: async ({ req }) => {
         const user = getUser(req.headers.authorization);
         console.log(user);
-        if (!user) {
+        if (!user.userId) {
           throw new GraphQLError('Nejste přihlášený', {
             extensions: {
               code: 'UNAUTHENTICATED',
@@ -66,13 +68,12 @@ const startServer = async () => {
   //createInvoiceItems();
   console.log(`🚀 Server ready`);
 };
-app.use(cors<cors.CorsRequest>(), bodyParser.json());
+
 app.post('/register', (req, res) => {
   signOut(req, res);
 });
 
 app.post('/login', (req, res) => {
-  console.log('test');
   signIn(req, res);
 });
 
