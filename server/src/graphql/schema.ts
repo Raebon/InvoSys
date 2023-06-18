@@ -7,8 +7,8 @@ export const typeDefs = `#graphql
   }
 
   type InvoiceItem {
-    id: ID!
-    invoiceId: ID!
+    id: ID
+    invoiceId: ID
     name: String
     unitPrice: Int
     numberOfItems: Int

@@ -46,7 +46,7 @@ const startServer = async () => {
     expressMiddleware(server, {
       context: async ({ req }) => {
         const user = getUser(req.headers.authorization);
-        console.log(user);
+
         if (!user.userId) {
           throw new GraphQLError('Nejste přihlášený', {
             extensions: {
