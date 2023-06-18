@@ -27,21 +27,8 @@ export const createInvoiceItems = async () => {
 export const getInvoiceItems = async (): Promise<InvoiceItemResult> => {
   try {
     const invoiceItemsData = await db.InvoiceItem.findAndCountAll();
-
-    const invoiceItems = await invoiceItemsData.rows.map(
-      (item: InvoiceItem) => {
-        return {
-          id: item.id,
-          invoiceId: item.invoiceId,
-          name: item.name,
-          unitPrice: item.unitPrice,
-          numberOfItems: item.numberOfItems,
-        };
-      },
-    );
-
     return {
-      rows: invoiceItems,
+      rows: invoiceItemsData.rows,
       count: invoiceItemsData.count,
     };
   } catch (error) {

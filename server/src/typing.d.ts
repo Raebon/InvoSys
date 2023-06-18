@@ -1,3 +1,28 @@
+interface LoginResponse {
+  error: boolean;
+  message: string;
+  token: string | null;
+  expiresIn: number;
+}
+
+interface SignOutInput {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
+interface SignInInput {
+  email: string;
+  password: string;
+}
+
+interface UserAttributes {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
 interface CustomerAttributes {
   id: string;
   firstName: string;
@@ -13,7 +38,7 @@ interface CustomerResult {
 
 interface InvoiceAttributes {
   id: string;
-  customerId: string;
+  //customerId: string;
   description: string;
   dateOfIssue: Date;
 }
@@ -34,7 +59,6 @@ interface Invoice extends InvoiceAttributes {
 
 interface InvoiceItemAttributes {
   id: string;
-  invoiceId: string;
   name: string;
   unitPrice: number;
   numberOfItems: number;

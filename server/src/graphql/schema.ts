@@ -27,9 +27,15 @@ export const typeDefs = `#graphql
     count: Int!
     rows: [Invoice!]!
   }
+
   type CustomerResult{
     count: Int!
     rows: [Customer]
+  }
+
+  type InvoiceItemResult{
+    count: Int!
+    rows: [InvoiceItem]
   }
 
   type LastThreeMonthsRevenue{
@@ -43,9 +49,9 @@ export const typeDefs = `#graphql
   }
 
   type Query{
-    customers: [Customer]
+    customers: CustomerResult!
     invoices: InvoicesResult!
-    invoiceItems: [InvoiceItem]
+    invoiceItems: InvoiceItemResult!
     lastThreeMonthsRevenue: [LastThreeMonthsRevenue]
     getInvoiceById(id:String!): Invoice
     searchCustomers(text:String): CustomerResult!

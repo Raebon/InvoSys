@@ -1,0 +1,46 @@
+<section class="flex items-center">
+  <div class="max-w-2xl mx-auto border rounded-md shadow-md px-10 py-5 my-12 antialiased">
+    <div class="flex">
+      <h1 class="w-3/12 mb-5">
+        <div class="h-6 w-auto duration-200 text-3xl font-bold flex">
+          <span>
+            Invo
+          </span>
+          <span class="text-green-500">
+            Sys
+          </span>
+        </div>
+      </h1>
+    </div>
+    <div class="text-3xl text-gray-400 mt-5">Přihlášení</div>
+    <form [formGroup]="form">
+      <div class="flex gap-3 items-center my-5 relative">
+        <div class="w-[80px] text-end">
+          <label class="font-semibold text-md text-gray-400 required">E-mail</label>
+        </div>
+        <input type="text"
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px] read-only:opacity-75 read-only:cursor-not-allowed read-only:outline-none"
+          formControlName="email" name="email" />
+        <app-error-validation-alert [control]="form.controls['email']"></app-error-validation-alert>
+      </div>
+      <div class="flex gap-3 items-center my-5 relative">
+        <div class="w-[80px] text-end">
+          <label class="font-semibold text-md text-gray-400 required">Heslo</label>
+        </div>
+        <input type="password"
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px] read-only:opacity-75 read-only:cursor-not-allowed read-only:outline-none"
+          formControlName="password" name="password" />
+        <app-error-validation-alert [control]="form.controls['password']"></app-error-validation-alert>
+      </div>
+
+
+      <div class="flex justify-end gap-3 mx-3">
+        <button class="py-2 px-4 bg-gray-500 shadow-lg font-semibold text-white hover:opacity-75">Registrace</button>
+        <button class="py-2 px-4 bg-green-500 shadow-lg font-semibold text-white hover:opacity-75" (click)="login()">
+          <i *ngIf="loading" class='fas fa-spinner text-2xl animate-spin'></i>
+          Login
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

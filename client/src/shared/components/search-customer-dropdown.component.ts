@@ -9,13 +9,19 @@ import { debounceTime, distinctUntilChanged, finalize } from "rxjs/operators";
 export class SearchCustomerDropdownComponent {
   @Output() selectedCustomer = new EventEmitter<Customer>();
 
-  count: number = 0;
-  customers: Customer[] = [];
-  filterText: string = "";
-  loading: boolean = false;
-  isDropdownOpen: boolean = false;
+  count: number;
+  customers: Customer[];
+  filterText: string;
+  loading: boolean;
+  isDropdownOpen: boolean;
 
-  constructor(private graphqlService: GraphqlService) {}
+  constructor(private graphqlService: GraphqlService) {
+    this.count = 0;
+    this.customers = [];
+    this.filterText = "";
+    this.loading = false;
+    this.isDropdownOpen = false;
+  }
 
   ngOnInit(): void {
     document.addEventListener("click", this.handleOutsideClick.bind(this));

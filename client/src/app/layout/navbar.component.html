@@ -21,6 +21,12 @@
           <a class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer"
             routerLinkActive="border-opacity-100" [routerLink]="item.path">{{item.label}}</a>
         </li>
+        <li class="py-4">
+          <a class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer"
+            (click)="logOut()">
+            <i class="fas fa-sign-out-alt"></i>
+          </a>
+        </li>
       </ul>
     </nav>
   </div>

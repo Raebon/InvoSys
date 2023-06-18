@@ -9,6 +9,7 @@ import {
 } from './invoices';
 import { createInvoiceItems, getInvoiceItems } from './invoiceitems';
 import { getCustomers, createCustomers, searchCustomers } from './customers';
+import { createUsers } from './users';
 
 export {
   createInvoices,
@@ -23,4 +24,5 @@ export {
   updateInvoice,
   searchCustomers,
   deleteInvoice,
+  createUsers,
 };

@@ -14,6 +14,9 @@ module.exports = (sequelize: any, DataTypes: any) => {
 
     static associate(models: any) {
       // define association here
+      Customer.belongsTo(models.User, {
+        foreignKey: 'userId',
+      });
       Customer.hasMany(models.Invoice, {
         foreignKey: 'customerId',
       });
@@ -22,8 +25,9 @@ module.exports = (sequelize: any, DataTypes: any) => {
   Customer.init(
     {
       id: {
-        type: DataTypes.STRING,
+        type: DataTypes.UUID,
         primaryKey: true,
+        defaultValue: DataTypes.UUIDV4,
       },
       firstName: {
         type: DataTypes.STRING,

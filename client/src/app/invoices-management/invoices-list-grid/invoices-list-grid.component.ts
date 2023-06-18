@@ -1,20 +1,23 @@
-import { Component, OnInit } from "@angular/core";
-import { GraphqlService } from "../../services/graphql.service";
+import { Component, OnInit, Injector } from "@angular/core";
 import { finalize } from "rxjs";
-import { NotificationService } from "src/app/services/notification.service";
+import { AppComponentBase } from "src/shared/app-component-base";
 
 @Component({
   selector: "app-invoices-list-grid",
   templateUrl: "./invoices-list-grid.component.html",
   styleUrls: ["./invoices-list-grid.component.css"],
 })
-export class InvoicesListGridComponent implements OnInit {
-  invoices: Invoice[] = [];
-  loading: boolean = false;
-  constructor(
-    private graphqlService: GraphqlService,
-    private notifyService: NotificationService
-  ) {}
+export class InvoicesListGridComponent
+  extends AppComponentBase
+  implements OnInit
+{
+  invoices: Invoice[];
+  loading: boolean;
+  constructor(injector: Injector) {
+    super(injector);
+    this.invoices = [];
+    this.loading = false;
+  }
 
   ngOnInit(): void {
     this.getInvoicesData();

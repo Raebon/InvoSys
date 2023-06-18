@@ -11,6 +11,7 @@ export const createInvoices = async () => {
   try {
     await Promise.all(
       invoices.map((invoice) => {
+        console.log(invoice);
         return db.Invoice.create(invoice);
       }),
     );
@@ -171,7 +172,8 @@ export const getInvoiceById = async (
 
     return {
       id: invoice.id,
-      customerId: invoice.customerId,
+      // userId: invoice.userId, // TODO: sem příjde z contextu userId
+      // customerId: invoice.customerId,
       description: invoice.description,
       dateOfIssue: invoice.dateOfIssue,
       customer: invoice.Customer,
@@ -200,7 +202,7 @@ export const addInvoice = async (input: AddInvoiceInput) => {
     //vytvoření zákazníka
     if (!customer) {
       customer = await db.Customer.create({
-        id: uuidv4(),
+        //id: uuidv4(),
         firstName: input.customer.firstName,
         lastName: input.customer.lastName,
         email: input.customer.email,
@@ -210,7 +212,7 @@ export const addInvoice = async (input: AddInvoiceInput) => {
 
     //vytvoření faktury
     const invoice = await db.Invoice.create({
-      id: uuidv4(),
+      //id: uuidv4(),
       customerId: customer.id,
       description: input.description,
       dateOfIssue: input.dateOfIssue,
@@ -219,7 +221,7 @@ export const addInvoice = async (input: AddInvoiceInput) => {
 
     //vytvoření položek faktury
     const invoiceItems = input.invoiceItems.map((item) => ({
-      id: uuidv4(),
+      //id: uuidv4(),
       invoiceId: invoice.id,
       name: item.name,
       unitPrice: item.unitPrice,
@@ -261,7 +263,7 @@ export const updateInvoice = async (input: UpdateInvoiceInput) => {
     if (!customer) {
       // záznam neexistuje => vytvořit
       await db.Customer.create({
-        id: uuidv4(),
+        //id: uuidv4(),
         firstName: input.customer.firstName,
         lastName: input.customer.lastName,
         email: input.customer.email,
