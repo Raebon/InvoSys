@@ -10,6 +10,12 @@ const GET_INVOICES = gql`
           firstName
           lastName
         }
+        user {
+          id
+          firstName
+          lastName
+          email
+        }
         dateOfIssue
         invoiceItems {
           numberOfItems

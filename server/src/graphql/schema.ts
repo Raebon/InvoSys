@@ -6,6 +6,13 @@ export const typeDefs = `#graphql
     email: String
   }
 
+  type User {
+    id: ID!
+    firstName: String
+    lastName: String
+    email: String
+  }
+
   type InvoiceItem {
     id: ID
     invoiceId: ID
@@ -16,11 +23,11 @@ export const typeDefs = `#graphql
 
   type Invoice {
     id: ID!
-    customerId: ID!
     description: String!
     dateOfIssue: String!
-    customer: Customer!
-    invoiceItems: [InvoiceItem!]!
+    user: User
+    customer: Customer
+    invoiceItems: [InvoiceItem!]
   }
 
   type InvoicesResult{

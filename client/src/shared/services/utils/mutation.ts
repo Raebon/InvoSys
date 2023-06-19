@@ -4,7 +4,6 @@ const CREATE_INVOICE = gql`
   mutation AddInvoice($input: AddInvoiceInput!) {
     addInvoice(input: $input) {
       id
-      customerId
       dateOfIssue
       description
       customer {
@@ -30,7 +29,6 @@ const UPDATE_INVOICE = gql`
       customer {
         id
       }
-      customerId
       dateOfIssue
       description
       id

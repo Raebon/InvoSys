@@ -31,7 +31,7 @@ export const getInvoices = async (
   try {
     const invoiceData = await db.Invoice.findAndCountAll({
       where: { userId: contextValue.userId },
-      include: [db.Customer, db.InvoiceItem],
+      include: [db.Customer, db.InvoiceItem, db.User],
     });
 
     const invoices = invoiceData.rows.map((invoice: Invoice) => {
@@ -41,12 +41,13 @@ export const getInvoices = async (
         description: invoice.description,
         dateOfIssue: invoice.dateOfIssue,
         customer: invoice.Customer,
+        user: invoice.User,
         invoiceItems: invoice.InvoiceItems,
       };
     });
 
     return {
-      count: invoiceData.count,
+      count: invoices.length,
       rows: invoices,
     };
   } catch (error) {
@@ -167,7 +168,7 @@ export const getInvoiceById = async (
 ): Promise<GetInvoiceResult | null> => {
   try {
     const invoice = await db.Invoice.findByPk(id, {
-      include: [db.Customer, db.InvoiceItem],
+      include: [db.Customer, db.InvoiceItem, db.User],
     });
 
     if (!invoice) {
@@ -176,10 +177,9 @@ export const getInvoiceById = async (
 
     return {
       id: invoice.id,
-      // userId: invoice.userId, // TODO: sem příjde z contextu userId
-      // customerId: invoice.customerId,
       description: invoice.description,
       dateOfIssue: invoice.dateOfIssue,
+      user: invoice.User,
       customer: invoice.Customer,
       invoiceItems: invoice.InvoiceItems,
     };

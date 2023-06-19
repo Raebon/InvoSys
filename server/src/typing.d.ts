@@ -60,11 +60,13 @@ interface InvoiceResult {
   rows: [Invoice];
 }
 interface GetInvoiceResult extends InvoiceAttributes {
+  user: User;
   customer: Customer;
   invoiceItems: InvoiceItem[];
 }
 
 interface Invoice extends InvoiceAttributes {
+  User: User;
   Customer: Customer;
   InvoiceItems: InvoiceItem[];
 }
