@@ -12,13 +12,23 @@ export const signOut = async (
 
     const expiresIn: number = 7200;
     if (!(email && password && lastName && firstName)) {
-      res.status(400).send('Všechny pole jsou povinná!');
+      res.status(400).send({
+        error: true,
+        message: 'Zadejte všechna povinná pole!',
+        token: null,
+        expiresIn: 0,
+      });
     }
 
     const oldUser = await db.User.findOne({ where: { email } });
 
     if (oldUser) {
-      return res.status(409).send('Uživatel již existuje. Prosím přihlašte se');
+      return res.status(409).send({
+        error: true,
+        message: 'Uživatel existuje. Přihlašte se!',
+        token: null,
+        expiresIn: 0,
+      });
     }
 
     const encryptedPassword = await bcrypt.hash(password, 10);
@@ -38,9 +48,19 @@ export const signOut = async (
     user.token = token;
 
     // return new user
-    return res.status(201).json(token);
+    return res.status(201).json({
+      error: false,
+      message: 'Registrace proběhla úspěšně',
+      token,
+      expiresIn,
+    });
   } catch (error) {
     console.log('Error - signOut: ', error);
-    return res.status(500).send('Chyba při registraci uživatele!');
+    return res.status(500).send({
+      error: true,
+      message: 'Chyba při registraci!',
+      token: null,
+      expiresIn: 0,
+    });
   }
 };

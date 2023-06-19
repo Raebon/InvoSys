@@ -3,6 +3,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { LoginComponent } from "./login/login.component";
 import { AccountComponent } from "./account.component";
 import { AccountRouteGuard } from "src/shared/auth/account-route-guard";
+import { RegisterComponent } from "./register/register.component";
 
 const routes: Routes = [
   {
@@ -15,11 +16,11 @@ const routes: Routes = [
         component: LoginComponent,
         canActivate: [AccountRouteGuard],
       },
-      /* {
+      {
         path: "register",
         component: RegisterComponent,
-        canActivate: [],
-      }, */
+        canActivate: [AccountRouteGuard],
+      },
     ],
   },
 ];

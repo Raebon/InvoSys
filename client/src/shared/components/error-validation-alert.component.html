@@ -1,11 +1,11 @@
 <div *ngIf="
 control &&
-control.invalid &&
+control.invalid  &&
   (control.dirty || control.touched)
 "
   class="px-2 py-2 border border-red-300 bg-red-200 shadow-md text-red-600 space-x-1 md:absolute top-0 max-w-[265px] flex items-center">
   <i class='fas fa-circle-exclamation text-sm'></i>
-  <span class="text-sm hidden md:block">
+  <span class="text-sm hidden md:flex min-w-[180px]">
     {{ getErrorText() }}
   </span>
 </div>

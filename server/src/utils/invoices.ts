@@ -25,9 +25,12 @@ export const createInvoices = async () => {
  * Seznam faktur
  * @return vrátí počet a seznam faktur
  */
-export const getInvoices = async (): Promise<InvoiceResult> => {
+export const getInvoices = async (
+  contextValue: UserContextValueI,
+): Promise<InvoiceResult> => {
   try {
     const invoiceData = await db.Invoice.findAndCountAll({
+      where: { userId: contextValue.userId },
       include: [db.Customer, db.InvoiceItem],
     });
 
@@ -57,9 +60,9 @@ export const getInvoices = async (): Promise<InvoiceResult> => {
  * @return vrátí obraty z faktur za jednotlivé poslední 3 měsíce
  */
 
-export const getRevenueLastThreeMonths = async (): Promise<
-  RevenueLastThreeMonthsResult[]
-> => {
+export const getRevenueLastThreeMonths = async (
+  contextValue: UserContextValueI,
+): Promise<RevenueLastThreeMonthsResult[]> => {
   try {
     const translatedMonths: string[] = [
       'Leden',
@@ -113,6 +116,7 @@ export const getRevenueLastThreeMonths = async (): Promise<
       const data = await db.Invoice.findAll({
         include: [db.InvoiceItem],
         where: {
+          userId: contextValue.userId,
           dateOfIssue: {
             [Op.gte]: month,
             [Op.lt]: nextMonthStartDate,
@@ -190,19 +194,22 @@ export const getInvoiceById = async (
  * @param AddInvoiceInput
  * @return založí se nová faktura
  */
-export const addInvoice = async (input: AddInvoiceInput) => {
+export const addInvoice = async (
+  input: AddInvoiceInput,
+  contextValue: UserContextValueI,
+) => {
   const transaction = await db.sequelize.transaction();
   try {
     //zjištění, jestli zákazník neexistuje v DB
     let customer = await db.Customer.findOne({
-      where: { email: input.customer.email },
+      where: { email: input.customer.email, userId: contextValue.userId },
       transaction,
     });
-
+    console.log(customer);
     //vytvoření zákazníka
     if (!customer) {
       customer = await db.Customer.create({
-        //id: uuidv4(),
+        userId: contextValue.userId,
         firstName: input.customer.firstName,
         lastName: input.customer.lastName,
         email: input.customer.email,
@@ -212,7 +219,7 @@ export const addInvoice = async (input: AddInvoiceInput) => {
 
     //vytvoření faktury
     const invoice = await db.Invoice.create({
-      //id: uuidv4(),
+      userId: contextValue.userId,
       customerId: customer.id,
       description: input.description,
       dateOfIssue: input.dateOfIssue,
@@ -221,7 +228,6 @@ export const addInvoice = async (input: AddInvoiceInput) => {
 
     //vytvoření položek faktury
     const invoiceItems = input.invoiceItems.map((item) => ({
-      //id: uuidv4(),
       invoiceId: invoice.id,
       name: item.name,
       unitPrice: item.unitPrice,
@@ -323,6 +329,7 @@ export const updateInvoice = async (input: UpdateInvoiceInput) => {
 
     return {
       id: updatedInvoice.id,
+      userId: updatedInvoice.userId,
       customerId: updatedInvoice.customerId,
       description: updatedInvoice.description,
       dateOfIssue: updatedInvoice.dateOfIssue,

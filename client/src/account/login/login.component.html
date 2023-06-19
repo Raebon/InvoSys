@@ -35,7 +35,8 @@
 
 
       <div class="flex justify-end gap-3 mx-3">
-        <button class="py-2 px-4 bg-gray-500 shadow-lg font-semibold text-white hover:opacity-75">Registrace</button>
+        <button class="py-2 px-4 bg-gray-500 shadow-lg font-semibold text-white hover:opacity-75"
+          routerLink="/account/register" routerLinkActive="router-link-active">Registrace</button>
         <button class="py-2 px-4 bg-green-500 shadow-lg font-semibold text-white hover:opacity-75" (click)="login()">
           <i *ngIf="loading" class='fas fa-spinner text-2xl animate-spin'></i>
           Login

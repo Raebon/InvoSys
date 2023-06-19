@@ -6,9 +6,10 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AccountRoutingModule } from "./account-routing.module";
 import { SharedModule } from "src/shared/shared.module";
 import { AccountRouteGuard } from "src/shared/auth/account-route-guard";
+import { RegisterComponent } from "./register/register.component";
 
 @NgModule({
-  declarations: [AccountComponent, LoginComponent],
+  declarations: [AccountComponent, LoginComponent, RegisterComponent],
   imports: [
     CommonModule,
     AccountRoutingModule,

@@ -1,0 +1,87 @@
+<section class="flex items-center">
+  <div class="mx-auto border rounded-md shadow-md px-10 py-5 my-12 antialiased max-w-2xl min-w-[550px]">
+    <div class="flex">
+      <h1 class="w-3/12 mb-5">
+        <div class="h-6 w-auto duration-200 text-3xl font-bold flex">
+          <span>
+            Invo
+          </span>
+          <span class="text-green-500">
+            Sys
+          </span>
+        </div>
+      </h1>
+    </div>
+    <div class="flex justify-between items-center">
+      <h3 class="text-3xl text-gray-400 my-5">
+        Registrace
+      </h3>
+      <button class="flex gap-2 items-center hover:text-green-500" (click)="goBack()"><i
+          class='fas fa-arrow-left-long'></i>Vrátit se
+        zpět</button>
+    </div>
+    <!--  <div class="text-3xl text-gray-400 mt-5">Registrace</div> -->
+    <form [formGroup]="registerForm">
+      <div class="flex gap-3 items-center my-5 relative">
+        <div class="w-[120px] text-end">
+          <label class="font-semibold text-md text-gray-400 required">Jméno</label>
+        </div>
+        <input type="text"
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[300px] read-only:opacity-75 read-only:cursor-not-allowed read-only:outline-none"
+          formControlName="firstName" name="firstName" />
+        <app-error-validation-alert [control]="registerForm.controls['firstName']"></app-error-validation-alert>
+      </div>
+      <div class="flex gap-3 items-center my-5 relative">
+        <div class="w-[120px] text-end">
+          <label class="font-semibold text-md text-gray-400 required">Příjmení</label>
+        </div>
+        <input type="text"
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[300px] read-only:opacity-75 read-only:cursor-not-allowed read-only:outline-none"
+          formControlName="lastName" name="lastName" />
+        <app-error-validation-alert [control]="registerForm.controls['lastName']"></app-error-validation-alert>
+      </div>
+      <div class="flex gap-3 items-center my-5 relative">
+        <div class="w-[120px] text-end">
+          <label class="font-semibold text-md text-gray-400 required">E-mail</label>
+        </div>
+        <input type="text"
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[300px] read-only:opacity-75 read-only:cursor-not-allowed read-only:outline-none"
+          formControlName="email" name="email" />
+        <app-error-validation-alert [control]="registerForm.controls['email']"></app-error-validation-alert>
+      </div>
+      <div class="flex gap-3 items-center my-5 relative">
+        <div class="w-[120px] text-end">
+          <label class="font-semibold text-md text-gray-400 required">Heslo</label>
+        </div>
+        <input type="password"
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[300px] read-only:opacity-75 read-only:cursor-not-allowed read-only:outline-none"
+          formControlName="password" name="password" />
+        <app-error-validation-alert [control]="registerForm.controls['password']"></app-error-validation-alert>
+      </div>
+      <div class="flex gap-3 items-center my-5 relative">
+        <div class="w-[120px] text-end">
+          <label class="font-semibold text-md text-gray-400 required">Potvrdit heslo</label>
+        </div>
+        <input type="password"
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[300px] read-only:opacity-75 read-only:cursor-not-allowed read-only:outline-none"
+          formControlName="confirmPassword" name="confirmPassword" />
+        <app-error-validation-alert [control]="registerForm.controls['confirmPassword']"></app-error-validation-alert>
+      </div>
+      <div *ngIf="this.registerForm.errors && this.registerForm.errors['mismatch']" class="flex gap-3 items-center">
+        <div class="w-[120px]"></div>
+        <div
+          class="px-2 py-2  mb-5 border border-red-300 bg-red-200 shadow-md text-red-600 space-x-1 top-0 w-[300px] flex items-center">
+          <i class='fas fa-circle-exclamation text-sm'></i>
+          <span class="text-sm">Hesla se neshodují</span>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-3 mx-3">
+        <button class="py-2 px-4 bg-green-500 shadow-lg font-semibold text-white hover:opacity-75" (click)="register()">
+          <i *ngIf="loading" class='fas fa-spinner text-2xl animate-spin'></i>
+          Registrovat
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

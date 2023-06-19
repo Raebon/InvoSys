@@ -18,6 +18,12 @@ export class AuthService {
       .pipe(tap((res: any) => this.setSession(res)));
   }
 
+  public register(input: SignOutInput) {
+    return this.http
+      .post(`${this.apiBaseUrl}register`, input)
+      .pipe(tap((res: any) => this.setSession(res)));
+  }
+
   private setSession(authResult: LoginResponse) {
     const expiresAt = moment().add(authResult.expiresIn, "second");
 

@@ -1,3 +1,15 @@
+interface UserContextValueI {
+  userId: string;
+  email: string;
+  iat: number;
+  exp: number;
+  sub: string;
+}
+
+interface ContextValueI {
+  user: UserContextValueI;
+}
+
 interface LoginResponse {
   error: boolean;
   message: string;

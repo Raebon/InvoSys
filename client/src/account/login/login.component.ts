@@ -5,7 +5,7 @@ import { finalize } from "rxjs";
 import { AppComponentBase } from "src/shared/app-component-base";
 
 @Component({
-  selector: "app-login",
+  selector: "account-login",
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.css"],
 })
@@ -28,13 +28,14 @@ export class LoginComponent extends AppComponentBase implements OnInit {
   ngOnInit(): void {}
 
   login() {
-    const input = this.form.value;
-    if (input.email && input.password) {
+    const payload = this.form.value;
+    if (payload.email && payload.password) {
       this.loading = true;
       this.authService
-        .login(input)
+        .login(payload)
         .pipe(finalize(() => (this.loading = false)))
         .subscribe(() => {
+          this.graphqlService.invalidateCache();
           this.router.navigateByUrl("/app/home");
         });
     }

@@ -26,9 +26,13 @@ export const createCustomers = async () => {
  * @returns vratí seznam zákaznkíku typu CustomerResult
  */
 
-export const getCustomers = async (): Promise<CustomerResult> => {
+export const getCustomers = async (
+  contextValue: UserContextValueI,
+): Promise<CustomerResult> => {
   try {
-    const customerData = await db.Customer.findAndCountAll();
+    const customerData = await db.Customer.findAndCountAll({
+      where: { userId: contextValue.userId },
+    });
 
     return { count: customerData.count, rows: customerData.rows };
   } catch (error) {
@@ -44,6 +48,7 @@ export const getCustomers = async (): Promise<CustomerResult> => {
 
 export const searchCustomers = async (
   searchInput: string = '',
+  contextValue: UserContextValueI,
 ): Promise<CustomerResult> => {
   try {
     if (searchInput.trim().length < 2) {
@@ -64,6 +69,7 @@ export const searchCustomers = async (
 
     const customerData = await db.Customer.findAndCountAll({
       where: {
+        userId: contextValue.userId,
         [Op.and]: whereConditions,
       },
     });

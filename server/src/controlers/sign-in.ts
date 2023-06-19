@@ -15,7 +15,7 @@ export const signIn = async (
     if (!(email && password)) {
       res.status(400).send({
         error: true,
-        message: 'Zadejte povinná pole!',
+        message: 'Zadejte všechna povinná pole!',
         token: null,
         expiresIn: 0,
       });

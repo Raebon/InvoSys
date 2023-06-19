@@ -6,7 +6,7 @@ import { AbstractControl } from "@angular/forms";
   templateUrl: "./error-validation-alert.component.html",
 })
 export class ErrorValidationAlertComponent {
-  @Input() control!: AbstractControl<any | null>;
+  @Input() control!: AbstractControl<any | null> | null | undefined;
   constructor() {}
 
   ngOnInit(): void {}
