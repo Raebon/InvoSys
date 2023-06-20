@@ -54,7 +54,6 @@ const startServer = async () => {
             },
           });
         }
-        console.log(user);
         return { user };
       },
     }),

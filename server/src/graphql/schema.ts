@@ -55,6 +55,10 @@ export const typeDefs = `#graphql
     message: String!
   }
 
+  input SortOrderInput {
+    field: String!
+    direction: String!
+  }
   
   type Query{
     customers: CustomerResult!
@@ -72,6 +76,7 @@ export const typeDefs = `#graphql
   }
   
   input GetInvoiceBody{
+    order: SortOrderInput
     currentPage: Int
     pageSize: Int
   }

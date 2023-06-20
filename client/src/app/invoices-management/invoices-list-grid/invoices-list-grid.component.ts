@@ -14,6 +14,7 @@ export class InvoicesListGridComponent
   invoices: Invoice[];
   loading: boolean;
   pageInfo: PaginationInfo;
+  sorting?: SortOrder;
   constructor(injector: Injector) {
     super(injector);
     this.invoices = [];
@@ -33,6 +34,7 @@ export class InvoicesListGridComponent
     this.loading = true;
     this.graphqlService
       .getInvoices({
+        order: this.sorting,
         pageSize: this.pageInfo.pageSize,
         currentPage: this.pageInfo.currentPage,
       })
@@ -41,6 +43,12 @@ export class InvoicesListGridComponent
         this.invoices = data.rows;
         this.pageInfo.totalItems = data.count;
       });
+  }
+
+  public onSortingChange(event: SortOrder): void {
+    this.sorting = event;
+    this.getInvoicesData();
+    //console.log(event);
   }
 
   public onPageChange({

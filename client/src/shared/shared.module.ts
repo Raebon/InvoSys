@@ -9,6 +9,7 @@ import { ErrorValidationAlertComponent } from "./components/error-validation-ale
 import { API_BASE_URL_TOKEN } from "./app.tokens";
 import { API_BASE_URL } from "./app-config";
 import { PaginatorComponent } from "./components/paginator.component";
+import { SortableColumnComponent } from "./components/sortable-column.component";
 
 @NgModule({
   imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule],
@@ -16,11 +17,13 @@ import { PaginatorComponent } from "./components/paginator.component";
     SearchCustomerDropdownComponent,
     ErrorValidationAlertComponent,
     PaginatorComponent,
+    SortableColumnComponent,
   ],
   exports: [
     SearchCustomerDropdownComponent,
     ErrorValidationAlertComponent,
     PaginatorComponent,
+    SortableColumnComponent,
   ],
   providers: [{ provide: API_BASE_URL_TOKEN, useValue: API_BASE_URL }],
 })

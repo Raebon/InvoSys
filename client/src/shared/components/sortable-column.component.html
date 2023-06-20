@@ -1,0 +1,8 @@
+<button [class]="class" (click)="onSortingChange()">
+  <span>
+    {{title}}
+  </span>
+  <i *ngIf="sortingKey === 'ASC' && isActive" class='fas fa-arrow-down-short-wide text-green-500'></i>
+  <i *ngIf="sortingKey === 'DESC' && isActive " class='fas fa-arrow-down-wide-short text-green-500'></i>
+  <i *ngIf="!sortingKey || !isActive" class='fas fa-arrow-right-arrow-left rotate-90'></i>
+</button>

@@ -11,7 +11,6 @@ export const createCustomers = async () => {
   try {
     await Promise.all(
       customers.map((customer) => {
-        console.log(customer);
         db.Customer.create(customer);
       }),
     );

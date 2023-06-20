@@ -1,9 +1,15 @@
+type SortOrder = {
+  field: string;
+  direction: "ASC" | "DESC";
+};
+
 interface PaginationInfo {
   currentPage: number;
   pageSize: number;
   totalItems: number;
 }
 interface GetInvoicesBody {
+  order?: SortOrder;
   currentPage: number;
   pageSize: number;
 }

@@ -2,19 +2,35 @@
   <div class="p-3">
     <div class="overflow-x-auto">
       <table class="table-auto w-full">
-        <thead class="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
+        <thead class="text-sm font-semibold text-gray-400 bg-gray-50">
           <tr>
             <th class="p-2 whitespace-nowrap">
-              <div class="font-semibold text-left">Jméno</div>
+              <div class="font-semibold text-left">
+                <app-sortable-column class="flex gap-2 justify-start items-center" title="Jméno"
+                  (sortingChange)="onSortingChange($event)" [activeKey]="sorting?.field" key="CustomerLastName">
+                </app-sortable-column>
+              </div>
             </th>
             <th class="p-2 whitespace-nowrap">
-              <div class="font-semibold text-left">Příjmení</div>
+              <div class="font-semibold text-left">
+                <app-sortable-column class="flex gap-2 justify-start items-center" title="Příjmení"
+                  (sortingChange)="onSortingChange($event)" [activeKey]="sorting?.field" key="CustomerFirstName">
+                </app-sortable-column>
+              </div>
             </th>
             <th class="p-2 whitespace-nowrap">
-              <div class="font-semibold text-center">Datum vystavení</div>
+              <div class="font-semibold text-center">
+                <app-sortable-column class="flex gap-2 justify-center items-center" title="Datum vystavení"
+                  (sortingChange)="onSortingChange($event)" [activeKey]="sorting?.field" key="dateOfIssue">
+                </app-sortable-column>
+              </div>
             </th>
             <th class="p-2 whitespace-nowrap">
-              <div class="font-semibold text-end">Cena celkem</div>
+              <div class="font-semibold text-end">
+                <app-sortable-column class="flex gap-2 justify-end items-center" title="Cena celkem"
+                  (sortingChange)="onSortingChange($event)" [activeKey]="sorting?.field" key="totalPrice">
+                </app-sortable-column>
+              </div>
             </th>
             <th>
             </th>

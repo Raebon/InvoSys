@@ -11,7 +11,6 @@ export const createInvoices = async () => {
   try {
     await Promise.all(
       invoices.map((invoice) => {
-        console.log(invoice);
         return db.Invoice.create(invoice);
       }),
     );
@@ -30,19 +29,44 @@ export const getInvoices = async (
   contextValue: UserContextValueI,
 ): Promise<InvoiceResult> => {
   try {
-    const { currentPage, pageSize } = params;
+    const { currentPage, pageSize, order } = params;
+    let orderBy:
+      | [string, 'ASC' | 'DESC']
+      | [any, string, 'ASC' | 'DESC']
+      | undefined = order ? [order?.field, order?.direction] : undefined;
+
     const offset =
       params.currentPage && params.pageSize
         ? (currentPage - 1) * pageSize
         : undefined;
     const limit = pageSize;
 
-    console.log(params, offset, limit);
+    if (order && order['field'] === 'totalPrice') {
+      let totalPriceSorting: any | undefined;
+      let invoiceLiteral = db.sequelize.literal(
+        '(SELECT SUM("InvoiceItems"."numberOfItems" * "InvoiceItems"."unitPrice") FROM "InvoiceItems" WHERE "InvoiceItems"."invoiceId" = "Invoice"."id")',
+      );
+      totalPriceSorting = [invoiceLiteral, order.direction];
+
+      orderBy = totalPriceSorting;
+    }
+
+    //TODO: refactoring
+    if (order && order['field'] === 'CustomerFirstName') {
+      orderBy = [db.Customer, 'firstName', order.direction];
+    }
+
+    if (order && order['field'] === 'CustomerLastName') {
+      orderBy = [db.Customer, 'lastName', order.direction];
+    }
+
     const invoiceData = await db.Invoice.findAndCountAll({
+      distinct: true,
       where: { userId: contextValue.userId },
       include: [db.Customer, db.InvoiceItem, db.User],
-      offset: offset ?? 0,
-      limit: limit ?? undefined,
+      order: order ? [orderBy] : undefined,
+      offset,
+      limit,
     });
 
     const invoices = invoiceData.rows.map((invoice: Invoice) => {
@@ -56,9 +80,9 @@ export const getInvoices = async (
         invoiceItems: invoice.InvoiceItems,
       };
     });
-
+    console.log(invoiceData);
     return {
-      count: invoices.length,
+      count: invoiceData.count,
       rows: invoices,
     };
   } catch (error) {
@@ -216,7 +240,7 @@ export const addInvoice = async (
       where: { email: input.customer.email, userId: contextValue.userId },
       transaction,
     });
-    console.log(customer);
+
     //vytvoření zákazníka
     if (!customer) {
       customer = await db.Customer.create({
