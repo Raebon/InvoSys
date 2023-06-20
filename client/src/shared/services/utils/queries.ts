@@ -1,22 +1,18 @@
 import { gql } from "apollo-angular";
 
 const GET_INVOICES = gql`
-  query Invoices {
-    invoices {
+  query Invoices($body: GetInvoiceBody) {
+    invoices(body: $body) {
       count
       rows {
+        dateOfIssue
+        description
         id
         customer {
           firstName
           lastName
-        }
-        user {
           id
-          firstName
-          lastName
-          email
         }
-        dateOfIssue
         invoiceItems {
           numberOfItems
           unitPrice

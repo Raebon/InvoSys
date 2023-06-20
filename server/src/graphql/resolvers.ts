@@ -14,19 +14,27 @@ export const resolvers = {
   Query: {
     customers: async (_: any, args: any, contextValue: ContextValueI) =>
       getCustomers(contextValue.user),
-    invoices: async (_: any, args: any, contextValue: ContextValueI) =>
-      getInvoices(contextValue.user),
+
+    invoices: async (
+      _: any,
+      { body }: { body: GetInvoicesBody },
+      contextValue: ContextValueI,
+    ) => getInvoices(body, contextValue.user),
+
     invoiceItems: async () => getInvoiceItems(),
+
     lastThreeMonthsRevenue: async (
       _: any,
       args: any,
       contextValue: ContextValueI,
     ) => getRevenueLastThreeMonths(contextValue.user),
+
     getInvoiceById: async (
       _: any,
       args: { id: string },
       contextValue: ContextValueI,
     ) => getInvoiceById(args.id),
+
     searchCustomers: async (
       _: any,
       args: { text: string },
@@ -39,8 +47,10 @@ export const resolvers = {
       { input }: { input: AddInvoiceInput },
       contextValue: ContextValueI,
     ) => addInvoice(input, contextValue.user),
+
     updateInvoice: async (_: any, { input }: { input: UpdateInvoiceInput }) =>
       updateInvoice(input),
+
     deleteInvoice: async (_: any, { input }: { input: string }) => {
       deleteInvoice(input);
     },

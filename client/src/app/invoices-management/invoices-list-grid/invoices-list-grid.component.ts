@@ -13,10 +13,16 @@ export class InvoicesListGridComponent
 {
   invoices: Invoice[];
   loading: boolean;
+  pageInfo: PaginationInfo;
   constructor(injector: Injector) {
     super(injector);
     this.invoices = [];
     this.loading = false;
+    this.pageInfo = {
+      currentPage: 1,
+      pageSize: 10,
+      totalItems: 3,
+    };
   }
 
   ngOnInit(): void {
@@ -26,11 +32,27 @@ export class InvoicesListGridComponent
   public getInvoicesData(): void {
     this.loading = true;
     this.graphqlService
-      .getInvoices()
+      .getInvoices({
+        pageSize: this.pageInfo.pageSize,
+        currentPage: this.pageInfo.currentPage,
+      })
       .pipe(finalize(() => (this.loading = false)))
       .subscribe((data) => {
         this.invoices = data.rows;
+        this.pageInfo.totalItems = data.count;
       });
+  }
+
+  public onPageChange({
+    currentPage,
+    pageSize,
+  }: {
+    currentPage: number;
+    pageSize: number;
+  }) {
+    this.pageInfo.currentPage = currentPage;
+    this.pageInfo.pageSize = pageSize;
+    this.getInvoicesData();
   }
 
   public calculateTotalPrice(invoiceItems: InvoiceItem[]): number {

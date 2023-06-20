@@ -1,0 +1,22 @@
+<div
+  class="grid grid-cols-3 gap-2 mt-5 bg-gray-50 py-2 whitespace-nowrap uppercase text-xs px-2 font-semibold text-gray-400 ">
+  <div class="flex justify-start gap-2 items-center">
+    <span class="font-normal">Celkem:</span>
+    <span class="font-semibold">{{totalItems}}</span>
+  </div>
+  <div class="flex justify-center text-base items-center">
+    <button
+      class="font-bold text-green-500 disabled:cursor-not-allowed disabled:opacity-75 hover:scale-110 disabled:hover:scale-100 px-2"
+      (click)="previousPage()" [disabled]="currentPage === 1"><i class='fas fa-arrow-left'></i></button>
+    <span class="px-5 font-semibold">{{ currentPage }}</span>
+    <button
+      class="font-bold text-green-500 disabled:cursor-not-allowed disabled:opacity-75 hover:scale-110 disabled:hover:scale-100 px-2"
+      (click)="nextPage()" [disabled]="currentPage === totalPages"><i class='fas fa-arrow-right'></i></button>
+  </div>
+  <div class="flex justify-end gap-2 items-center">
+    <label for="page-sizes" class="font-normal">Počet záznamů na stránku:</label>
+    <select name="page-sizes" id="page-sizes" [(ngModel)]="pageSize" (ngModelChange)="onSelectChange($event)">
+      <option *ngFor="let size of pageSizes" [ngValue]="size">{{size}}</option>
+    </select>
+  </div>
+</div>

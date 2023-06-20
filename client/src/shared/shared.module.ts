@@ -8,14 +8,20 @@ import { SearchCustomerDropdownComponent } from "./components/search-customer-dr
 import { ErrorValidationAlertComponent } from "./components/error-validation-alert.component";
 import { API_BASE_URL_TOKEN } from "./app.tokens";
 import { API_BASE_URL } from "./app-config";
+import { PaginatorComponent } from "./components/paginator.component";
 
 @NgModule({
   imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule],
   declarations: [
     SearchCustomerDropdownComponent,
     ErrorValidationAlertComponent,
+    PaginatorComponent,
   ],
-  exports: [SearchCustomerDropdownComponent, ErrorValidationAlertComponent],
+  exports: [
+    SearchCustomerDropdownComponent,
+    ErrorValidationAlertComponent,
+    PaginatorComponent,
+  ],
   providers: [{ provide: API_BASE_URL_TOKEN, useValue: API_BASE_URL }],
 })
 export class SharedModule {

@@ -50,10 +50,12 @@
           </tr>
         </tbody>
       </table>
+      <ng-container *ngIf="loading">
+        <div class="flex justify-center">
+          <i class='fas fa-spinner text-2xl animate-spin'></i>
+        </div>
+      </ng-container>
+      <app-paginator [currentPage]="pageInfo.currentPage" [pageSize]="pageInfo.pageSize"
+        [totalItems]="pageInfo.totalItems" (pageChange)="onPageChange($event)"></app-paginator>
     </div>
-    <ng-container *ngIf="loading">
-      <div class="flex justify-center">
-        <i class='fas fa-spinner text-2xl animate-spin'></i>
-      </div>
-    </ng-container>
   </div>

@@ -55,21 +55,27 @@ export const typeDefs = `#graphql
     message: String!
   }
 
+  
   type Query{
     customers: CustomerResult!
-    invoices: InvoicesResult!
+    invoices(body:GetInvoiceBody): InvoicesResult!
     invoiceItems: InvoiceItemResult!
     lastThreeMonthsRevenue: [LastThreeMonthsRevenue]
     getInvoiceById(id:String!): Invoice
     searchCustomers(text:String): CustomerResult!
   }
-
+  
   type Mutation{
     addInvoice(input: AddInvoiceInput!): Invoice!
     updateInvoice(input: UpdateInvoiceInput!): Invoice!
     deleteInvoice(input: ID!): DeleteInvoiceResponse
   }
-
+  
+  input GetInvoiceBody{
+    currentPage: Int
+    pageSize: Int
+  }
+  
   input AddInvoiceInput{
     description: String!
     dateOfIssue: String!

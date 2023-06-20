@@ -46,10 +46,11 @@ export class GraphqlService {
       .pipe(map((result) => result.data.searchCustomers));
   }
 
-  public getInvoices(): Observable<InvoiceResult> {
+  public getInvoices(params?: GetInvoicesBody): Observable<InvoiceResult> {
     return this.apollo
       .query<GetInvoicesResponse>({
         query: GET_INVOICES,
+        variables: { body: params },
       })
       .pipe(map((result) => result.data.invoices));
   }

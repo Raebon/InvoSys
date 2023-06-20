@@ -7,6 +7,7 @@ import { AbstractControl } from "@angular/forms";
 })
 export class ErrorValidationAlertComponent {
   @Input() control!: AbstractControl<any | null> | null | undefined;
+
   constructor() {}
 
   ngOnInit(): void {}

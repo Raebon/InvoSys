@@ -1,3 +1,7 @@
+interface GetInvoicesBody {
+  currentPage: number;
+  pageSize: number;
+}
 interface UserContextValueI {
   userId: string;
   email: string;

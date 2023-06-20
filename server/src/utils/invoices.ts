@@ -26,12 +26,23 @@ export const createInvoices = async () => {
  * @return vrátí počet a seznam faktur
  */
 export const getInvoices = async (
+  params: GetInvoicesBody,
   contextValue: UserContextValueI,
 ): Promise<InvoiceResult> => {
   try {
+    const { currentPage, pageSize } = params;
+    const offset =
+      params.currentPage && params.pageSize
+        ? (currentPage - 1) * pageSize
+        : undefined;
+    const limit = pageSize;
+
+    console.log(params, offset, limit);
     const invoiceData = await db.Invoice.findAndCountAll({
       where: { userId: contextValue.userId },
       include: [db.Customer, db.InvoiceItem, db.User],
+      offset: offset ?? 0,
+      limit: limit ?? undefined,
     });
 
     const invoices = invoiceData.rows.map((invoice: Invoice) => {

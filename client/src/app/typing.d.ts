@@ -1,3 +1,13 @@
+interface PaginationInfo {
+  currentPage: number;
+  pageSize: number;
+  totalItems: number;
+}
+interface GetInvoicesBody {
+  currentPage: number;
+  pageSize: number;
+}
+
 interface LoginResponse {
   error: boolean;
   message: string;
