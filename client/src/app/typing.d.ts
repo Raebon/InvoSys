@@ -9,6 +9,7 @@ interface PaginationInfo {
   totalItems: number;
 }
 interface GetInvoicesBody {
+  filterText?: string;
   order?: SortOrder;
   currentPage: number;
   pageSize: number;

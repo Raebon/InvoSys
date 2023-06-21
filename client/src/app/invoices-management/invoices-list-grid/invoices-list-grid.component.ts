@@ -30,10 +30,11 @@ export class InvoicesListGridComponent
     this.getInvoicesData();
   }
 
-  public getInvoicesData(): void {
+  public getInvoicesData(filterText?: string): void {
     this.loading = true;
     this.graphqlService
       .getInvoices({
+        filterText,
         order: this.sorting,
         pageSize: this.pageInfo.pageSize,
         currentPage: this.pageInfo.currentPage,
@@ -43,6 +44,11 @@ export class InvoicesListGridComponent
         this.invoices = data.rows;
         this.pageInfo.totalItems = data.count;
       });
+  }
+
+  public search(filterText: string): void {
+    this.getInvoicesData(filterText);
+    console.log(filterText);
   }
 
   public onSortingChange(event: SortOrder): void {

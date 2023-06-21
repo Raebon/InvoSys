@@ -4,6 +4,7 @@ type SortOrder = {
 };
 interface GetInvoicesBody {
   order?: SortOrder;
+  filterText?: string;
   currentPage: number;
   pageSize: number;
 }

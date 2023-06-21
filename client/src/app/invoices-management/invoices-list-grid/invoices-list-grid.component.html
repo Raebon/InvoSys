@@ -1,7 +1,8 @@
 <div class="w-full my-5 shadow-md">
   <div class="p-3">
     <div class="overflow-x-auto">
-      <app-invoices-grid-actions [excelExportData]="invoices"></app-invoices-grid-actions>
+      <app-invoices-grid-actions [excelExportData]="invoices"
+        (searchOutput)="search($event)"></app-invoices-grid-actions>
       <table class="table-auto w-full">
         <thead class="text-sm font-semibold text-gray-400 bg-gray-50">
           <tr>

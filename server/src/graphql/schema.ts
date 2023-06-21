@@ -76,6 +76,7 @@ export const typeDefs = `#graphql
   }
   
   input GetInvoiceBody{
+    filterText: String
     order: SortOrderInput
     currentPage: Int
     pageSize: Int

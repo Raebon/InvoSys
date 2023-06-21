@@ -29,17 +29,29 @@ export const getInvoices = async (
   contextValue: UserContextValueI,
 ): Promise<InvoiceResult> => {
   try {
-    const { currentPage, pageSize, order } = params;
+    const { currentPage, pageSize, order, filterText } = params;
+
     let orderBy:
       | [string, 'ASC' | 'DESC']
       | [any, string, 'ASC' | 'DESC']
       | undefined = order ? [order?.field, order?.direction] : undefined;
 
     const offset =
-      params.currentPage && params.pageSize
-        ? (currentPage - 1) * pageSize
-        : undefined;
+      currentPage && pageSize ? (currentPage - 1) * pageSize : undefined;
     const limit = pageSize;
+
+    const filterTextInput = filterText ?? '';
+
+    const searchTokens = filterTextInput
+      .split(' ')
+      .filter((token) => token.length > 0);
+
+    const whereConditions = searchTokens.map((token) => ({
+      [Op.or]: [
+        { '$Customer.firstName$': { [Op.iLike]: `%${token}%` } },
+        { '$Customer.lastName$': { [Op.iLike]: `%${token}%` } },
+      ],
+    }));
 
     if (order && order['field'] === 'totalPrice') {
       let totalPriceSorting: any | undefined;
@@ -62,8 +74,20 @@ export const getInvoices = async (
 
     const invoiceData = await db.Invoice.findAndCountAll({
       distinct: true,
-      where: { userId: contextValue.userId },
-      include: [db.Customer, db.InvoiceItem, db.User],
+      where: {
+        userId: contextValue.userId,
+      },
+      include: [
+        {
+          model: db.Customer,
+          as: 'Customer',
+          where: {
+            [Op.and]: whereConditions,
+          },
+        },
+        db.InvoiceItem,
+        db.User,
+      ],
       order: order ? [orderBy] : undefined,
       offset,
       limit,
@@ -80,7 +104,6 @@ export const getInvoices = async (
         invoiceItems: invoice.InvoiceItems,
       };
     });
-    console.log(invoiceData);
     return {
       count: invoiceData.count,
       rows: invoices,

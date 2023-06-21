@@ -1,5 +1,11 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { writeFileXLSX, utils } from "xlsx";
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormControl,
+} from "@angular/forms";
 
 interface InvoiceExportData {
   id: string;
@@ -15,11 +21,19 @@ interface InvoiceExportData {
 })
 export class InvoicesGridActionsComponent implements OnInit {
   @Input() excelExportData!: Invoice[];
+  @Output() searchOutput = new EventEmitter<string>();
+
+  filterText = new FormControl("");
   constructor() {}
 
   ngOnInit(): void {}
 
-  excelExport() {
+  search(): void {
+    console.log("click", this.filterText.value);
+    this.searchOutput.emit(this.filterText.value ?? "");
+  }
+
+  excelExport(): void {
     let exportData: InvoiceExportData[] = [];
     this.excelExportData.map((item) => {
       let totalPrice = 0;
