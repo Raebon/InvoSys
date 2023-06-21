@@ -13,6 +13,7 @@ import { InvoicesListGridComponent } from "./invoices-management/invoices-list-g
 import { InvoicesManagementComponent } from "./invoices-management/invoices-management.component";
 import { RevenueLastThreeMonthsComponent } from "./invoices-management/revenue-last-three-months/revenue-last-three-months.component";
 import { NavbarComponent } from "./layout/navbar.component";
+import { InvoicesGridActionsComponent } from "./invoices-management/invoices-list-grid/invoices-grid-actions.component";
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { NavbarComponent } from "./layout/navbar.component";
     InvoiceAddEditComponent,
     InvoiceItemComponent,
     HomeComponent,
+    InvoicesGridActionsComponent,
   ],
   imports: [
     CommonModule,
