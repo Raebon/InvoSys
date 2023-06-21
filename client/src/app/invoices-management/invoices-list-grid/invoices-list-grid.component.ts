@@ -54,7 +54,6 @@ export class InvoicesListGridComponent
   public onSortingChange(event: SortOrder): void {
     this.sorting = event;
     this.getInvoicesData();
-    //console.log(event);
   }
 
   public onPageChange({
@@ -80,25 +79,6 @@ export class InvoicesListGridComponent
   }
 
   public deleteInvoice(invoiceId: string): void {
-    if (window.confirm(`Opravdu chcete odstranit fakturu?`)) {
-      try {
-        this.graphqlService.deleteInvoice(invoiceId).subscribe((data) => {
-          this.notifyService.showSuccess(
-            "Faktura byla úspěšně odstraněna",
-            "Úspěšná akce!"
-          );
-          this.invoices = this.invoices.filter(
-            (invoice) => invoice.id !== invoiceId
-          );
-        });
-      } catch (error) {
-        {
-          this.notifyService.showError(
-            "Faktura nebyla odstraněna",
-            "Neúspěšná akce!"
-          );
-        }
-      }
-    }
+    this.invoices = this.invoices.filter((invoice) => invoice.id !== invoiceId);
   }
 }

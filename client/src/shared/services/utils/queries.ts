@@ -14,6 +14,7 @@ const GET_INVOICES = gql`
           id
         }
         invoiceItems {
+          name
           numberOfItems
           unitPrice
         }

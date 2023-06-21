@@ -6,6 +6,7 @@
       <table class="table-auto w-full">
         <thead class="text-sm font-semibold text-gray-400 bg-gray-50">
           <tr>
+            <!-- TODO: Refactoring -->
             <th class="p-2 whitespace-nowrap">
               <div class="font-semibold text-left">
                 <app-sortable-column class="flex gap-2 justify-start items-center" title="Jméno" cd
@@ -57,14 +58,8 @@
                 Kč</div>
             </td>
             <td class="p-2 whitespace-nowrap min-w-[5rem]">
-              <div class="flex gap-2 justify-end my-auto">
-                <button class="hover:opacity-80 shadow-lg py-1 px-1.5 rounded-full bg-sky-500 text-white"
-                  routerLink="/app/invoice/{{item.id}}"><i class='fas fa-pencil'></i></button>
-                <button class="hover:opacity-80 shadow-lg py-0 px-2 rounded-full bg-red-500 text-white"
-                  (click)="deleteInvoice(item.id)"><i class='fas fa-trash'></i></button>
-              </div>
+              <app-invoices-row-actions [item]="item" (onDeleteItem)="deleteInvoice($event)"></app-invoices-row-actions>
             </td>
-
           </tr>
         </tbody>
       </table>
