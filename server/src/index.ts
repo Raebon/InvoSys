@@ -29,14 +29,12 @@ const server = new ApolloServer({
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
 
-db.sequelize.sync().then(() => {
-  startServer();
-});
-
 app.use(cors<cors.CorsRequest>(), bodyParser.json());
 const startServer = async () => {
+  db.sequelize.authenticate();
+  console.log('🚀 Connected to DB');
   await server.start();
-
+  console.log('🚀 Apollo server ready');
   app.use(
     '/',
     cors<cors.CorsRequest>(),
@@ -62,12 +60,10 @@ const startServer = async () => {
   await new Promise<void>((resolve) =>
     httpServer.listen({ port: 4000 }, resolve),
   );
-  //createUsers();
-  //createCustomers();
-  //createInvoices();
-  //createInvoiceItems();
   console.log(`🚀 Server ready`);
 };
+
+startServer();
 
 app.post('/register', (req, res) => {
   signOut(req, res);
