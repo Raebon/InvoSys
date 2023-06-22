@@ -7,6 +7,11 @@ module.exports = {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
       },
+      userId: {
+        allowNull: false,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+      },
       firstName: {
         type: DataTypes.STRING,
         allowNull: false,
