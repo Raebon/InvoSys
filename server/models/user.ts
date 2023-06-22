@@ -30,15 +30,28 @@ module.exports = (sequelize: any, DataTypes: any) => {
       firstName: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: { msg: 'Uživatel musí mít křestní jméno' },
+          notEmpty: { msg: 'Křestní jméno nesmí být prázdný' },
+        },
       },
       lastName: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: { msg: 'Uživatel musí mít příjmení' },
+          notEmpty: { msg: 'Příjmení nesmí být prázdný' },
+        },
       },
       email: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+        validate: {
+          notNull: { msg: 'Uživatel musí mít email' },
+          notEmpty: { msg: 'Email nesmí být prázdný' },
+          isEmail: { msg: 'Email musí být validní' },
+        },
       },
       password: {
         type: DataTypes.STRING,
