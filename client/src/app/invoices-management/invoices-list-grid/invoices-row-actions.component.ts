@@ -72,14 +72,22 @@ export class InvoicesRowActionsComponent
     let rows: InvoiceItemRowPDF[][] = [
       [
         {
-          text: "Popis",
+          text: "",
+          border: [false, true, false, true],
+          alignment: "left",
+          fillColor: "#eaf2f5",
+          margin: [0, 5, 0, 5],
+          textTransform: "uppercase",
+        },
+        {
+          text: "",
           fillColor: "#eaf2f5",
           border: [false, true, false, true],
           margin: [0, 5, 0, 5],
           textTransform: "uppercase",
         },
         {
-          text: "Cena za jednotku",
+          text: "Cena za MJ",
           border: [false, true, false, true],
           alignment: "right",
           fillColor: "#eaf2f5",
@@ -98,6 +106,13 @@ export class InvoicesRowActionsComponent
     ];
     items.forEach((item) => {
       let array: InvoiceItemRowPDF[] = [
+        {
+          border: [false, false, false, true],
+          text: `${item.numberOfItems}`,
+          fillColor: "#f5f5f5",
+          alignment: "left",
+          margin: [0, 5, 0, 5],
+        },
         {
           text: `${item.name}`,
           border: [false, false, false, true],
@@ -323,7 +338,7 @@ export class InvoicesRowActionsComponent
           },
           table: {
             headerRows: 1,
-            widths: ["*", 120, 120],
+            widths: [50, "*", 100, 100],
             body: this.generateInvoiceItemsRows(this.item.invoiceItems),
           },
         },
