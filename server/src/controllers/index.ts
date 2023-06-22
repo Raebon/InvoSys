@@ -8,7 +8,7 @@ import {
 } from './invoices';
 import { getInvoiceItems } from './invoiceitems';
 import { getCustomers, searchCustomers } from './customers';
-import { signOut, signIn } from './users';
+import { signOut, signIn, getUser } from './users';
 
 export {
   getInvoices,
@@ -22,4 +22,5 @@ export {
   deleteInvoice,
   signOut,
   signIn,
+  getUser,
 };

@@ -3,6 +3,18 @@ const bcrypt = require('bcryptjs');
 import { Request, Response } from 'express';
 const jwt = require('jsonwebtoken');
 
+export const getUser = (token: string | string[] | undefined) => {
+  if (token) {
+    try {
+      // return the user information from the token
+      return jwt.verify(token, process.env.JWT_TOKEN);
+    } catch (err) {
+      // if there's a problem with the token, throw an error
+      throw new Error('Session invalid');
+    }
+  }
+};
+
 export const signOut = async (
   req: Request<any, never, SignOutInput>,
   res: Response,

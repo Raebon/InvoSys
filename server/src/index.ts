@@ -1,16 +1,15 @@
 import { ApolloServer } from '@apollo/server';
-import express from 'express';
 import { expressMiddleware } from '@apollo/server/express4';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
-import http from 'http';
-import cors from 'cors';
 import bodyParser from 'body-parser';
+import cors from 'cors';
+import express from 'express';
+import { GraphQLError } from 'graphql';
+import http from 'http';
+import db from '../models';
+import { getUser, signIn, signOut } from './controllers';
 import { resolvers } from './graphql/resolvers';
 import { typeDefs } from './graphql/schema';
-import db from '../models';
-import { GraphQLError } from 'graphql';
-import { signOut, signIn } from './controllers';
-const jwt = require('jsonwebtoken');
 const app = express();
 const httpServer = http.createServer(app);
 
@@ -63,15 +62,3 @@ app.post('/register', (req, res) => {
 app.post('/login', (req, res) => {
   signIn(req, res);
 });
-
-const getUser = (token: string | string[] | undefined) => {
-  if (token) {
-    try {
-      // return the user information from the token
-      return jwt.verify(token, process.env.JWT_TOKEN);
-    } catch (err) {
-      // if there's a problem with the token, throw an error
-      throw new Error('Session invalid');
-    }
-  }
-};
