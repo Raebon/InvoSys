@@ -1,8 +1,8 @@
 <div class="flex gap-2 justify-end my-auto">
-  <button class="hover:opacity-80 shadow-lg py-1 px-1.5 rounded-full bg-amber-500 text-white" (click)="generatePDF()"><i
-      class='fa-fw fas fa-download'></i></button>
+  <button class="hover:opacity-80 shadow-lg py-1 px-1.5 rounded-full bg-amber-500 text-white" (click)="generatePDF()"
+    title="Stažení faktury v PDF formátu"><i class='fa-fw fas fa-download'></i></button>
   <button class="hover:opacity-80 shadow-lg py-1 px-1.5 rounded-full bg-sky-500 text-white"
-    routerLink="/app/invoice/{{item.id}}"><i class='fa-fw fas fa-pencil'></i></button>
+    routerLink="/app/invoice/{{item.id}}" title="Editace faktury"><i class='fa-fw fas fa-pencil'></i></button>
   <button class="hover:opacity-80 shadow-lg py-1 px-1.5 rounded-full bg-red-500 text-white"
-    (click)="deleteInvoice(item.id)"><i class='fa-fw fas fa-trash'></i></button>
+    (click)="deleteInvoice(item.id)" title="Odstranit fakturu"><i class='fa-fw fas fa-trash'></i></button>
 </div>
