@@ -1,24 +1,5 @@
 import { Op } from 'sequelize';
 import db from '../../models';
-import { customers } from '../../seeders/customers';
-
-/**
- *
- * @returns vytvoří zákazníky ze seeders
- */
-
-export const createCustomers = async () => {
-  try {
-    await Promise.all(
-      customers.map((customer) => {
-        db.Customer.create(customer);
-      }),
-    );
-  } catch (error) {
-    console.error('Chyba při vytváření zákazníku:', error);
-    throw new Error('Nepodařilo se vytvořit zákazníky.');
-  }
-};
 
 /**
  *

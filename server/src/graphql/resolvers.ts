@@ -8,7 +8,7 @@ import {
   updateInvoice,
   searchCustomers,
   deleteInvoice,
-} from '../utils';
+} from '../controllers';
 
 export const resolvers = {
   Query: {

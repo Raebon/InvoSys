@@ -8,17 +8,8 @@ import bodyParser from 'body-parser';
 import { resolvers } from './graphql/resolvers';
 import { typeDefs } from './graphql/schema';
 import db from '../models';
-import {
-  createCustomers,
-  createInvoices,
-  createInvoiceItems,
-  getRevenueLastThreeMonths,
-  getInvoices,
-  createUsers,
-} from './utils';
 import { GraphQLError } from 'graphql';
-import { signOut } from './controlers/sign-out';
-import { signIn } from './controlers';
+import { signOut, signIn } from './controllers';
 const jwt = require('jsonwebtoken');
 const app = express();
 const httpServer = http.createServer(app);

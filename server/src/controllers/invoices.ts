@@ -1,24 +1,6 @@
 import { Op } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import db from '../../models';
-import { invoices } from '../../seeders/invoices';
-
-/**
- * Vytvoření záznamu ze seeedru
- * @return naplní data do tabulky Invoice ze seeders
- */
-export const createInvoices = async () => {
-  try {
-    await Promise.all(
-      invoices.map((invoice) => {
-        return db.Invoice.create(invoice);
-      }),
-    );
-  } catch (error) {
-    console.error('Chyba při vytváření faktur:', error);
-    throw new Error('Nepodařilo se vytvořit faktury.');
-  }
-};
 
 /**
  * Seznam faktur
