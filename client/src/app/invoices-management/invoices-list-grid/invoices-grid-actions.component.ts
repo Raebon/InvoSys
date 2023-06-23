@@ -1,11 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { writeFileXLSX, utils } from "xlsx";
-import {
-  FormGroup,
-  FormBuilder,
-  Validators,
-  FormControl,
-} from "@angular/forms";
+import { FormControl } from "@angular/forms";
+import { utils, writeFileXLSX } from "xlsx";
 
 interface InvoiceExportData {
   id: string;
