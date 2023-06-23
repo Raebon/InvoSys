@@ -85,6 +85,7 @@ type TCreateInvoiceInput = Omit<IInvoice, 'id'> & {
 };
 interface IUpdateInvoiceInput extends IInvoice {
   customerId?: string;
+  userId?: string;
 }
 
 interface DeleteInvoiceResponse {
