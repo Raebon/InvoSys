@@ -2,8 +2,13 @@
 
 import { Model } from 'sequelize';
 
+type InvoiceModel = Omit<
+  IInvoice,
+  'user' | 'customer' | 'invoiceItems' | 'customerId'
+>;
+
 module.exports = (sequelize: any, DataTypes: any) => {
-  class Invoice extends Model<InvoiceAttributes> implements InvoiceAttributes {
+  class Invoice extends Model<InvoiceModel> implements InvoiceModel {
     id!: string;
     description!: string;
     dateOfIssue!: Date;
@@ -13,8 +18,12 @@ module.exports = (sequelize: any, DataTypes: any) => {
       Invoice.belongsTo(models.User, {
         foreignKey: 'userId',
       });
-      Invoice.belongsTo(models.Customer, { foreignKey: 'customerId' });
-      Invoice.hasMany(models.InvoiceItem, { foreignKey: 'invoiceId' });
+      Invoice.belongsTo(models.Customer, {
+        foreignKey: 'customerId',
+      });
+      Invoice.hasMany(models.InvoiceItem, {
+        foreignKey: 'invoiceId',
+      });
     }
   }
 
@@ -37,6 +46,10 @@ module.exports = (sequelize: any, DataTypes: any) => {
       sequelize,
       modelName: 'Invoice',
       tableName: 'Invoices',
+      name: {
+        singular: 'invoice',
+        plural: 'invoices',
+      },
     },
   );
 

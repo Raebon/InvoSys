@@ -1,15 +1,18 @@
 import { Op } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import db from '../../models';
+import { Model } from 'sequelize';
 
+interface InvoiceModel extends IInvoice, Model {}
+interface CustomerModel extends ICustomer, Model {}
 /**
  * Seznam faktur
  * @return vrátí počet a seznam faktur
  */
 export const getInvoices = async (
-  params: GetInvoicesBody,
-  contextValue: UserContextValueI,
-): Promise<InvoiceResult> => {
+  params: IGetInvoicesBody,
+  contextValue: IUserContextValue,
+): Promise<IInvoiceResult> => {
   try {
     const { currentPage, pageSize, order, filterText } = params;
 
@@ -62,7 +65,7 @@ export const getInvoices = async (
       include: [
         {
           model: db.Customer,
-          as: 'Customer',
+          as: 'customer',
           where: {
             [Op.and]: whereConditions,
           },
@@ -75,15 +78,15 @@ export const getInvoices = async (
       limit,
     });
 
-    const invoices = invoiceData.rows.map((invoice: Invoice) => {
+    const invoices = invoiceData.rows.map((invoice: IInvoice) => {
       return {
         id: invoice.id,
         customerId: invoice.customerId,
         description: invoice.description,
         dateOfIssue: invoice.dateOfIssue,
-        customer: invoice.Customer,
-        user: invoice.User,
-        invoiceItems: invoice.InvoiceItems,
+        customer: invoice.customer,
+        user: invoice.user,
+        invoiceItems: invoice.invoiceItems,
       };
     });
     return {
@@ -102,7 +105,7 @@ export const getInvoices = async (
  */
 
 export const getRevenueLastThreeMonths = async (
-  contextValue: UserContextValueI,
+  contextValue: IUserContextValue,
 ): Promise<RevenueLastThreeMonthsResult[]> => {
   try {
     const translatedMonths: string[] = [
@@ -165,9 +168,9 @@ export const getRevenueLastThreeMonths = async (
         },
       });
 
-      const revenue = data.reduce((acc: number, item: Invoice) => {
-        const total = item.InvoiceItems.reduce(
-          (subtotal: number, item: InvoiceItem) => {
+      const revenue = data.reduce((acc: number, item: IInvoice) => {
+        const total = item.invoiceItems.reduce(
+          (subtotal: number, item: IInvoiceItem) => {
             return subtotal + item.unitPrice * item.numberOfItems;
           },
           0,
@@ -205,11 +208,14 @@ export const getRevenueLastThreeMonths = async (
  */
 export const getInvoiceById = async (
   id: string,
-): Promise<GetInvoiceResult | null> => {
+): Promise<Omit<IInvoice, 'customerId'> | null> => {
   try {
-    const invoice = await db.Invoice.findByPk(id, {
-      include: [db.Customer, db.InvoiceItem, db.User],
-    });
+    const invoice: Omit<IInvoice, 'customerId'> = await db.Invoice.findByPk(
+      id,
+      {
+        include: [db.Customer, db.InvoiceItem, db.User],
+      },
+    );
 
     if (!invoice) {
       throw new Error(`Faktura s ID ${id} nebyla nalezena.`);
@@ -219,9 +225,9 @@ export const getInvoiceById = async (
       id: invoice.id,
       description: invoice.description,
       dateOfIssue: invoice.dateOfIssue,
-      user: invoice.User,
-      customer: invoice.Customer,
-      invoiceItems: invoice.InvoiceItems,
+      user: invoice.user,
+      customer: invoice.customer,
+      invoiceItems: invoice.invoiceItems,
     };
   } catch (error) {
     console.error(`Chyba při získávání faktury s ID ${id}:`, error);
@@ -231,17 +237,17 @@ export const getInvoiceById = async (
 
 /**
  * Založení nové faktury
- * @param AddInvoiceInput
+ * @param TCreateInvoiceInput
  * @return založí se nová faktura
  */
 export const addInvoice = async (
-  input: AddInvoiceInput,
-  contextValue: UserContextValueI,
+  input: TCreateInvoiceInput,
+  contextValue: IUserContextValue,
 ) => {
   const transaction = await db.sequelize.transaction();
   try {
     //zjištění, jestli zákazník neexistuje v DB
-    let customer = await db.Customer.findOne({
+    let customer: CustomerModel = await db.Customer.findOne({
       where: { email: input.customer.email, userId: contextValue.userId },
       transaction,
     });
@@ -258,7 +264,7 @@ export const addInvoice = async (
     }
 
     //vytvoření faktury
-    const invoice = await db.Invoice.create({
+    const invoice: IInvoice = await db.Invoice.create({
       userId: contextValue.userId,
       customerId: customer.id,
       description: input.description,
@@ -267,12 +273,14 @@ export const addInvoice = async (
     });
 
     //vytvoření položek faktury
-    const invoiceItems = input.invoiceItems.map((item) => ({
-      invoiceId: invoice.id,
-      name: item.name,
-      unitPrice: item.unitPrice,
-      numberOfItems: item.numberOfItems,
-    }));
+    const invoiceItems: Omit<IInvoiceItem, 'id'>[] = input.invoiceItems.map(
+      (item) => ({
+        invoiceId: invoice.id,
+        name: item.name,
+        unitPrice: item.unitPrice,
+        numberOfItems: item.numberOfItems,
+      }),
+    );
     await db.InvoiceItem.bulkCreate(invoiceItems, { transaction });
 
     await transaction.commit();
@@ -294,14 +302,14 @@ export const addInvoice = async (
 
 /**
  *  Update faktury
- * @param UpdateInvoiceInput
+ * @param TUpdateInvoiceInput
  * @return aktualizuje se nová faktura
  */
-export const updateInvoice = async (input: UpdateInvoiceInput) => {
+export const updateInvoice = async (input: IUpdateInvoiceInput) => {
   const transaction = await db.sequelize.transaction();
   try {
     // vytáhnout aktuální data zákazníka z DB podle emailu
-    let customer = await db.Customer.findOne({
+    let customer: CustomerModel = await db.Customer.findOne({
       where: { email: input.customer.email },
       transaction,
     });
@@ -309,7 +317,6 @@ export const updateInvoice = async (input: UpdateInvoiceInput) => {
     if (!customer) {
       // záznam neexistuje => vytvořit
       await db.Customer.create({
-        //id: uuidv4(),
         firstName: input.customer.firstName,
         lastName: input.customer.lastName,
         email: input.customer.email,
@@ -328,7 +335,7 @@ export const updateInvoice = async (input: UpdateInvoiceInput) => {
     }
 
     // update faktury
-    let invoice = await db.Invoice.update(
+    const invoice: InvoiceModel = await db.Invoice.update(
       {
         customerId: customer.id,
         description: input.description,
@@ -346,7 +353,7 @@ export const updateInvoice = async (input: UpdateInvoiceInput) => {
       transaction,
     });
 
-    const invoiceItems = input.invoiceItems.map((item) => ({
+    const invoiceItems: IInvoiceItem[] = input.invoiceItems.map((item) => ({
       id: item.id || uuidv4(),
       invoiceId: input.id,
       name: item.name,
@@ -359,9 +366,12 @@ export const updateInvoice = async (input: UpdateInvoiceInput) => {
     await transaction.commit();
 
     // vrátit upravenou fakturu
-    let updatedInvoice = await db.Invoice.findByPk(input.id, {
-      include: [db.Customer, db.InvoiceItem],
-    });
+    const updatedInvoice: IUpdateInvoiceInput = await db.Invoice.findByPk(
+      input.id,
+      {
+        include: [db.Customer, db.InvoiceItem],
+      },
+    );
 
     if (!invoice) {
       throw new Error('Faktura nebyla nalezena');
@@ -373,8 +383,8 @@ export const updateInvoice = async (input: UpdateInvoiceInput) => {
       customerId: updatedInvoice.customerId,
       description: updatedInvoice.description,
       dateOfIssue: updatedInvoice.dateOfIssue,
-      customer: updatedInvoice.Customer,
-      invoiceItems: updatedInvoice.InvoiceItems,
+      customer: updatedInvoice.customer,
+      invoiceItems: updatedInvoice.invoiceItems,
     };
   } catch (error) {
     await transaction.rollback();
@@ -394,7 +404,7 @@ export const deleteInvoice = async (
   const transaction = await db.sequelize.transaction();
   try {
     //vyhledáni faktury podle id
-    const invoice = await db.Invoice.findByPk(invoiceId, {
+    const invoice: InvoiceModel = await db.Invoice.findByPk(invoiceId, {
       include: [db.InvoiceItem],
       transaction,
     });
@@ -405,7 +415,7 @@ export const deleteInvoice = async (
 
     // odstranění všech vazebných položek faktury s transakcí
     await Promise.all(
-      invoice.InvoiceItems.map((item: any) => item.destroy({ transaction })),
+      invoice.invoiceItems.map((item: any) => item.destroy({ transaction })),
     );
 
     // odstranění faktury

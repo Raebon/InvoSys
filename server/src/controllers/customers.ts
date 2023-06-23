@@ -7,8 +7,8 @@ import db from '../../models';
  */
 
 export const getCustomers = async (
-  contextValue: UserContextValueI,
-): Promise<CustomerResult> => {
+  contextValue: IUserContextValue,
+): Promise<ICustomerResult> => {
   try {
     const customerData = await db.Customer.findAndCountAll({
       where: { userId: contextValue.userId },
@@ -28,8 +28,8 @@ export const getCustomers = async (
 
 export const searchCustomers = async (
   searchInput: string = '',
-  contextValue: UserContextValueI,
-): Promise<CustomerResult> => {
+  contextValue: IUserContextValue,
+): Promise<ICustomerResult> => {
   try {
     if (searchInput.trim().length < 2) {
       return { count: 0, rows: [] };

@@ -15,8 +15,10 @@ export const getUser = (token: string | string[] | undefined) => {
   }
 };
 
+type RequiredRegisterUserInfo = Omit<IUser, 'id'>;
+
 export const signOut = async (
-  req: Request<any, never, SignOutInput>,
+  req: Request<any, never, RequiredRegisterUserInfo>,
   res: Response,
 ) => {
   try {
@@ -77,8 +79,10 @@ export const signOut = async (
   }
 };
 
+type RequiredLoginUserInfo = Omit<IUser, 'id' | 'firstName' | 'lastName'>;
+
 export const signIn = async (
-  req: Request<any, never, SignInInput>,
+  req: Request<any, never, RequiredLoginUserInfo>,
   res: Response<LoginResponse>,
 ) => {
   try {

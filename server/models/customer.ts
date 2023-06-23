@@ -3,10 +3,7 @@
 import { Model } from 'sequelize';
 
 module.exports = (sequelize: any, DataTypes: any) => {
-  class Customer
-    extends Model<CustomerAttributes>
-    implements CustomerAttributes
-  {
+  class Customer extends Model<ICustomer> implements ICustomer {
     id!: string;
     firstName!: string;
     lastName!: string;
@@ -60,6 +57,10 @@ module.exports = (sequelize: any, DataTypes: any) => {
       sequelize,
       modelName: 'Customer',
       tableName: 'Customers',
+      name: {
+        singular: 'customer',
+        plural: 'customers',
+      },
     },
   );
 

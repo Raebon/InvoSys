@@ -3,10 +3,7 @@
 import { Model } from 'sequelize';
 
 module.exports = (sequelize: any, DataTypes: any) => {
-  class InvoiceItem
-    extends Model<InvoiceItemAttributes>
-    implements InvoiceItemAttributes
-  {
+  class InvoiceItem extends Model<IInvoiceItem> implements IInvoiceItem {
     id!: string;
     name!: string;
     unitPrice!: number;
@@ -43,6 +40,10 @@ module.exports = (sequelize: any, DataTypes: any) => {
       sequelize,
       modelName: 'InvoiceItem',
       tableName: 'InvoiceItems',
+      name: {
+        singular: 'invoiceItem',
+        plural: 'invoiceItems',
+      },
     },
   );
 
