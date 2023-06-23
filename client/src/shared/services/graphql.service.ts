@@ -14,11 +14,11 @@ import {
 } from "./utils/queries";
 
 type SearchCustomerResponse = {
-  searchCustomers: CustomerResult;
+  searchCustomers: ICustomerResult;
 };
 
 type GetInvoicesResponse = {
-  invoices: InvoiceResult;
+  invoices: IInvoiceResult;
 };
 
 type GetRevenueLastThreeMonthsResponse = {
@@ -26,7 +26,7 @@ type GetRevenueLastThreeMonthsResponse = {
 };
 
 type GetInvoiceResponse = {
-  getInvoiceById: GetInvoiceResult;
+  getInvoiceById: IInvoice;
 };
 
 @Injectable({
@@ -35,7 +35,7 @@ type GetInvoiceResponse = {
 export class GraphqlService {
   constructor(private apollo: Apollo) {}
 
-  public searchCustomers(text: string = ""): Observable<CustomerResult> {
+  public searchCustomers(text: string = ""): Observable<ICustomerResult> {
     return this.apollo
       .query<SearchCustomerResponse>({
         query: SEARCH_CUSTOMERS,
@@ -46,7 +46,7 @@ export class GraphqlService {
       .pipe(map((result) => result.data.searchCustomers));
   }
 
-  public getInvoices(params?: GetInvoicesBody): Observable<InvoiceResult> {
+  public getInvoices(params?: IGetInvoicesBody): Observable<IInvoiceResult> {
     return this.apollo
       .query<GetInvoicesResponse>({
         query: GET_INVOICES,
@@ -65,7 +65,7 @@ export class GraphqlService {
       .pipe(map((result) => result.data.lastThreeMonthsRevenue));
   }
 
-  public getInvoiceById(id: string): Observable<GetInvoiceResult> {
+  public getInvoiceById(id: string): Observable<IInvoice> {
     return this.apollo
       .query<GetInvoiceResponse>({
         query: GET_INVOICE_BY_ID,
@@ -76,11 +76,17 @@ export class GraphqlService {
       .pipe(map((result) => result.data.getInvoiceById));
   }
 
-  public createInvoice(invoiceInput: AddInvoiceInput): Observable<any> {
+  public createInvoice(invoiceInput: IInvoiceInput): Observable<any> {
+    const { inputCustomer, inputInvoiceItems, ...rest } = invoiceInput;
+    const payload = {
+      ...rest,
+      customer: inputCustomer,
+      invoiceItems: inputInvoiceItems,
+    };
     return this.apollo
       .mutate({
         mutation: CREATE_INVOICE,
-        variables: { input: invoiceInput },
+        variables: { input: payload },
       })
       .pipe(
         map((res) => {
@@ -90,11 +96,17 @@ export class GraphqlService {
       );
   }
 
-  public updateInvoice(invoiceInput: UpdateInvoiceInput): Observable<any> {
+  public updateInvoice(invoiceInput: IInvoiceInput): Observable<any> {
+    const { inputCustomer, inputInvoiceItems, ...rest } = invoiceInput;
+    const payload = {
+      ...rest,
+      customer: inputCustomer,
+      invoiceItems: inputInvoiceItems,
+    };
     return this.apollo
       .mutate({
         mutation: UPDATE_INVOICE,
-        variables: { input: invoiceInput },
+        variables: { input: payload },
       })
       .pipe(
         map((res) => {

@@ -8,9 +8,9 @@ interface PaginationInfo {
   pageSize: number;
   totalItems: number;
 }
-interface GetInvoicesBody {
-  filterText?: string;
+interface IGetInvoicesBody {
   order?: SortOrder;
+  filterText?: string;
   currentPage: number;
   pageSize: number;
 }
@@ -22,18 +22,7 @@ interface LoginResponse {
   expiresIn: number;
 }
 
-interface SignOutInput {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-}
-interface SignInInput {
-  email: string;
-  password: string;
-}
-
-interface UserAttributes {
+interface IUser {
   id: string;
   firstName: string;
   lastName: string;
@@ -41,52 +30,45 @@ interface UserAttributes {
   password: string;
 }
 
-interface CustomerAttributes {
+interface ICustomer {
   id: string;
   firstName: string;
   lastName: string;
   email: string;
 }
 
-interface Customer extends CustomerAttributes {}
+interface ICustomerResult {
+  count: number;
+  rows: [ICustomer] | [];
+}
 
-interface InvoiceAttributes {
+interface IInvoice {
   id: string;
-  customerId: string;
   description: string;
   dateOfIssue: Date;
+  userId?: string;
+  customerId?: string;
+  user: IUser;
+  customer: ICustomer;
+  invoiceItems: IInvoiceItem[];
 }
 
-interface InvoiceResult {
+interface IInvoiceResult {
   count: number;
-  rows: [Invoice];
+  rows: [IInvoice];
 }
 
-interface CustomerResult {
-  count: number;
-  rows: [Customer] | [];
-}
-
-interface GetInvoiceResult extends InvoiceAttributes {
-  customer: Customer;
-  invoiceItems: InvoiceItem[];
-}
-
-interface Invoice extends InvoiceAttributes {
-  customer: Customer;
-  invoiceItems: InvoiceItem[];
-}
-
-interface InvoiceItemAttributes {
-  id?: string;
-  invoiceId?: string;
+interface IInvoiceItem {
+  id: string;
   name: string;
   unitPrice: number;
   numberOfItems: number;
+  __typename?: string;
 }
 
-interface InvoiceItem extends InvoiceItemAttributes {
-  __typename?: string;
+interface InvoiceItemResult {
+  count: number;
+  rows: [IInvoiceItem];
 }
 
 interface RevenueLastThreeMonthsResult {
@@ -94,45 +76,16 @@ interface RevenueLastThreeMonthsResult {
   revenue: number;
 }
 
-interface AddInvoiceInput {
-  description: string;
-  dateOfIssue: Date;
-  customer: AddCustomerInput;
-  invoiceItems: AddInvoiceItemInput[];
+type TInvoiceItemInput = Partial<IInvoiceItem>;
+type TCustomerInput = Partial<ICustomer>;
+type TInvoiceInput = Partial<IInvoice>;
+
+interface IInvoiceInput extends TInvoiceInput {
+  inputCustomer: TCustomerInput;
+  inputInvoiceItems: TInvoiceItemInput[];
 }
 
-interface AddCustomerInput {
-  firstName: string;
-  lastName: string;
-  email: string;
-}
-
-interface AddInvoiceItemInput {
-  name: string;
-  unitPrice: number;
-  numberOfItems: number;
-}
-
-interface UpdateInvoiceInput {
-  id: string;
-  customerId?: string;
-  description: string;
-  dateOfIssue: Date;
-  customer: UpdateCustomerInput;
-  invoiceItems: UpdateInvoiceItemInput[];
-}
-
-interface UpdateCustomerInput {
-  id?: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-}
-
-interface UpdateInvoiceItemInput {
-  id?: string;
-  invoiceId?: string;
-  name: string;
-  unitPrice: number;
-  numberOfItems: number;
+interface DeleteInvoiceResponse {
+  success: boolean;
+  message: string;
 }

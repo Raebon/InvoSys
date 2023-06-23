@@ -48,7 +48,7 @@ export const resolvers = {
       contextValue: IContextValue,
     ) => addInvoice(input, contextValue.user),
 
-    updateInvoice: async (_: any, { input }: { input: IUpdateInvoiceInput }) =>
+    updateInvoice: async (_: any, { input }: { input: IInvoice }) =>
       updateInvoice(input),
 
     deleteInvoice: async (_: any, { input }: { input: string }) => {

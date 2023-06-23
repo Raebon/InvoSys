@@ -11,7 +11,7 @@ export class InvoicesListGridComponent
   extends AppComponentBase
   implements OnInit
 {
-  invoices: Invoice[];
+  invoices: IInvoice[];
   loading: boolean;
   pageInfo: PaginationInfo;
   sorting?: SortOrder;
@@ -68,7 +68,7 @@ export class InvoicesListGridComponent
     this.getInvoicesData();
   }
 
-  public calculateTotalPrice(invoiceItems: InvoiceItem[]): number {
+  public calculateTotalPrice(invoiceItems: IInvoiceItem[]): number {
     let totalPrice = 0;
 
     invoiceItems.forEach((item) => {

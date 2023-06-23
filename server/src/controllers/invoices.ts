@@ -305,7 +305,7 @@ export const addInvoice = async (
  * @param TUpdateInvoiceInput
  * @return aktualizuje se nová faktura
  */
-export const updateInvoice = async (input: IUpdateInvoiceInput) => {
+export const updateInvoice = async (input: IInvoice) => {
   const transaction = await db.sequelize.transaction();
   try {
     // vytáhnout aktuální data zákazníka z DB podle emailu
@@ -366,12 +366,9 @@ export const updateInvoice = async (input: IUpdateInvoiceInput) => {
     await transaction.commit();
 
     // vrátit upravenou fakturu
-    const updatedInvoice: IUpdateInvoiceInput = await db.Invoice.findByPk(
-      input.id,
-      {
-        include: [db.Customer, db.InvoiceItem],
-      },
-    );
+    const updatedInvoice: IInvoice = await db.Invoice.findByPk(input.id, {
+      include: [db.Customer, db.InvoiceItem],
+    });
 
     if (!invoice) {
       throw new Error('Faktura nebyla nalezena');

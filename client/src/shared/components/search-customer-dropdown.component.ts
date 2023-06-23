@@ -7,10 +7,10 @@ import { debounceTime, distinctUntilChanged, finalize } from "rxjs/operators";
   templateUrl: "./search-customer-dropdown.component.html",
 })
 export class SearchCustomerDropdownComponent {
-  @Output() selectedCustomer = new EventEmitter<Customer>();
+  @Output() selectedCustomer = new EventEmitter<ICustomer>();
 
   count: number;
-  customers: Customer[];
+  customers: ICustomer[];
   filterText: string;
   loading: boolean;
   isDropdownOpen: boolean;
@@ -52,7 +52,7 @@ export class SearchCustomerDropdownComponent {
       });
   }
 
-  selectCustomer(customer: Customer): void {
+  selectCustomer(customer: ICustomer): void {
     this.filterText = `${customer.firstName} ${customer.lastName}`;
     this.selectedCustomer.emit(customer);
   }

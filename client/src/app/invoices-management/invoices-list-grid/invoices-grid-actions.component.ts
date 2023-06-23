@@ -20,7 +20,7 @@ interface InvoiceExportData {
   templateUrl: "./invoices-grid-actions.component.html",
 })
 export class InvoicesGridActionsComponent implements OnInit {
-  @Input() excelExportData!: Invoice[];
+  @Input() excelExportData!: IInvoice[];
   @Output() searchOutput = new EventEmitter<string>();
 
   filterText = new FormControl("");

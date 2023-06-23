@@ -15,11 +15,11 @@ import { AppComponentBase } from "src/shared/app-component-base";
 })
 export class InvoiceItemComponent extends AppComponentBase implements OnInit {
   @Output() itemValuesChange = new EventEmitter<{
-    item: InvoiceItem;
+    item: TInvoiceItemInput;
     index: number;
   }>();
   @Output() deleteItem = new EventEmitter<number>();
-  @Input() item!: InvoiceItem;
+  @Input() item!: TInvoiceItemInput;
   @Input() index!: number;
 
   invoiceItem = new FormGroup({

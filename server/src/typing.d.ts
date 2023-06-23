@@ -51,7 +51,8 @@ interface IInvoice {
   id: string;
   description: string;
   dateOfIssue: Date;
-  customerId: string;
+  userId?: string;
+  customerId?: string;
   user: IUser;
   customer: ICustomer;
   invoiceItems: IInvoiceItem[];
@@ -83,11 +84,6 @@ type TCreateInvoiceInput = Omit<IInvoice, 'id'> & {
   customer: Omit<ICustomer, 'id'>;
   invoiceItems: Omit<IInvoiceItem, 'id'>;
 };
-interface IUpdateInvoiceInput extends IInvoice {
-  customerId?: string;
-  userId?: string;
-}
-
 interface DeleteInvoiceResponse {
   success: boolean;
   message: string;

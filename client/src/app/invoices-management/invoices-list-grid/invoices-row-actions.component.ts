@@ -29,7 +29,7 @@ export class InvoicesRowActionsComponent
   extends AppComponentBase
   implements OnInit
 {
-  @Input() item!: Invoice;
+  @Input() item!: IInvoice;
   @Output() onDeleteItem = new EventEmitter<string>();
 
   constructor(injector: Injector) {
@@ -59,7 +59,7 @@ export class InvoicesRowActionsComponent
     }
   }
 
-  public calculateTotalPrice(invoiceItems: InvoiceItem[]): number {
+  public calculateTotalPrice(invoiceItems: IInvoiceItem[]): number {
     let totalPrice = 0;
     invoiceItems.forEach((item) => {
       totalPrice += item.numberOfItems * item.unitPrice;
@@ -68,7 +68,7 @@ export class InvoicesRowActionsComponent
     return totalPrice;
   }
 
-  private generateInvoiceItemsRows(items: InvoiceItem[]) {
+  private generateInvoiceItemsRows(items: IInvoiceItem[]) {
     let rows: InvoiceItemRowPDF[][] = [
       [
         {

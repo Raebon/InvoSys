@@ -11,14 +11,14 @@ export class AuthService {
     @Inject(API_BASE_URL_TOKEN) private apiBaseUrl: string
   ) {}
 
-  public login(input: SignInInput) {
+  public login(input: Omit<IUser, "id" | "firstName" | "lastName">) {
     const { email, password } = input;
     return this.http
       .post(`${this.apiBaseUrl}login`, { email, password })
       .pipe(tap((res: any) => this.setSession(res)));
   }
 
-  public register(input: SignOutInput) {
+  public register(input: Omit<IUser, "id">) {
     return this.http
       .post(`${this.apiBaseUrl}register`, input)
       .pipe(tap((res: any) => this.setSession(res)));

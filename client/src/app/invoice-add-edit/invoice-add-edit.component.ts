@@ -16,12 +16,12 @@ export class InvoiceAddEditComponent
 {
   title: string;
   buttonLabel: string;
-  newInvoiceItem: InvoiceItem;
+  newInvoiceItem: Partial<IInvoiceItem>;
   invoiceId: string | null;
   currentDate: Date;
   invoiceDetail: FormGroup;
-  invoiceItems: InvoiceItem[];
-  selectedCustomerFromDropdown: Customer | undefined;
+  invoiceItems: TInvoiceItemInput[];
+  selectedCustomerFromDropdown: ICustomer | undefined;
 
   constructor(
     injector: Injector,
@@ -53,7 +53,7 @@ export class InvoiceAddEditComponent
     this.invoiceItems = [this.newInvoiceItem];
   }
 
-  private createInvoice(input: AddInvoiceInput) {
+  private createInvoice(input: IInvoiceInput) {
     try {
       this.graphqlService.createInvoice(input).subscribe((res) => {
         this.notifyService.showSuccess(
@@ -71,7 +71,7 @@ export class InvoiceAddEditComponent
     }
   }
 
-  private editInvoice(input: UpdateInvoiceInput) {
+  private editInvoice(input: IInvoiceInput) {
     try {
       this.graphqlService.updateInvoice(input).subscribe((res) => {
         this.notifyService.showSuccess(
@@ -98,29 +98,29 @@ export class InvoiceAddEditComponent
     }
     if (!this.invoiceId) {
       //vytvoření
-      const createInvoiceInput: AddInvoiceInput = {
+      const createInvoiceInput: IInvoiceInput = {
         description: this.invoiceDetail.value.description!,
         dateOfIssue: this.invoiceDetail.value.dateOfIssue!,
-        customer: {
+        inputCustomer: {
           firstName: this.invoiceDetail.value.firstName!,
           lastName: this.invoiceDetail.value.lastName!,
           email: this.invoiceDetail.value.email!,
         },
-        invoiceItems: this.invoiceItems,
+        inputInvoiceItems: this.invoiceItems,
       };
       this.createInvoice(createInvoiceInput);
     } else {
       //editace
-      const updateInvoiceInput: UpdateInvoiceInput = {
+      const updateInvoiceInput: IInvoiceInput = {
         id: this.invoiceId,
         description: this.invoiceDetail.value.description!,
         dateOfIssue: this.invoiceDetail.value.dateOfIssue!,
-        customer: {
+        inputCustomer: {
           firstName: this.invoiceDetail.value.firstName!,
           lastName: this.invoiceDetail.value.lastName!,
           email: this.invoiceDetail.value.email!,
         },
-        invoiceItems: this.invoiceItems,
+        inputInvoiceItems: this.invoiceItems,
       };
       this.editInvoice(updateInvoiceInput);
     }
@@ -141,7 +141,7 @@ export class InvoiceAddEditComponent
     }
   }
 
-  public getSelectedCustomerFromDropdown(event: Customer): void {
+  public getSelectedCustomerFromDropdown(event: ICustomer): void {
     this.selectedCustomerFromDropdown = event;
     this.updateOrResetCustomerFormDetail(event);
   }
@@ -151,7 +151,7 @@ export class InvoiceAddEditComponent
     this.updateOrResetCustomerFormDetail(undefined);
   }
 
-  public updateOrResetCustomerFormDetail(event: Customer | undefined): void {
+  public updateOrResetCustomerFormDetail(event: ICustomer | undefined): void {
     if (event) {
       this.invoiceDetail.patchValue({
         firstName: event.firstName,
@@ -169,7 +169,7 @@ export class InvoiceAddEditComponent
 
   public getInvoiceByIdDataToFormIfEdit(invoiceId: string): void {
     this.graphqlService.getInvoiceById(invoiceId).subscribe((data) => {
-      this.invoiceItems = data.invoiceItems.map((obj) => {
+      this.invoiceItems = data.invoiceItems!.map((obj) => {
         const { __typename, ...rest } = obj;
         return rest;
       });
@@ -177,15 +177,15 @@ export class InvoiceAddEditComponent
       this.invoiceDetail.patchValue({
         description: data.description,
         dateOfIssue: data.dateOfIssue,
-        firstName: data.customer.firstName,
-        lastName: data.customer.lastName,
-        email: data.customer.email,
+        firstName: data.customer?.firstName,
+        lastName: data.customer?.lastName,
+        email: data.customer?.email,
       });
     });
   }
 
   public onUpdateInvoiceItemFormValue(event: {
-    item: InvoiceItem;
+    item: TInvoiceItemInput;
     index: number;
   }): void {
     const { item: eventItem, index } = event;
@@ -206,7 +206,7 @@ export class InvoiceAddEditComponent
     this.invoiceItems = [...this.invoiceItems, this.newInvoiceItem];
   }
 
-  public trackByFn(index: number, item: InvoiceItem): string | number {
+  public trackByFn(index: number, item: TInvoiceItemInput): string | number {
     if (item.id) {
       return item.id;
     }
@@ -220,7 +220,7 @@ export class InvoiceAddEditComponent
   get getTotalPriceFromInvoiceItems(): number {
     let totalPrice: number = 0;
     this.invoiceItems.map((item) => {
-      totalPrice += item.numberOfItems * item.unitPrice;
+      totalPrice += item.numberOfItems! * item.unitPrice!;
     });
     return totalPrice;
   }
