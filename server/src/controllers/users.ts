@@ -69,7 +69,7 @@ export const signOut = async (
       expiresIn,
     });
   } catch (error) {
-    console.log('Error - signOut: ', error);
+    console.error('Error - signOut: ', error);
     return res.status(500).send({
       error: true,
       message: 'Chyba při registraci!',
@@ -130,7 +130,7 @@ export const signIn = async (
       expiresIn: 0,
     });
   } catch (error) {
-    console.log('Error - signIn: ', error);
+    console.error('Error - signIn: ', error);
     return res.status(500).send({
       error: true,
       message: 'Chyba při přihlašování!',

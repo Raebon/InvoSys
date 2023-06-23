@@ -24,7 +24,6 @@ export class InvoicesGridActionsComponent implements OnInit {
   ngOnInit(): void {}
 
   search(): void {
-    console.log("click", this.filterText.value);
     this.searchOutput.emit(this.filterText.value ?? "");
   }
 

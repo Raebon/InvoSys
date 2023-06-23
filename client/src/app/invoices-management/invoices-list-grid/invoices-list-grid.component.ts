@@ -48,7 +48,6 @@ export class InvoicesListGridComponent
 
   public search(filterText: string): void {
     this.getInvoicesData(filterText);
-    console.log(filterText);
   }
 
   public onSortingChange(event: SortOrder): void {
