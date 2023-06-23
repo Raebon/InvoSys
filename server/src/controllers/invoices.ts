@@ -2,6 +2,7 @@ import { Op } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import db from '../../models';
 import { Model } from 'sequelize';
+import { generateOrderBy } from '../utils/generateOrderBy';
 
 interface InvoiceModel extends IInvoice, Model {}
 interface CustomerModel extends ICustomer, Model {}
@@ -48,13 +49,12 @@ export const getInvoices = async (
       orderBy = totalPriceSorting;
     }
 
-    //TODO: refactoring
     if (order && order['field'] === 'CustomerFirstName') {
-      orderBy = [db.Customer, 'firstName', order.direction];
+      orderBy = generateOrderBy('customer', 'firstName', order.direction);
     }
 
     if (order && order['field'] === 'CustomerLastName') {
-      orderBy = [db.Customer, 'lastName', order.direction];
+      orderBy = generateOrderBy('customer', 'lastName', order.direction);
     }
 
     const invoiceData = await db.Invoice.findAndCountAll({

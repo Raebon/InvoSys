@@ -9,15 +9,15 @@
             <!-- TODO: Refactoring -->
             <th class="p-2 whitespace-nowrap">
               <div class="font-semibold text-left">
-                <app-sortable-column class="flex gap-2 justify-start items-center" title="Jméno" cd
-                  (sortingChange)="onSortingChange($event)" [activeKey]="sorting?.field" key="CustomerLastName">
+                <app-sortable-column class="flex gap-2 justify-start items-center" title="Jméno"
+                  (sortingChange)="onSortingChange($event)" [activeKey]="sorting?.field" key="CustomerFirstName">
                 </app-sortable-column>
               </div>
             </th>
             <th class="p-2 whitespace-nowrap">
               <div class="font-semibold text-left">
                 <app-sortable-column class="flex gap-2 justify-start items-center" title="Příjmení"
-                  (sortingChange)="onSortingChange($event)" [activeKey]="sorting?.field" key="CustomerFirstName">
+                  (sortingChange)="onSortingChange($event)" [activeKey]="sorting?.field" key="CustomerLastName">
                 </app-sortable-column>
               </div>
             </th>
