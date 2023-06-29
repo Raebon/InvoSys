@@ -16,6 +16,7 @@ export const getInvoices = async (
 ): Promise<IInvoiceResult> => {
   try {
     const { currentPage, pageSize, order, filterText } = params;
+    console.log(params);
 
     let orderBy:
       | [string, 'ASC' | 'DESC']
@@ -34,8 +35,8 @@ export const getInvoices = async (
 
     const whereConditions = searchTokens.map((token) => ({
       [Op.or]: [
-        { '$Customer.firstName$': { [Op.iLike]: `%${token}%` } },
-        { '$Customer.lastName$': { [Op.iLike]: `%${token}%` } },
+        { '$customer.firstName$': { [Op.iLike]: `%${token}%` } },
+        { '$customer.lastName$': { [Op.iLike]: `%${token}%` } },
       ],
     }));
 
