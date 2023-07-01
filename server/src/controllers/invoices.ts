@@ -36,6 +36,7 @@ export const getInvoices = async (
       [Op.or]: [
         { '$customer.firstName$': { [Op.iLike]: `%${token}%` } },
         { '$customer.lastName$': { [Op.iLike]: `%${token}%` } },
+        { '$Invoice.variableNumber$': parseInt(token) },
       ],
     }));
 
