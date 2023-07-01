@@ -172,7 +172,7 @@ export class InvoicesRowActionsComponent
                         alignment: "right",
                       },
                       {
-                        text: `${this.item.id}`,
+                        text: `${this.item.variableNumber}`,
                         bold: true,
                         color: "#333333",
                         fontSize: 12,
@@ -193,6 +193,26 @@ export class InvoicesRowActionsComponent
                       },
                       {
                         text: `${this.item.dateOfIssue}`,
+                        bold: true,
+                        color: "#333333",
+                        fontSize: 12,
+                        alignment: "right",
+                        width: 100,
+                      },
+                    ],
+                  },
+                  {
+                    columns: [
+                      {
+                        text: "Datum splatnosti",
+                        color: "#aaaaab",
+                        bold: true,
+                        width: "*",
+                        fontSize: 12,
+                        alignment: "right",
+                      },
+                      {
+                        text: `${this.item.dueDate}`,
                         bold: true,
                         color: "#333333",
                         fontSize: 12,

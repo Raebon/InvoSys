@@ -97,9 +97,11 @@ export class GraphqlService {
   }
 
   public updateInvoice(invoiceInput: IInvoiceInput): Observable<any> {
-    const { inputCustomer, inputInvoiceItems, ...rest } = invoiceInput;
+    const { inputCustomer, inputInvoiceItems, variableNumber, ...rest } =
+      invoiceInput;
     const payload = {
       ...rest,
+      variableNumber: Number(variableNumber),
       customer: inputCustomer,
       invoiceItems: inputInvoiceItems,
     };

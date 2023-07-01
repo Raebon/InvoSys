@@ -23,8 +23,10 @@ export const typeDefs = `#graphql
 
   type Invoice {
     id: ID!
-    description: String!
-    dateOfIssue: String!
+    description: String
+    dateOfIssue: String
+    dueDate: String
+    variableNumber: Int
     user: User
     customer: Customer
     invoiceItems: [InvoiceItem!]
@@ -85,6 +87,7 @@ export const typeDefs = `#graphql
   input AddInvoiceInput{
     description: String!
     dateOfIssue: String!
+    dueDate: String!
     customer: AddCustomerInput!
     invoiceItems: [AddInvoiceItemInput!]!
   }
@@ -106,6 +109,8 @@ export const typeDefs = `#graphql
     customerId: ID
     description: String!
     dateOfIssue: String!
+    dueDate: String!
+    variableNumber: Int!
     customer: UpdateCustomerInput!
     invoiceItems: [UpdateInvoiceItemInput!]!
   }

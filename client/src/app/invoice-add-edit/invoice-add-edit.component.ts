@@ -46,9 +46,20 @@ export class InvoiceAddEditComponent
         format(this.currentDate, "yyyy-MM-dd"),
         Validators.required,
       ],
+      dueDate: [
+        format(
+          this.currentDate.setDate(this.currentDate.getDate() + 30),
+          "yyyy-MM-dd"
+        ),
+        Validators.required,
+      ],
       firstName: ["", Validators.required],
       lastName: ["", Validators.required],
       email: ["", Validators.required],
+      variableNumber: [
+        "",
+        [Validators.required, Validators.pattern("[0-9]{1,10}")],
+      ],
     });
     this.invoiceItems = [this.newInvoiceItem];
   }
@@ -96,33 +107,39 @@ export class InvoiceAddEditComponent
       );
       return;
     }
+
+    const invoiceInput: IInvoiceInput = {
+      description: this.invoiceDetail.value.description!,
+      dateOfIssue: this.invoiceDetail.value.dateOfIssue!,
+      dueDate: this.invoiceDetail.value.dueDate!,
+      variableNumber: this.invoiceDetail.value.variableNumber!,
+      inputCustomer: {
+        firstName: this.invoiceDetail.value.firstName!,
+        lastName: this.invoiceDetail.value.lastName!,
+        email: this.invoiceDetail.value.email!,
+      },
+      inputInvoiceItems: this.invoiceItems,
+    };
+
     if (!this.invoiceId) {
       //vytvoření
-      const createInvoiceInput: IInvoiceInput = {
-        description: this.invoiceDetail.value.description!,
-        dateOfIssue: this.invoiceDetail.value.dateOfIssue!,
-        inputCustomer: {
-          firstName: this.invoiceDetail.value.firstName!,
-          lastName: this.invoiceDetail.value.lastName!,
-          email: this.invoiceDetail.value.email!,
-        },
-        inputInvoiceItems: this.invoiceItems,
-      };
-      this.createInvoice(createInvoiceInput);
+      this.createInvoice(invoiceInput);
     } else {
       //editace
-      const updateInvoiceInput: IInvoiceInput = {
+      invoiceInput.id = this.invoiceId;
+      /*    const updateInvoiceInput: IInvoiceInput = {
         id: this.invoiceId,
         description: this.invoiceDetail.value.description!,
         dateOfIssue: this.invoiceDetail.value.dateOfIssue!,
+        variableNumber: this.invoiceDetail.value.variableNumber!,
         inputCustomer: {
           firstName: this.invoiceDetail.value.firstName!,
           lastName: this.invoiceDetail.value.lastName!,
           email: this.invoiceDetail.value.email!,
         },
         inputInvoiceItems: this.invoiceItems,
-      };
-      this.editInvoice(updateInvoiceInput);
+      }; */
+      this.editInvoice(invoiceInput);
     }
   }
 
@@ -131,7 +148,6 @@ export class InvoiceAddEditComponent
 
     if (this.invoiceId) {
       //Editace
-      this.title = `Editace faktury - ${this.invoiceId}`;
       this.buttonLabel = "Editace";
       this.getInvoiceByIdDataToFormIfEdit(this.invoiceId);
     } else {
@@ -173,10 +189,14 @@ export class InvoiceAddEditComponent
         const { __typename, ...rest } = obj;
         return rest;
       });
+      this.title = `Editace faktury - ${data.variableNumber}`;
       this.selectedCustomerFromDropdown = data.customer;
+
       this.invoiceDetail.patchValue({
         description: data.description,
         dateOfIssue: data.dateOfIssue,
+        dueDate: data.dueDate,
+        variableNumber: data.variableNumber,
         firstName: data.customer?.firstName,
         lastName: data.customer?.lastName,
         email: data.customer?.email,

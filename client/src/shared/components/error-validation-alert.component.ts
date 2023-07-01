@@ -14,7 +14,10 @@ export class ErrorValidationAlertComponent {
 
   public getErrorText(): string {
     if (this.control!.errors?.["required"]) {
-      return "Toto pole je povinné.";
+      return "Povinné pole.";
+    }
+    if (this.control!.errors?.["pattern"]) {
+      return "Neplatný formát.";
     }
     if (this.control!.errors?.["minlength"]) {
       return "Toto pole nesplňuje minimální délku.";

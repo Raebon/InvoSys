@@ -46,8 +46,10 @@ interface IInvoice {
   id: string;
   description: string;
   dateOfIssue: Date;
+  dueDate: Date;
   userId?: string;
   customerId?: string;
+  variableNumber?: number;
   user: IUser;
   customer: ICustomer;
   invoiceItems: IInvoiceItem[];

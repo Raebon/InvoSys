@@ -6,7 +6,9 @@ const GET_INVOICES = gql`
       count
       rows {
         dateOfIssue
+        dueDate
         description
+        variableNumber
         id
         customer {
           firstName
@@ -43,7 +45,9 @@ const GET_INVOICE_BY_ID = gql`
         lastName
       }
       dateOfIssue
+      dueDate
       description
+      variableNumber
       invoiceItems {
         id
         name

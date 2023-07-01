@@ -12,6 +12,8 @@ module.exports = (sequelize: any, DataTypes: any) => {
     id!: string;
     description!: string;
     dateOfIssue!: Date;
+    variableNumber!: number;
+    dueDate!: Date;
 
     static associate(models: any) {
       // define association here
@@ -40,6 +42,14 @@ module.exports = (sequelize: any, DataTypes: any) => {
       },
       dateOfIssue: {
         type: DataTypes.DATEONLY,
+      },
+      dueDate: {
+        type: DataTypes.DATEONLY,
+      },
+      variableNumber: {
+        allowNull: true,
+        type: DataTypes.INTEGER,
+        defaultValue: DataTypes.INTEGER,
       },
     },
     {

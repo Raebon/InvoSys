@@ -5,6 +5,8 @@ import { utils, writeFileXLSX } from "xlsx";
 interface InvoiceExportData {
   id: string;
   datum_vystaveni: Date;
+  datum_splatnosti: Date;
+  variabilni_symbol: number | undefined;
   popis: string;
   zakaznik: string;
   celkova_cena: number;
@@ -38,6 +40,8 @@ export class InvoicesGridActionsComponent implements OnInit {
       let object: InvoiceExportData = {
         id: item.id,
         datum_vystaveni: item.dateOfIssue,
+        datum_splatnosti: item.dueDate,
+        variabilni_symbol: item.variableNumber,
         popis: item.description,
         zakaznik: `${item.customer.firstName} ${item.customer.lastName}`,
         celkova_cena: totalPrice,

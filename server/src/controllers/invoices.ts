@@ -16,7 +16,6 @@ export const getInvoices = async (
 ): Promise<IInvoiceResult> => {
   try {
     const { currentPage, pageSize, order, filterText } = params;
-    console.log(params);
 
     let orderBy:
       | [string, 'ASC' | 'DESC']
@@ -85,6 +84,8 @@ export const getInvoices = async (
         customerId: invoice.customerId,
         description: invoice.description,
         dateOfIssue: invoice.dateOfIssue,
+        dueDate: invoice.dueDate,
+        variableNumber: invoice.variableNumber,
         customer: invoice.customer,
         user: invoice.user,
         invoiceItems: invoice.invoiceItems,
@@ -226,9 +227,11 @@ export const getInvoiceById = async (
       id: invoice.id,
       description: invoice.description,
       dateOfIssue: invoice.dateOfIssue,
+      dueDate: invoice.dueDate,
       user: invoice.user,
       customer: invoice.customer,
       invoiceItems: invoice.invoiceItems,
+      variableNumber: invoice.variableNumber,
     };
   } catch (error) {
     console.error(`Chyba při získávání faktury s ID ${id}:`, error);
@@ -270,6 +273,8 @@ export const addInvoice = async (
       customerId: customer.id,
       description: input.description,
       dateOfIssue: input.dateOfIssue,
+      dueDate: input.dueDate,
+      variableNumber: input.variableNumber,
       transaction,
     });
 
@@ -291,6 +296,8 @@ export const addInvoice = async (
       customerId: customer.id,
       description: invoice.description,
       dateOfIssue: invoice.dateOfIssue,
+      dueDate: invoice.dueDate,
+      variableNumber: invoice.variableNumber,
       customer: customer,
       invoiceItems: invoiceItems,
     };
@@ -341,6 +348,8 @@ export const updateInvoice = async (input: IInvoice) => {
         customerId: customer.id,
         description: input.description,
         dateOfIssue: input.dateOfIssue,
+        dueDate: input.dueDate,
+        variableNumber: input.variableNumber,
       },
       {
         where: { id: input.id },
@@ -381,6 +390,8 @@ export const updateInvoice = async (input: IInvoice) => {
       customerId: updatedInvoice.customerId,
       description: updatedInvoice.description,
       dateOfIssue: updatedInvoice.dateOfIssue,
+      dueDate: updatedInvoice.dueDate,
+      variableNumber: updatedInvoice.variableNumber,
       customer: updatedInvoice.customer,
       invoiceItems: updatedInvoice.invoiceItems,
     };

@@ -6,6 +6,7 @@
       <table class="table-auto w-full">
         <thead class="text-sm font-semibold text-gray-400 bg-gray-50">
           <tr>
+            <th class="w-[20px]"></th>
             <!-- TODO: Refactoring -->
             <th class="p-2 whitespace-nowrap">
               <div class="font-semibold text-left">
@@ -18,6 +19,13 @@
               <div class="font-semibold text-left">
                 <app-sortable-column class="flex gap-2 justify-start items-center" title="Příjmení"
                   (sortingChange)="onSortingChange($event)" [activeKey]="sorting?.field" key="CustomerLastName">
+                </app-sortable-column>
+              </div>
+            </th>
+            <th class="p-2 whitespace-nowrap">
+              <div class="font-semibold text-center">
+                <app-sortable-column class="flex gap-2 justify-center items-center" title="Variabilní symbol"
+                  (sortingChange)="onSortingChange($event)" [activeKey]="sorting?.field" key="variableNumber">
                 </app-sortable-column>
               </div>
             </th>
@@ -42,10 +50,20 @@
         <tbody class="text-sm divide-y divide-gray-100">
           <tr *ngFor="let item of invoices">
             <td class="p-2 whitespace-nowrap">
+              <div class="text-left">
+                <i *ngIf="!isInvoiceValid(item)" class='fas fa-triangle-exclamation text-amber-500'
+                  title="Chyba - zkontrolujte fakturu"></i>
+                <i *ngIf="isInvoiceValid(item)" class='fas fa-circle-check text-green-500' title="Vše v pořádku"></i>
+              </div>
+            </td>
+            <td class="p-2 whitespace-nowrap">
               <div class="text-left">{{item.customer.firstName}}</div>
             </td>
             <td class="p-2 whitespace-nowrap">
               <div class="text-left">{{item.customer.lastName}}</div>
+            </td>
+            <td class="p-2 whitespace-nowrap">
+              <div class="text-center">{{item.variableNumber}}</div>
             </td>
             <td class="p-2 whitespace-nowrap">
               <div class="text-center">{{item.dateOfIssue | date: 'dd.MM.yyyy'}}</div>

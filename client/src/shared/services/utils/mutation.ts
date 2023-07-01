@@ -5,6 +5,7 @@ const CREATE_INVOICE = gql`
     addInvoice(input: $input) {
       id
       dateOfIssue
+      dueDate
       description
       customer {
         email
@@ -30,6 +31,7 @@ const UPDATE_INVOICE = gql`
         id
       }
       dateOfIssue
+      dueDate
       description
       id
       invoiceItems {

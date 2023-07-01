@@ -80,4 +80,14 @@ export class InvoicesListGridComponent
   public deleteInvoice(invoiceId: string): void {
     this.invoices = this.invoices.filter((invoice) => invoice.id !== invoiceId);
   }
+
+  public isInvoiceValid(invoice: IInvoice): boolean {
+    let badInvoiceInputs: string[] = [];
+    Object.entries(invoice).forEach(([key, value]) => {
+      if (!value) {
+        badInvoiceInputs.push(key);
+      }
+    });
+    return badInvoiceInputs.length === 0;
+  }
 }

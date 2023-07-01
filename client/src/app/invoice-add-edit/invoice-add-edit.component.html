@@ -67,6 +67,25 @@
 
       <div class="flex gap-3 items-center my-5 relative">
         <div class="w-[180px] text-end">
+          <label class="font-semibold text-md text-gray-400 required">Datum splatnosti</label>
+        </div>
+        <input type="date"
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px] read-only:opacity-75 read-only:cursor-not-allowed read-only:outline-none"
+          formControlName="dueDate" name="dueDate" required />
+        <app-error-validation-alert [control]="invoiceDetail.controls['dueDate']"></app-error-validation-alert>
+      </div>
+
+      <div class="flex gap-3 items-center my-5 relative">
+        <div class="w-[180px] text-end">
+          <label class="font-semibold text-md text-gray-400 required">Variabilní symbol</label>
+        </div>
+        <input type="text"
+          class="p-2 border border-gray-300 text-md rounded-sm shadow-md w-full outline-green-500 focus:outline-1 max-w-[265px] read-only:opacity-75 read-only:cursor-not-allowed read-only:outline-none"
+          formControlName="variableNumber" name="variableNumber" required />
+        <app-error-validation-alert [control]="invoiceDetail.controls['variableNumber']"></app-error-validation-alert>
+      </div>
+      <div class="flex gap-3 items-center my-5 relative">
+        <div class="w-[180px] text-end">
           <label class="font-semibold text-md text-gray-400 required">Popis</label>
         </div>
         <textarea
