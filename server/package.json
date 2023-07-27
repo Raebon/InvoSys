@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "compile": "tsc",
-    "start": "npm run compile && node ./build/src/index.js",
-    "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
+    "start": "npm run compile && node ./build/index.js",
+    "dev": "ts-node-dev --respawn --transpile-only index.ts"
   },
   "keywords": [],
   "author": "",

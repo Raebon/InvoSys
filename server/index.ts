@@ -6,10 +6,10 @@ import cors from 'cors';
 import express from 'express';
 import { GraphQLError } from 'graphql';
 import http from 'http';
-import db from '../db/models';
-import { getUser, signIn, signOut } from './controllers';
-import { resolvers } from './graphql/resolvers';
-import { typeDefs } from './graphql/schema';
+import db from './db/models';
+import { getUser, signIn, signOut } from './src/controllers';
+import { resolvers } from './src/graphql/resolvers';
+import { typeDefs } from './src/graphql/schema';
 const app = express();
 const httpServer = http.createServer(app);
 
