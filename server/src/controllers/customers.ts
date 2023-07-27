@@ -1,5 +1,5 @@
 import { Op } from 'sequelize';
-import db from '../../models';
+import db from '../../db/models';
 
 /**
  *

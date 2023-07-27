@@ -6,7 +6,7 @@ import cors from 'cors';
 import express from 'express';
 import { GraphQLError } from 'graphql';
 import http from 'http';
-import db from '../models';
+import db from '../db/models';
 import { getUser, signIn, signOut } from './controllers';
 import { resolvers } from './graphql/resolvers';
 import { typeDefs } from './graphql/schema';

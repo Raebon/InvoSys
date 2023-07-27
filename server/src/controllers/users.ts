@@ -1,4 +1,4 @@
-import db from '../../models';
+import db from '../../db/models';
 const bcrypt = require('bcryptjs');
 import { Request, Response } from 'express';
 const jwt = require('jsonwebtoken');
