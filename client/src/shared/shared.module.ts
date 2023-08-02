@@ -10,9 +10,17 @@ import { API_BASE_URL_TOKEN } from "./app.tokens";
 import { API_BASE_URL } from "./app-config";
 import { PaginatorComponent } from "./components/paginator.component";
 import { SortableColumnComponent } from "./components/sortable-column.component";
+import { InvoicesService } from "./services/invoice/invoice.service";
+import { ServicesModule } from "./services/service.module";
 
 @NgModule({
-  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ServicesModule,
+  ],
   declarations: [
     SearchCustomerDropdownComponent,
     ErrorValidationAlertComponent,
@@ -31,7 +39,11 @@ export class SharedModule {
   static forRoot(): ModuleWithProviders<SharedModule> {
     return {
       ngModule: SharedModule,
-      providers: [GraphqlService, AuthService],
+      providers: [
+        GraphqlService, //it should be replaced by services
+        AuthService,
+        InvoicesService,
+      ],
     };
   }
 }

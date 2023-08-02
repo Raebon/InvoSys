@@ -7,15 +7,14 @@ import express from 'express';
 import { GraphQLError } from 'graphql';
 import http from 'http';
 import db from './db/models';
-import { getUser, signIn, signOut } from './src/controllers';
-import { resolvers } from './src/graphql/resolvers';
-import { typeDefs } from './src/graphql/schema';
+import { getUser, signIn, signOut } from './services/users';
+import { schema } from './graphql/schema';
+
 const app = express();
 const httpServer = http.createServer(app);
 
 const server = new ApolloServer({
-  typeDefs,
-  resolvers,
+  schema,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
 

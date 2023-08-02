@@ -1,6 +1,7 @@
 import { Component, OnInit, Injector } from "@angular/core";
 import { finalize } from "rxjs";
 import { AppComponentBase } from "src/shared/app-component-base";
+import { GET_INVOICES } from "./invoices-list-grid.data";
 
 @Component({
   selector: "app-invoices-list-grid",
@@ -32,15 +33,18 @@ export class InvoicesListGridComponent
 
   public getInvoicesData(filterText?: string): void {
     this.loading = true;
-    this.graphqlService
-      .getInvoices({
-        filterText,
-        order: this.sorting,
-        pageSize: this.pageInfo.pageSize,
-        currentPage: this.pageInfo.currentPage,
-      })
-      .pipe(finalize(() => (this.loading = false)))
+    this.invoiceServices
+      .getInvoices(
+        {
+          filterText,
+          order: this.sorting,
+          pageSize: this.pageInfo.pageSize,
+          currentPage: this.pageInfo.currentPage,
+        },
+        GET_INVOICES
+      )
       .subscribe((data) => {
+        this.loading = false;
         this.invoices = data.rows;
         this.pageInfo.totalItems = data.count;
       });

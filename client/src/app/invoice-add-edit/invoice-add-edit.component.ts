@@ -4,6 +4,11 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { format } from "date-fns";
 import { AppComponentBase } from "../../shared/app-component-base";
+import {
+  CREATE_INVOICE,
+  GET_INVOICE_BY_ID,
+  UPDATE_INVOICE,
+} from "./invoice-add-edit.data";
 
 @Component({
   selector: "app-invoice-add-edit",
@@ -66,14 +71,16 @@ export class InvoiceAddEditComponent
 
   private createInvoice(input: IInvoiceInput) {
     try {
-      this.graphqlService.createInvoice(input).subscribe((res) => {
-        this.notifyService.showSuccess(
-          "Faktura byla úspěšně vytvořena",
-          "Úspěšná akce!"
-        );
+      this.invoiceServices
+        .createInvoice(input, CREATE_INVOICE)
+        .subscribe((res) => {
+          this.notifyService.showSuccess(
+            "Faktura byla úspěšně vytvořena",
+            "Úspěšná akce!"
+          );
 
-        this.router.navigate(["/app/invoices-list"]);
-      });
+          this.router.navigate(["/app/invoices-list"]);
+        });
     } catch (error) {
       this.notifyService.showError(
         "Faktura nebyla vytvořena",
@@ -84,13 +91,15 @@ export class InvoiceAddEditComponent
 
   private editInvoice(input: IInvoiceInput) {
     try {
-      this.graphqlService.updateInvoice(input).subscribe((res) => {
-        this.notifyService.showSuccess(
-          "Faktura byla úspěšně aktualizovaná",
-          "Úspěšná akce!"
-        );
-        this.router.navigate(["/app/invoices-list"]);
-      });
+      this.invoiceServices
+        .updateInvoice(input, UPDATE_INVOICE)
+        .subscribe((res) => {
+          this.notifyService.showSuccess(
+            "Faktura byla úspěšně aktualizovaná",
+            "Úspěšná akce!"
+          );
+          this.router.navigate(["/app/invoices-list"]);
+        });
     } catch (error) {
       this.notifyService.showError(
         "Faktura nebyla aktualizovaná",
@@ -112,7 +121,7 @@ export class InvoiceAddEditComponent
       description: this.invoiceDetail.value.description!,
       dateOfIssue: this.invoiceDetail.value.dateOfIssue!,
       dueDate: this.invoiceDetail.value.dueDate!,
-      variableNumber: this.invoiceDetail.value.variableNumber!,
+      variableNumber: Number(this.invoiceDetail.value.variableNumber!),
       inputCustomer: {
         firstName: this.invoiceDetail.value.firstName!,
         lastName: this.invoiceDetail.value.lastName!,
@@ -184,24 +193,26 @@ export class InvoiceAddEditComponent
   }
 
   public getInvoiceByIdDataToFormIfEdit(invoiceId: string): void {
-    this.graphqlService.getInvoiceById(invoiceId).subscribe((data) => {
-      this.invoiceItems = data.invoiceItems!.map((obj) => {
-        const { __typename, ...rest } = obj;
-        return rest;
-      });
-      this.title = `Editace faktury - ${data.variableNumber}`;
-      this.selectedCustomerFromDropdown = data.customer;
+    this.invoiceServices
+      .getInvoiceById(invoiceId, GET_INVOICE_BY_ID)
+      .subscribe((data) => {
+        this.invoiceItems = data.invoiceItems!.map((obj) => {
+          const { __typename, ...rest } = obj;
+          return rest;
+        });
+        this.title = `Editace faktury - ${data.variableNumber}`;
+        this.selectedCustomerFromDropdown = data.customer;
 
-      this.invoiceDetail.patchValue({
-        description: data.description,
-        dateOfIssue: data.dateOfIssue,
-        dueDate: data.dueDate,
-        variableNumber: data.variableNumber,
-        firstName: data.customer?.firstName,
-        lastName: data.customer?.lastName,
-        email: data.customer?.email,
+        this.invoiceDetail.patchValue({
+          description: data.description,
+          dateOfIssue: data.dateOfIssue,
+          dueDate: data.dueDate,
+          variableNumber: data.variableNumber,
+          firstName: data.customer?.firstName,
+          lastName: data.customer?.lastName,
+          email: data.customer?.email,
+        });
       });
-    });
   }
 
   public onUpdateInvoiceItemFormValue(event: {

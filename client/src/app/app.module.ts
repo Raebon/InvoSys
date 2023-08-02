@@ -9,12 +9,12 @@ import { AppComponent } from "./app.component";
 import { HomeComponent } from "./home/home.component";
 import { InvoiceAddEditComponent } from "./invoice-add-edit/invoice-add-edit.component";
 import { InvoiceItemComponent } from "./invoice-add-edit/invoice-item/invoice-item.component";
+import { InvoicesGridActionsComponent } from "./invoices-management/invoices-list-grid/invoices-grid-actions.component";
 import { InvoicesListGridComponent } from "./invoices-management/invoices-list-grid/invoices-list-grid.component";
+import { InvoicesRowActionsComponent } from "./invoices-management/invoices-list-grid/invoices-row-actions.component";
 import { InvoicesManagementComponent } from "./invoices-management/invoices-management.component";
 import { RevenueLastThreeMonthsComponent } from "./invoices-management/revenue-last-three-months/revenue-last-three-months.component";
 import { NavbarComponent } from "./layout/navbar.component";
-import { InvoicesGridActionsComponent } from "./invoices-management/invoices-list-grid/invoices-grid-actions.component";
-import { InvoicesRowActionsComponent } from "./invoices-management/invoices-list-grid/invoices-row-actions.component";
 
 @NgModule({
   declarations: [

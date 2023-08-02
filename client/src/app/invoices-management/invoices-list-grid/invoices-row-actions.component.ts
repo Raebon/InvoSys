@@ -10,6 +10,7 @@ import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import { AppComponentBase } from "src/shared/app-component-base";
 import { logo } from "./logo-image";
+import { DELETE_INVOICE } from "./invoices-row-actions.data";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 interface InvoiceItemRowPDF {
@@ -41,13 +42,15 @@ export class InvoicesRowActionsComponent
   public deleteInvoice(invoiceId: string): void {
     if (window.confirm(`Opravdu chcete odstranit fakturu?`)) {
       try {
-        this.graphqlService.deleteInvoice(invoiceId).subscribe((data) => {
-          this.notifyService.showSuccess(
-            "Faktura byla úspěšně odstraněna",
-            "Úspěšná akce!"
-          );
-          this.onDeleteItem.emit(invoiceId);
-        });
+        this.invoiceServices
+          .deleteInvoice(invoiceId, DELETE_INVOICE)
+          .subscribe((data) => {
+            this.notifyService.showSuccess(
+              "Faktura byla úspěšně odstraněna",
+              "Úspěšná akce!"
+            );
+            this.onDeleteItem.emit(invoiceId);
+          });
       } catch (error) {
         {
           this.notifyService.showError(

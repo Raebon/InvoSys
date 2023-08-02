@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output } from "@angular/core";
-import { GraphqlService } from "../services/graphql.service";
 import { debounceTime, distinctUntilChanged, finalize } from "rxjs/operators";
+import { CustomerService } from "../services/customer/customer.service";
+import { SEARCH_CUSTOMERS } from "./search-customer-dropdown.data";
 
 @Component({
   selector: "app-search-customer-dropdown",
@@ -15,7 +16,7 @@ export class SearchCustomerDropdownComponent {
   loading: boolean;
   isDropdownOpen: boolean;
 
-  constructor(private graphqlService: GraphqlService) {
+  constructor(private customerService: CustomerService) {
     this.count = 0;
     this.customers = [];
     this.filterText = "";
@@ -36,14 +37,11 @@ export class SearchCustomerDropdownComponent {
       return;
     }
     this.loading = true;
-    this.graphqlService
-      .searchCustomers(text)
-      .pipe(
-        debounceTime(500),
-        distinctUntilChanged(),
-        finalize(() => (this.loading = false))
-      )
+    this.customerService
+      .searchCustomers(text, SEARCH_CUSTOMERS)
+      .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe((response) => {
+        this.loading = false;
         this.customers = response.rows;
         this.count = response.count;
         if (this.count > 0) {

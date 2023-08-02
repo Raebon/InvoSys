@@ -1,5 +1,6 @@
 import { Component, OnInit, Injector } from "@angular/core";
 import { AppComponentBase } from "src/shared/app-component-base";
+import { GET_LAST_THREE_MONTHS_REVENUE } from "./getLastThreeMonthsRevenue.data";
 
 @Component({
   selector: "app-revenue-last-three-months",
@@ -22,8 +23,10 @@ export class RevenueLastThreeMonthsComponent
   }
 
   public getLastThreeMonthsRevenueData(): void {
-    this.graphqlService.getLastThreeMonthsRevenue().subscribe((data) => {
-      this.revenueStats = data;
-    });
+    this.invoiceServices
+      .getLastThreeMonthsRevenue(GET_LAST_THREE_MONTHS_REVENUE)
+      .subscribe((data) => {
+        this.revenueStats = data;
+      });
   }
 }
