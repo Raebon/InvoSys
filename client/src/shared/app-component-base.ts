@@ -1,10 +1,11 @@
-import { Injector } from "@angular/core";
+import { Injectable, Injector } from "@angular/core";
 import { GraphqlService } from "./services/graphql.service";
 import { NotificationService } from "./services/notification.service";
 import { AuthService } from "./auth/auth.service";
 import { InvoicesService } from "./services/invoice/invoice.service";
 import { CustomerService } from "./services/customer/customer.service";
 
+@Injectable()
 export abstract class AppComponentBase {
   graphqlService: GraphqlService;
   notifyService: NotificationService;

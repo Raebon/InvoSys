@@ -14,6 +14,10 @@ const routes: Routes = [
     loadChildren: () => import("./app/app.module").then((m) => m.AppModule), // Lazy load account module
     data: { preload: true },
   },
+  {
+    path: "**",
+    redirectTo: "/app/home",
+  },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
