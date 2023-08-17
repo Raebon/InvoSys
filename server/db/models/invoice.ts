@@ -1,6 +1,7 @@
 'use strict';
 
 import { Model } from 'sequelize';
+import { IInvoice } from '../../interfaces';
 
 type InvoiceModel = Omit<
   IInvoice,
@@ -24,6 +25,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
         foreignKey: 'customerId',
       });
       Invoice.hasMany(models.InvoiceItem, {
+        onDelete: 'cascade',
         foreignKey: 'invoiceId',
       });
     }

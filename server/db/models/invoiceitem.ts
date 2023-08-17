@@ -1,6 +1,7 @@
 'use strict';
 
 import { Model } from 'sequelize';
+import { IInvoiceItem } from '../../interfaces';
 
 module.exports = (sequelize: any, DataTypes: any) => {
   class InvoiceItem extends Model<IInvoiceItem> implements IInvoiceItem {
@@ -13,6 +14,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
       // define association here
       InvoiceItem.belongsTo(models.Invoice, {
         foreignKey: 'invoiceId',
+        onDelete: 'cascade',
       });
     }
   }

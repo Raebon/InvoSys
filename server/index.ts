@@ -7,20 +7,46 @@ import express from 'express';
 import { GraphQLError } from 'graphql';
 import http from 'http';
 import db from './db/models';
-import { getUser, signIn, signOut } from './services/users';
-import { schema } from './graphql/schema';
+import { buildContext, schema } from './graphql';
+import { Services } from './services';
+import { ApolloServerErrorCode } from '@apollo/server/errors';
 
 const app = express();
 const httpServer = http.createServer(app);
 
+const myPlugin = {
+  async requestDidStart(requestContext: any) {
+    console.log(
+      `${requestContext.request.operationName} - ${requestContext.request.extensions}`,
+    );
+  },
+};
+
 const server = new ApolloServer({
   schema,
-  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  plugins: [ApolloServerPluginDrainHttpServer({ httpServer }), myPlugin],
+  formatError: (formattedError: any, error: any) => {
+    // Return a different error message
+    if (
+      formattedError.extensions.code ===
+      ApolloServerErrorCode.GRAPHQL_VALIDATION_FAILED
+    ) {
+      return {
+        ...formattedError,
+        message: "Your query doesn't match the schema. Try double-checking it!",
+      };
+    }
+    // Otherwise return the formatted error. This error can also
+    // be manipulated in other ways, as long as it's returned.
+    return formattedError;
+  },
 });
 
 app.use(cors<cors.CorsRequest>(), bodyParser.json());
 const startServer = async () => {
   db.sequelize.authenticate();
+  db.sequelize.options.logging = false;
+
   console.log('🚀 Connected to DB');
   await server.start();
   console.log('🚀 Apollo server ready');
@@ -32,7 +58,9 @@ const startServer = async () => {
     // an Apollo Server instance and optional configuration options
     expressMiddleware(server, {
       context: async ({ req }) => {
-        const user = getUser(req.headers.authorization);
+        const user = await Services.getInstance().user.getUser(
+          req.headers.authorization,
+        );
 
         if (!user.userId) {
           throw new GraphQLError('Nejste přihlášený', {
@@ -41,7 +69,10 @@ const startServer = async () => {
             },
           });
         }
-        return { user };
+
+        const context = await buildContext(user, Services.getInstance());
+
+        return context;
       },
     }),
   );
@@ -55,9 +86,9 @@ const startServer = async () => {
 startServer();
 
 app.post('/register', (req, res) => {
-  signOut(req, res);
+  Services.getInstance().user.signOut(req, res);
 });
 
 app.post('/login', (req, res) => {
-  signIn(req, res);
+  Services.getInstance().user.signIn(req, res);
 });

@@ -1,6 +1,7 @@
 'use strict';
 
 import { Model } from 'sequelize';
+import { ICustomer } from '../../interfaces';
 
 module.exports = (sequelize: any, DataTypes: any) => {
   class Customer extends Model<ICustomer> implements ICustomer {

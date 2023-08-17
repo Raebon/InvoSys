@@ -272,7 +272,7 @@ export class InvoicesRowActionsComponent
         {
           columns: [
             {
-              text: "info o přihlášeným uživ...",
+              text: `${this.item.user.firstName} ${this.item.user.lastName}`,
               bold: true,
               color: "#333333",
               alignment: "left",
@@ -453,8 +453,10 @@ export class InvoicesRowActionsComponent
         columnGap: 20,
       },
     };
-
-    pdfMake.createPdf(documentDefinition).download(`faktura_${this.item.id}`);
-    //.open();
+    console.log(this.item);
+    pdfMake
+      .createPdf(documentDefinition)
+      //.download(`faktura_${this.item.id}`);
+      .open();
   }
 }

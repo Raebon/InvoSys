@@ -16,6 +16,11 @@ export const GET_INVOICES = gql`
             lastName
             id
           }
+          user {
+            firstName
+            lastName
+            id
+          }
           invoiceItems {
             name
             numberOfItems
